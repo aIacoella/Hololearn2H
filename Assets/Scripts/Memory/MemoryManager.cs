@@ -29,6 +29,8 @@ public class MemoryManager : TaskManager
         Instantiate(PlayModesPrefabs.transform.GetChild(playMode), GameObject.Find("MemoryManager").transform);
 
         virtualAssistant = VirtualAssistantsPrefabs.transform.GetChild(selectedAssistant + 1).GetChild(0);
+
+        GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
     }
 
     // Update is called once per frame
@@ -124,6 +126,7 @@ public class MemoryManager : TaskManager
         waitingTime = MemorySettings.Instance.waitingTime;
         assistantPresence = VirtualAssistantChoice.Instance.assistantPresence;
         selectedAssistant = VirtualAssistantChoice.Instance.selectedAssistant;
+        //Debug.Log("PlayMode: " + playMode + " - Number of Boxes: " + numberOfBoxes + " - Waiting Time: " + waitingTime + " - Assistant Presence: " + assistantPresence + " - Selected Assistant: " + selectedAssistant);
     }
 
 

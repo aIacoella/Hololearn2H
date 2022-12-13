@@ -27,25 +27,18 @@ MonoBehaviour:
     componentName: XR SDK Windows Mixed Reality Spatial Mesh Observer
     priority: 0
     runtimePlatform: 9
-    observerProfile: {fileID: 11400000, guid: 8be0bcd2117dd214da41ed98f0def2e3, type: 2}
+    observerProfile: {fileID: 11400000, guid: 614ce91fd18312449b5987f7a48dd01e, type: 2}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKSpatialMeshObserver,
         Microsoft.MixedReality.Toolkit.Providers.XRSDK
     componentName: XR SDK Spatial Mesh Observer
     priority: 0
     runtimePlatform: 2039
-    observerProfile: {fileID: 11400000, guid: 8be0bcd2117dd214da41ed98f0def2e3, type: 2}
+    observerProfile: {fileID: 11400000, guid: 614ce91fd18312449b5987f7a48dd01e, type: 2}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OpenXRSpatialAwarenessMeshObserver,
         Microsoft.MixedReality.Toolkit.Providers.OpenXR
     componentName: OpenXR Spatial Mesh Observer
     priority: 0
     runtimePlatform: 9
-    observerProfile: {fileID: 11400000, guid: 8be0bcd2117dd214da41ed98f0def2e3, type: 2}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.WindowsSceneUnderstandingObserver,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsSceneUnderstanding
-    componentName: Windows Scene Understanding Observer
-    priority: 0
-    runtimePlatform: 8
-    observerProfile: {fileID: 11400000, guid: 1ce015d87321ac7458f2f259a7e1aaa5, type: 2}
+    observerProfile: {fileID: 11400000, guid: 614ce91fd18312449b5987f7a48dd01e, type: 2}

@@ -36,6 +36,8 @@ public class LayTheTableManager : TaskManager
         virtualAssistant = VirtualAssistantsPrefabs.transform.GetChild(selectedAssistant + 1).GetChild(assistantBehaviour - 1);
 
         Instantiate(PlacementsManagerPrefabs.transform.GetChild(targetsVisibility), GameObject.Find("LayTheTableManager").transform);
+
+        GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
     }
 
     // Update is called once per frame

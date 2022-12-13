@@ -75,7 +75,9 @@ public class DressUpManager : TaskManager
         Debug.DrawLine(Camera.main.transform.position, weatherPosition, Color.black, 30f);
 
 
-        Vector3 relativePos = Camera.main.transform.position - gazePosition;
+        //Vector3 relativePos = Camera.main.transform.position - gazePosition;
+        Vector3 relativePos = Camera.main.transform.position;
+        
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         rotation.x = 0f;
         rotation.z = 0f;
