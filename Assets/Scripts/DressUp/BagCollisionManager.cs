@@ -19,7 +19,7 @@ public class BagCollisionManager : MonoBehaviour
     {
         if (transform.position.y < floorPosition.y)
         {
-            transform.position = new Vector3(transform.position.x, floorPosition.y + 0.01f, transform.position.z);
+            //transform.position = new Vector3(transform.position.x, floorPosition.y + 0.01f, transform.position.z);
         }
     }
 
