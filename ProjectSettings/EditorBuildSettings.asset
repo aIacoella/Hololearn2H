@@ -48,21 +48,21 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Photon/PhotonUnityNetworking/Demos/DemoSlotRacer/SlotCar-Scene.unity
     guid: 711b38c07f2cf904f81b3422c67f1825
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/collaborative_example.unity
     guid: 8e2d9092dea6d734398a0caec1c635a2
   - enabled: 1
     path: Assets/_Scenes/MainScene.unity
     guid: 0a63e81d3a9755a4c9c6bdbbf92c9086
   - enabled: 1
-    path: Assets/_Scenes/DressUp.unity
-    guid: 7c4780999793f7c47a50b4b8d6e4e218
+    path: Assets/_Scenes/LayTheTable.unity
+    guid: 0525174ae9c455f4eb15c2b12259661a
   - enabled: 1
     path: Assets/_Scenes/GarbageCollection.unity
     guid: 8dc88782476783947ad420be6f946b27
   - enabled: 1
-    path: Assets/_Scenes/LayTheTable.unity
-    guid: 0525174ae9c455f4eb15c2b12259661a
+    path: Assets/_Scenes/DressUp.unity
+    guid: 7c4780999793f7c47a50b4b8d6e4e218
   - enabled: 1
     path: Assets/_Scenes/Memory.unity
     guid: 68da405994dc627498d5d4c875472ed2
