@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Photon.Pun;
 using UnityEngine;
 
 /// <summary>
@@ -9,7 +10,7 @@ using UnityEngine;
 /// parent root GameObject with <see cref="Object.DontDestroyOnLoad"/></remarks>
 /// </summary>
 /// <typeparam name="T">The Singleton Type</typeparam>
-public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+public class Singleton<T> : MonoBehaviourPunCallbacks where T : Singleton<T>
 {
     private static T instance;
 

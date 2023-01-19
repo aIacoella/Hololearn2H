@@ -8,8 +8,11 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
+using UnityEngine.XR.ARFoundation;
+using Photon.Realtime;
+using Photon.Pun;
 
-public class DressUpManager : TaskManager
+public class DressUpManager : TaskManager, IInRoomCallbacks
 {
     public GameObject WeatherPrefabs;
     public GameObject ClothesPrefabs;
@@ -28,15 +31,87 @@ public class DressUpManager : TaskManager
     private string weathertag;
     private string temperaturetag;
 
+    public static DressUpManager Room;
+
+    [SerializeField] private GameObject photonUserPrefab = default;
+
+    private Transform roverExplorerLocation = default;
+
+    private Player[] photonPlayers;
+
+    private int playersInRoom;
+    private int myNumberInRoom;
+
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+        photonPlayers = PhotonNetwork.PlayerList;
+        playersInRoom++;
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (Room == null)
+        {
+            Room = this;
+        }
+        else
+        {
+            if (Room != this)
+            {
+                Destroy(Room.gameObject);
+                Room = this;
+            }
+        }
+
+        //get the ar session origin component for the table anchor object in the scene
+        ARSessionOrigin arSessionOrigin = GameObject.Find("TableAnchor").GetComponent<ARSessionOrigin>();
+
+        //get the main camera
+        Camera mainCamera = Camera.main;
+
+        arSessionOrigin.camera = mainCamera;
+    }
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
 
     // Use this for initialization
     public override void Start()
     {
+        // Allow prefabs not in a Resources folder
+        if (PhotonNetwork.PrefabPool is DefaultPool pool)
+        {
+            if (photonUserPrefab != null) pool.ResourceCache.Add(photonUserPrefab.name, photonUserPrefab);
+
+            if (WeatherPrefabs != null) pool.ResourceCache.Add(WeatherPrefabs.name, WeatherPrefabs);
+
+            if (ClothesPrefabs != null) pool.ResourceCache.Add(ClothesPrefabs.name, ClothesPrefabs);
+
+            if (BagsPrefabs != null) pool.ResourceCache.Add(BagsPrefabs.name, BagsPrefabs);
+
+            if (VirtualAssistantsPrefabs != null) pool.ResourceCache.Add(VirtualAssistantsPrefabs.name, VirtualAssistantsPrefabs);
+        }
+
+
         LoadSettings();
 
         virtualAssistant = VirtualAssistantsPrefabs.transform.GetChild(selectedAssistant + 1).GetChild(assistantBehaviour - 1);
 
-        GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
+
+
     }
 
     // Update is called once per frame
@@ -45,11 +120,42 @@ public class DressUpManager : TaskManager
 
     }
 
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+        photonPlayers = PhotonNetwork.PlayerList;
+        playersInRoom = photonPlayers.Length;
+        myNumberInRoom = playersInRoom;
+        PhotonNetwork.NickName = myNumberInRoom.ToString();
+
+        StartGame();
+    }
+
+    private void StartGame()
+    {
+        CreatePlayer();
+
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        PhotonNetwork.Instantiate(ClothesPrefabs.name, Vector3.zero, Quaternion.identity);
+
+        Debug.Log("Test master");
+
+        //GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
+    }
+
+    private void CreatePlayer() {
+        var player = PhotonNetwork.Instantiate(photonUserPrefab.name, Vector3.zero, Quaternion.identity);
+    }
+
+
+
     public override void GenerateObjectsInWorld()
     {
         //Seleziono il pavimento
         //Transform floor = SpatialProcessing.Instance.floors.ElementAt(0).transform;
         //SurfacePlane plane = floor.GetComponent<SurfacePlane>();
+        
 
         System.Random rnd = new System.Random();
 
@@ -77,7 +183,7 @@ public class DressUpManager : TaskManager
 
         //Vector3 relativePos = Camera.main.transform.position - gazePosition;
         Vector3 relativePos = Camera.main.transform.position;
-        
+
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         rotation.x = 0f;
         rotation.z = 0f;
@@ -85,7 +191,9 @@ public class DressUpManager : TaskManager
 
         Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
 
-        Transform weather = new GameObject("Weather").transform;
+        //PhotonNetwork.Instantiate(ClothesPrefabs.name, weatherPosition, rotation);
+
+       /* Transform weather = new GameObject("Weather").transform;
         weather.parent = sceneRoot;
         weather.position = weatherPosition;
 
@@ -98,7 +206,6 @@ public class DressUpManager : TaskManager
 
         weathertag = GameObject.Find("Weather").transform.GetChild(0).GetChild(0).tag;
         temperaturetag = GameObject.Find("Weather").transform.GetChild(0).GetChild(1).tag;
-
 
         Transform clothes = new GameObject("Clothes").transform;
         clothes.parent = sceneRoot;
@@ -157,8 +264,9 @@ public class DressUpManager : TaskManager
             Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, sceneRoot);
             VirtualAssistantManager.Instance.patience = assistantPatience;
             VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
-        }
+        }*/
 
+        
     }
 
 
