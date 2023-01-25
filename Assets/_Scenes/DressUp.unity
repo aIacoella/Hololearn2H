@@ -347,6 +347,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1736778354}
     m_Modifications:
+    - target: {fileID: 468229091480462161, guid: 027a280457906a64aa8223f89eaac773, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6931196017462994529, guid: 027a280457906a64aa8223f89eaac773, type: 3}
       propertyPath: m_Name
       value: TableAnchor
@@ -441,6 +445,10 @@ PrefabInstance:
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 114081867692619540, guid: 0825158796c8865499b0a5cef2f9c503, type: 3}
+      propertyPath: BagsPrefabs
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114081867692619540, guid: 0825158796c8865499b0a5cef2f9c503, type: 3}
       propertyPath: ClothesPrefabs
       value: 
       objectReference: {fileID: 1858990561776124, guid: 8e05b0daad14f6145b6793cf31f99e5f, type: 3}
@@ -448,6 +456,22 @@ PrefabInstance:
       propertyPath: photonUserPrefab
       value: 
       objectReference: {fileID: 3000569307421430844, guid: 77681e113a66a094ca9b8d6e673d84e0, type: 3}
+    - target: {fileID: 114081867692619540, guid: 0825158796c8865499b0a5cef2f9c503, type: 3}
+      propertyPath: TemperatureTextPrefab
+      value: 
+      objectReference: {fileID: 1248424925796311411, guid: a0e3655c81de8de4a9e47ef1022f746f, type: 3}
+    - target: {fileID: 114081867692619540, guid: 0825158796c8865499b0a5cef2f9c503, type: 3}
+      propertyPath: BagsPrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114081867692619540, guid: 0825158796c8865499b0a5cef2f9c503, type: 3}
+      propertyPath: BagsPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 561424133762525507, guid: ea5b0f36474432044b41636ce2944210, type: 3}
+    - target: {fileID: 114081867692619540, guid: 0825158796c8865499b0a5cef2f9c503, type: 3}
+      propertyPath: BagsPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 8002519358077038671, guid: 38c2dcec4d8808a43a8b822bd68353bb, type: 3}
     - target: {fileID: 114081867692619540, guid: 0825158796c8865499b0a5cef2f9c503, type: 3}
       propertyPath: ClothesPrefabs.Array.size
       value: 22
@@ -540,6 +564,18 @@ PrefabInstance:
       propertyPath: ClothesPrefabs.Array.data[21]
       value: 
       objectReference: {fileID: 9183360292320803397, guid: a2abe40e9917196479f5e3eb4cc488ab, type: 3}
+    - target: {fileID: 114081867692619540, guid: 0825158796c8865499b0a5cef2f9c503, type: 3}
+      propertyPath: WheatherPrefabsLvl1.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114081867692619540, guid: 0825158796c8865499b0a5cef2f9c503, type: 3}
+      propertyPath: WheatherPrefabsLvl1.Array.data[0]
+      value: 
+      objectReference: {fileID: 1673918624741578564, guid: eb3998555aad13943add50e3830f8aac, type: 3}
+    - target: {fileID: 114081867692619540, guid: 0825158796c8865499b0a5cef2f9c503, type: 3}
+      propertyPath: WheatherPrefabsLvl1.Array.data[1]
+      value: 
+      objectReference: {fileID: 6618942124839086900, guid: 6f86c8514d697fc409b31008b3f1d768, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0825158796c8865499b0a5cef2f9c503, type: 3}
 --- !u!1001 &5164786161737765117

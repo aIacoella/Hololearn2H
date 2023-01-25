@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class TemperatureGenerator : MonoBehaviour {
@@ -30,7 +31,7 @@ public class TemperatureGenerator : MonoBehaviour {
         temperatureRotation.x = 0f;
         temperatureRotation.z = 0f;
 
-        Transform temperature = Instantiate(manager.WeatherPrefabs.transform.GetChild(0), temperaturePostion, temperatureRotation, weather.GetChild(0).GetChild(1));
+        GameObject temperature = PhotonNetwork.Instantiate(manager.TemperatureTextPrefab.name, temperaturePostion, temperatureRotation, 0);
 
         int temperatureValue = new System.Random().Next(MinRange, MaxRange);
         temperature.GetComponent<TextMesh>().text = temperatureValue + "°C";

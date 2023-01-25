@@ -14,9 +14,10 @@ using Photon.Pun;
 
 public class DressUpManager : TaskManager, IInRoomCallbacks
 {
-    public GameObject WeatherPrefabs;
+    public GameObject[] WheatherPrefabsLvl1;
+    public GameObject TemperatureTextPrefab;
     public GameObject[] ClothesPrefabs;
-    public GameObject BagsPrefabs;
+    public GameObject[] BagsPrefabs;
     public GameObject VirtualAssistantsPrefabs;
 
     private int numberOfLevel;
@@ -96,7 +97,17 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
         {
             if (photonUserPrefab != null) pool.ResourceCache.Add(photonUserPrefab.name, photonUserPrefab);
 
-            if (WeatherPrefabs != null) pool.ResourceCache.Add(WeatherPrefabs.name, WeatherPrefabs);
+            //if (WheatherPrefabsLvl1 != null) pool.ResourceCache.Add(WheatherPrefabsLvl1.name, WheatherPrefabsLvl1);
+
+            if (WheatherPrefabsLvl1 != null)
+            {
+                foreach (GameObject wheather in WheatherPrefabsLvl1)
+                {
+                    pool.ResourceCache.Add(wheather.name, wheather);
+                }
+            }
+
+            if (TemperatureTextPrefab != null) pool.ResourceCache.Add(TemperatureTextPrefab.name, TemperatureTextPrefab);
 
             //if (ClothesPrefabs != null) pool.ResourceCache.Add(ClothesPrefabs.name, ClothesPrefabs);
             if (ClothesPrefabs != null)
@@ -107,7 +118,15 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
                 }
             }
 
-            if (BagsPrefabs != null) pool.ResourceCache.Add(BagsPrefabs.name, BagsPrefabs);
+            //if (BagsPrefabs != null) pool.ResourceCache.Add(BagsPrefabs.name, BagsPrefabs);
+
+            if (BagsPrefabs != null)
+            {
+                foreach (GameObject bags in BagsPrefabs)
+                {
+                    pool.ResourceCache.Add(bags.name, bags);
+                }
+            }
 
             if (VirtualAssistantsPrefabs != null) pool.ResourceCache.Add(VirtualAssistantsPrefabs.name, VirtualAssistantsPrefabs);
         }
@@ -144,9 +163,9 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
 
         if (!PhotonNetwork.IsMasterClient) return;
 
-        PhotonNetwork.Instantiate(ClothesPrefabs[0].name, Vector3.zero, Quaternion.identity);
+        //PhotonNetwork.Instantiate(ClothesPrefabs[0].name, Vector3.zero, Quaternion.identity);
 
-        Debug.Log("Test master");
+        GenerateObjectsInWorld();
 
         //GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
     }
@@ -200,19 +219,25 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
 
         //PhotonNetwork.Instantiate(ClothesPrefabs.name, weatherPosition, rotation);
 
-       /* Transform weather = new GameObject("Weather").transform;
+        Transform weather = new GameObject("Weather").transform;
         weather.parent = sceneRoot;
         weather.position = weatherPosition;
 
-        Transform selectedLevel = WeatherPrefabs.transform.GetChild(numberOfLevel);
-        Transform selectedWeather = selectedLevel.GetChild(rnd.Next(0, selectedLevel.childCount));
-        Instantiate(selectedWeather, weather.TransformPoint(-0.2f, 0f, 0f), rotation, weather);
+        //Transform selectedLevel = WeatherPrefabs.transform.GetChild(numberOfLevel);
+        //Transform selectedWeather = selectedLevel.GetChild(rnd.Next(0, selectedLevel.childCount));
+        //Instantiate(selectedWeather, weather.TransformPoint(-0.2f, 0f, 0f), rotation, weather);
+        GameObject selectedWeather = PhotonNetwork.Instantiate(WheatherPrefabsLvl1[0].transform.name, weather.TransformPoint(-0.2f, 0f, 0f), rotation, 0);
 
-        selectedWeather.GetChild(1).GetComponent<TemperatureGenerator>().GenerateTemperature();
+
+        TemperatureGenerator temperatureGenerator = selectedWeather.transform.GetChild(1).GetComponent<TemperatureGenerator>();
+        selectedWeather.transform.GetChild(1).GetComponent<TemperatureGenerator>().GenerateTemperature();
 
 
-        weathertag = GameObject.Find("Weather").transform.GetChild(0).GetChild(0).tag;
-        temperaturetag = GameObject.Find("Weather").transform.GetChild(0).GetChild(1).tag;
+        weathertag = selectedWeather.transform.GetChild(0).tag;
+        temperaturetag = selectedWeather.transform.GetChild(1).tag;
+
+        Debug.Log("Weather: " + weathertag);
+        Debug.Log("Temperature: " + temperaturetag);
 
         Transform clothes = new GameObject("Clothes").transform;
         clothes.parent = sceneRoot;
@@ -225,7 +250,7 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
         int counter = 0;
         for (int i = 0; i < numberOfClothes; i++)
         {
-            Transform currentClothe = ClothesPrefabs.transform.GetChild(rnd.Next(0, ClothesPrefabs.transform.childCount));
+            Transform currentClothe = ClothesPrefabs[(rnd.Next(0, ClothesPrefabs.Length))].transform;
             List<string> tags = currentClothe.GetComponent<TagsContainer>().tags;
 
             if (counter <= Math.Floor((double)numberOfClothes / 3))
@@ -236,7 +261,7 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
                     continue;
                 }
             }
-            Instantiate(currentClothe.gameObject, currentClothe.position, currentClothe.rotation, clothes);
+            PhotonNetwork.Instantiate(currentClothe.name, currentClothe.position, currentClothe.rotation);
 
             if (tags.Contains(weathertag) || tags.Contains(temperaturetag))
             {
@@ -248,14 +273,14 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
         clothes.Translate(clothesPosition);
         clothes.Rotate(rotation.eulerAngles);
 
-
+        
         Transform bag = new GameObject("Bag").transform;
         bag.parent = sceneRoot;
         bag.tag = "Targets";
 
         Vector3 bagPosition = weatherPosition;
         bagPosition.y = floorPosition.y + 0.1f;
-        Instantiate(BagsPrefabs.transform.GetChild(rnd.Next(0, BagsPrefabs.transform.childCount)).gameObject, bagPosition, rotation, bag);
+        PhotonNetwork.Instantiate(BagsPrefabs[(rnd.Next(0, BagsPrefabs.Length))].transform.name, bagPosition, rotation);
         Debug.DrawLine(clothesPosition, bagPosition, Color.blue, 30f);
 
 
@@ -266,14 +291,13 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
         assistantPosition.y = floor.position.y;
         Debug.DrawLine(bagPosition, assistantPosition, Color.green, 30f);
 
-        if (assistantPresence != 0)
+        /*if (assistantPresence != 0)
         {
             Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, sceneRoot);
             VirtualAssistantManager.Instance.patience = assistantPatience;
             VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
         }*/
-
-        
+    
     }
 
 
