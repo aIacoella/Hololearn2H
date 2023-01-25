@@ -27,7 +27,7 @@ public class ClothesPositionManager : ObjectPositionManager
 
         if (transform.position.y < floorPosition.y)
         {
-            Debug.Log("Re-aligning");
+            //Debug.Log("Re-aligning");
             //transform.position = new Vector3(transform.position.x, floorPosition.y + 0.01f, transform.position.z);
         }
 

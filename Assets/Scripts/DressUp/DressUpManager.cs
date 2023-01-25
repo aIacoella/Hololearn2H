@@ -15,7 +15,7 @@ using Photon.Pun;
 public class DressUpManager : TaskManager, IInRoomCallbacks
 {
     public GameObject WeatherPrefabs;
-    public GameObject ClothesPrefabs;
+    public GameObject[] ClothesPrefabs;
     public GameObject BagsPrefabs;
     public GameObject VirtualAssistantsPrefabs;
 
@@ -98,7 +98,14 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
 
             if (WeatherPrefabs != null) pool.ResourceCache.Add(WeatherPrefabs.name, WeatherPrefabs);
 
-            if (ClothesPrefabs != null) pool.ResourceCache.Add(ClothesPrefabs.name, ClothesPrefabs);
+            //if (ClothesPrefabs != null) pool.ResourceCache.Add(ClothesPrefabs.name, ClothesPrefabs);
+            if (ClothesPrefabs != null)
+            {
+                foreach (GameObject clothes in ClothesPrefabs)
+                {
+                    pool.ResourceCache.Add(clothes.name, clothes);
+                }
+            }
 
             if (BagsPrefabs != null) pool.ResourceCache.Add(BagsPrefabs.name, BagsPrefabs);
 
@@ -137,7 +144,7 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
 
         if (!PhotonNetwork.IsMasterClient) return;
 
-        PhotonNetwork.Instantiate(ClothesPrefabs.name, Vector3.zero, Quaternion.identity);
+        PhotonNetwork.Instantiate(ClothesPrefabs[0].name, Vector3.zero, Quaternion.identity);
 
         Debug.Log("Test master");
 
