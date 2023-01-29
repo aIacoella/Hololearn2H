@@ -4,6 +4,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+Parallel [
+    {
+        1) Single Player or Multiplayer
+        2) If Multiplayer, how many players? (2-10)
+    }
+]
+
+*/
+
 public class TaskInteractionHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
 {
 

@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1315105019138660457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1315105019138660462}
+  - component: {fileID: 5919828634056065323}
+  m_Layer: 0
+  m_Name: DressUpRoomManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1315105019138660462
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315105019138660457}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5919828634056065323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315105019138660457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40dad3e4c39124a4bab25cbb447b68b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  photonUserPrefab: {fileID: 3000569307421430844, guid: 77681e113a66a094ca9b8d6e673d84e0, type: 3}
+  WheatherPrefabsLvl1:
+  - {fileID: 1673918624741578564, guid: eb3998555aad13943add50e3830f8aac, type: 3}
+  - {fileID: 6618942124839086900, guid: 6f86c8514d697fc409b31008b3f1d768, type: 3}
+  WheatherPrefabsLvl2:
+  - {fileID: 7391388415543290590, guid: 96b51b660594ef745b4d9d89d93d8b45, type: 3}
+  - {fileID: 1673918624741578564, guid: eb3998555aad13943add50e3830f8aac, type: 3}
+  - {fileID: 234328335095754891, guid: 437b6881c4b454e4da26f0c6b242eaed, type: 3}
+  - {fileID: 2619339354697059657, guid: d35ae0245943a8c48a3ada4a7b857ef5, type: 3}
+  - {fileID: 6618942124839086900, guid: 6f86c8514d697fc409b31008b3f1d768, type: 3}
+  - {fileID: 2290589368207066758, guid: 253122a3086d4924a94a3a3856c2e88d, type: 3}
+  TemperatureTextPrefab: {fileID: 1248424925796311411, guid: a0e3655c81de8de4a9e47ef1022f746f, type: 3}
+  ClothesPrefabs:
+  - {fileID: 223193921399936210, guid: dcc227e42ed63b245b340134733682eb, type: 3}
+  - {fileID: 7983453442394476004, guid: 7917c4f983aa07547b1fc779571b350d, type: 3}
+  - {fileID: 3847757585666516652, guid: 2e7b1b89d54558a44bbfc7e451cbfe21, type: 3}
+  - {fileID: 2997780568709823090, guid: 757c442c864392d419aaacc37939bd15, type: 3}
+  - {fileID: 7826207706626886152, guid: ab6793ceae2f9c5429c9008b3dfcc065, type: 3}
+  - {fileID: 8718375929286182920, guid: 09d2689d8fee5d749bc9e1a693671d02, type: 3}
+  - {fileID: 6280871360064521273, guid: e413b126bd1c5484da2c60fb7cb3914c, type: 3}
+  - {fileID: 6679705674254367802, guid: a1cd551119d421549a99dc1bbd3937d7, type: 3}
+  - {fileID: 6804780450238978923, guid: 8be20c5820fadca46b4e6e5cb5ba7e58, type: 3}
+  - {fileID: 7746417510847903295, guid: 1b8224b848f7c094a8d485c96f8d8475, type: 3}
+  - {fileID: 1464227664758319524, guid: 73cf280a365f78b4c8e274c77683ce1e, type: 3}
+  - {fileID: 5382316375801316890, guid: 329719075dc69e14dbebcf234a498581, type: 3}
+  - {fileID: 901575491670301563, guid: ccafbf78638859b4c860f29c96d86a3a, type: 3}
+  - {fileID: 2766400484792221148, guid: 11302f5b307d227409859b31a33ba885, type: 3}
+  - {fileID: 8490483601482509655, guid: f2440d9593c999e42b0d32e461683ab4, type: 3}
+  - {fileID: 4251107728422914101, guid: 4dc3eefff52eb914aadbf3641a2a67ac, type: 3}
+  - {fileID: 5666140059941805510, guid: 89727abe49d178d459afdace99bf3962, type: 3}
+  - {fileID: 4312437742548537260, guid: 654c1014ba873b042987c6effbecf486, type: 3}
+  - {fileID: 6561296260946753248, guid: c169e76a08b74da4eb9172872adb474c, type: 3}
+  - {fileID: 6396556986915419914, guid: e67ab33d05e81154bbd8eef68db51232, type: 3}
+  - {fileID: 201137685578981488, guid: f6cca8fe16e56734994fd66925c839ce, type: 3}
+  - {fileID: 9183360292320803397, guid: a2abe40e9917196479f5e3eb4cc488ab, type: 3}
+  BagsPrefabs:
+  - {fileID: 561424133762525507, guid: ea5b0f36474432044b41636ce2944210, type: 3}
+  - {fileID: 8002519358077038671, guid: 38c2dcec4d8808a43a8b822bd68353bb, type: 3}
+  VirtualAssistantsPrefabs:
+  - {fileID: 7242400749179737478, guid: 60fbeebbec8b1ad48bdccbeb9c8ac68c, type: 3}
+  - {fileID: 4807352126350515121, guid: 4651cae70906b5548824fe27bc705e5a, type: 3}

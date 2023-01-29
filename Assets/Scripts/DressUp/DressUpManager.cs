@@ -12,13 +12,16 @@ using UnityEngine.XR.ARFoundation;
 using Photon.Realtime;
 using Photon.Pun;
 
-public class DressUpManager : TaskManager, IInRoomCallbacks
+public class DressUpManager : RoomManager
 {
     public GameObject[] WheatherPrefabsLvl1;
+
+    public GameObject[] WheatherPrefabsLvl2;
+
     public GameObject TemperatureTextPrefab;
     public GameObject[] ClothesPrefabs;
     public GameObject[] BagsPrefabs;
-    public GameObject VirtualAssistantsPrefabs;
+    public GameObject[] VirtualAssistantsPrefabs;
 
     private int numberOfLevel;
     private int numberOfClothes;
@@ -32,72 +35,17 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
     private string weathertag;
     private string temperaturetag;
 
-    public static DressUpManager Room;
-
-    [SerializeField] private GameObject photonUserPrefab = default;
-
-    private Transform roverExplorerLocation = default;
-
-    private Player[] photonPlayers;
-
-    private int playersInRoom;
-    private int myNumberInRoom;
-
-
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        base.OnPlayerEnteredRoom(newPlayer);
-        photonPlayers = PhotonNetwork.PlayerList;
-        playersInRoom++;
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-        if (Room == null)
-        {
-            Room = this;
-        }
-        else
-        {
-            if (Room != this)
-            {
-                Destroy(Room.gameObject);
-                Room = this;
-            }
-        }
-
-        //get the ar session origin component for the table anchor object in the scene
-        ARSessionOrigin arSessionOrigin = GameObject.Find("TableAnchor").GetComponent<ARSessionOrigin>();
-
-        //get the main camera
-        Camera mainCamera = Camera.main;
-
-        arSessionOrigin.camera = mainCamera;
-    }
-
-    public override void OnEnable()
-    {
-        base.OnEnable();
-        PhotonNetwork.AddCallbackTarget(this);
-    }
-
-    public override void OnDisable()
-    {
-        base.OnDisable();
-        PhotonNetwork.RemoveCallbackTarget(this);
-    }
 
 
     // Use this for initialization
-    public override void Start()
+    public void Start()
     {
+        base.Start();
+
         // Allow prefabs not in a Resources folder
         if (PhotonNetwork.PrefabPool is DefaultPool pool)
         {
-            if (photonUserPrefab != null) pool.ResourceCache.Add(photonUserPrefab.name, photonUserPrefab);
-
-            //if (WheatherPrefabsLvl1 != null) pool.ResourceCache.Add(WheatherPrefabsLvl1.name, WheatherPrefabsLvl1);
+            Debug.Log("Caching all prefabs");
 
             if (WheatherPrefabsLvl1 != null)
             {
@@ -107,9 +55,17 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
                 }
             }
 
+            if (WheatherPrefabsLvl2 != null)
+            {
+                foreach (GameObject wheather in WheatherPrefabsLvl2)
+                {
+                    if (!pool.ResourceCache.ContainsKey(wheather.name))
+                        pool.ResourceCache.Add(wheather.name, wheather);
+                }
+            }
+
             if (TemperatureTextPrefab != null) pool.ResourceCache.Add(TemperatureTextPrefab.name, TemperatureTextPrefab);
 
-            //if (ClothesPrefabs != null) pool.ResourceCache.Add(ClothesPrefabs.name, ClothesPrefabs);
             if (ClothesPrefabs != null)
             {
                 foreach (GameObject clothes in ClothesPrefabs)
@@ -117,8 +73,6 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
                     pool.ResourceCache.Add(clothes.name, clothes);
                 }
             }
-
-            //if (BagsPrefabs != null) pool.ResourceCache.Add(BagsPrefabs.name, BagsPrefabs);
 
             if (BagsPrefabs != null)
             {
@@ -128,52 +82,21 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
                 }
             }
 
-            if (VirtualAssistantsPrefabs != null) pool.ResourceCache.Add(VirtualAssistantsPrefabs.name, VirtualAssistantsPrefabs);
+            if (VirtualAssistantsPrefabs != null)
+            {
+                foreach (GameObject va in VirtualAssistantsPrefabs)
+                {
+                    pool.ResourceCache.Add(va.name, va);
+                }
+            }
         }
+
 
 
         LoadSettings();
 
-        virtualAssistant = VirtualAssistantsPrefabs.transform.GetChild(selectedAssistant + 1).GetChild(assistantBehaviour - 1);
-
-
-
+        virtualAssistant = VirtualAssistantsPrefabs[selectedAssistant].transform.GetChild(assistantBehaviour - 1);
     }
-
-    // Update is called once per frame
-    public override void Update()
-    {
-
-    }
-
-    public override void OnJoinedRoom()
-    {
-        base.OnJoinedRoom();
-        photonPlayers = PhotonNetwork.PlayerList;
-        playersInRoom = photonPlayers.Length;
-        myNumberInRoom = playersInRoom;
-        PhotonNetwork.NickName = myNumberInRoom.ToString();
-
-        StartGame();
-    }
-
-    private void StartGame()
-    {
-        CreatePlayer();
-
-        if (!PhotonNetwork.IsMasterClient) return;
-
-        //PhotonNetwork.Instantiate(ClothesPrefabs[0].name, Vector3.zero, Quaternion.identity);
-
-        GenerateObjectsInWorld();
-
-        //GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
-    }
-
-    private void CreatePlayer() {
-        var player = PhotonNetwork.Instantiate(photonUserPrefab.name, Vector3.zero, Quaternion.identity);
-    }
-
 
 
     public override void GenerateObjectsInWorld()
@@ -181,7 +104,7 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
         //Seleziono il pavimento
         //Transform floor = SpatialProcessing.Instance.floors.ElementAt(0).transform;
         //SurfacePlane plane = floor.GetComponent<SurfacePlane>();
-        
+
 
         System.Random rnd = new System.Random();
 
@@ -217,31 +140,24 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
 
         Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
 
-        //PhotonNetwork.Instantiate(ClothesPrefabs.name, weatherPosition, rotation);
-
         Transform weather = new GameObject("Weather").transform;
         weather.parent = sceneRoot;
         weather.position = weatherPosition;
 
-        //Transform selectedLevel = WeatherPrefabs.transform.GetChild(numberOfLevel);
-        //Transform selectedWeather = selectedLevel.GetChild(rnd.Next(0, selectedLevel.childCount));
+        GameObject[] selectedLevel = numberOfLevel == 1 ? WheatherPrefabsLvl1 : WheatherPrefabsLvl2;
+        GameObject selectedWeatherObj = selectedLevel[rnd.Next(0, selectedLevel.Length)];
         //Instantiate(selectedWeather, weather.TransformPoint(-0.2f, 0f, 0f), rotation, weather);
-        GameObject selectedWeather = PhotonNetwork.Instantiate(WheatherPrefabsLvl1[0].transform.name, weather.TransformPoint(-0.2f, 0f, 0f), rotation, 0);
+        GameObject selectedWeather = PhotonNetwork.Instantiate(selectedWeatherObj.transform.name, weather.TransformPoint(-0.2f, 0f, 0f), rotation, 0);
 
 
         TemperatureGenerator temperatureGenerator = selectedWeather.transform.GetChild(1).GetComponent<TemperatureGenerator>();
         selectedWeather.transform.GetChild(1).GetComponent<TemperatureGenerator>().GenerateTemperature();
-
 
         weathertag = selectedWeather.transform.GetChild(0).tag;
         temperaturetag = selectedWeather.transform.GetChild(1).tag;
 
         Debug.Log("Weather: " + weathertag);
         Debug.Log("Temperature: " + temperaturetag);
-
-        Transform clothes = new GameObject("Clothes").transform;
-        clothes.parent = sceneRoot;
-        clothes.tag = "ObjectsToBePlaced";
 
         Vector3 clothesPosition = weatherPosition;
         clothesPosition.y = floorPosition.y + 0.1f;
@@ -252,6 +168,7 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
         {
             Transform currentClothe = ClothesPrefabs[(rnd.Next(0, ClothesPrefabs.Length))].transform;
             List<string> tags = currentClothe.GetComponent<TagsContainer>().tags;
+            currentClothe.tag = "ObjectsToBePlaced";
 
             if (counter <= Math.Floor((double)numberOfClothes / 3))
             {
@@ -270,34 +187,31 @@ public class DressUpManager : TaskManager, IInRoomCallbacks
         }
         Debug.Log("Number of clothes: " + numberOfClothes + ", correct clothes: " + counter);
 
-        clothes.Translate(clothesPosition);
-        clothes.Rotate(rotation.eulerAngles);
-
-        
         Transform bag = new GameObject("Bag").transform;
         bag.parent = sceneRoot;
         bag.tag = "Targets";
 
         Vector3 bagPosition = weatherPosition;
         bagPosition.y = floorPosition.y + 0.1f;
-        PhotonNetwork.Instantiate(BagsPrefabs[(rnd.Next(0, BagsPrefabs.Length))].transform.name, bagPosition, rotation);
-        Debug.DrawLine(clothesPosition, bagPosition, Color.blue, 30f);
 
+        PhotonNetwork.Instantiate(BagsPrefabs[(rnd.Next(0, BagsPrefabs.Length))].transform.name, bagPosition, rotation);
+
+        Debug.DrawLine(clothesPosition, bagPosition, Color.blue, 30f);
 
         Counter.Instance.InitializeCounter(counter);
 
-
-        Vector3 assistantPosition = clothes.TransformPoint(-0.3f, 0f, 0.3f);
+        Vector3 assistantPosition = new Vector3(-0.3f, 0f, 0.3f) + bagPosition;
         assistantPosition.y = floor.position.y;
         Debug.DrawLine(bagPosition, assistantPosition, Color.green, 30f);
 
-        /*if (assistantPresence != 0)
+        if (assistantPresence != 0)
         {
-            Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, sceneRoot);
+            PhotonNetwork.Instantiate(virtualAssistant.name, assistantPosition, virtualAssistant.transform.rotation);
+
             VirtualAssistantManager.Instance.patience = assistantPatience;
             VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
-        }*/
-    
+        }
+
     }
 
 

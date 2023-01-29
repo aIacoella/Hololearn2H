@@ -33,6 +33,7 @@ namespace HoloLearn
             GameObject.Find("MenuPrefab").transform.GetChild(0).gameObject.SetActive(true);
         }
 
+        //Previously this was going to load the scene. Now it is showing the game mode menu first
         public void ChangeScene(int scene)
         {
             SceneManager.LoadScene(scene, LoadSceneMode.Additive);
