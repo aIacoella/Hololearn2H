@@ -21,6 +21,46 @@ public class MemoryManager : TaskManager
 
     private Transform virtualAssistant;
 
+    private Player[] photonPlayers;
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+        photonPlayers = PhotonNetwork.PlayerList;
+        playersInRoom++;
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (Room == null)
+        {
+            Room = this;
+        }
+        else
+        {
+            if (Room != this)
+            {
+                Destroy(Room.gameObject);
+                Room = this;
+            }
+        }
+    }
+
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
+
     // Use this for initialization
     public override void Start()
     {
@@ -138,5 +178,7 @@ public class MemoryManager : TaskManager
         }
         Destroy(GameObject.Find("Elements"));
     }
+
+
 
 }
