@@ -5,10 +5,10 @@ using Photon.Pun;
 using MRTK.Tutorials.MultiUserCapabilities;
 using Photon.Realtime;
 
-public class DressUpLobby : MonoBehaviourPunCallbacks
+public class LobbyManager : MonoBehaviourPunCallbacks
 {
 
-    public static DressUpLobby lobby;
+    public static LobbyManager lobby;
 
     private int roomNumber = 1;
 
@@ -36,12 +36,15 @@ public class DressUpLobby : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
+        Debug.Log("Connected to master");
+
         var randomUserId = Random.Range(0, 999999);
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.AuthValues = new AuthenticationValues();
         PhotonNetwork.AuthValues.UserId = randomUserId.ToString();
         userIdCount++;
         PhotonNetwork.NickName = PhotonNetwork.AuthValues.UserId;
+        //PhotonNetwork.JoinRoom(GameSettings.Instance.getSceneName());
         PhotonNetwork.JoinRandomRoom();
     }
 
@@ -67,12 +70,16 @@ public class DressUpLobby : MonoBehaviourPunCallbacks
 
     private void CreateRoom()
     {
-        var roomOptions = new RoomOptions { IsVisible = true, IsOpen = true, MaxPlayers = 10 };
-        PhotonNetwork.CreateRoom("Room" + Random.Range(1, 3000), roomOptions);
+        Debug.Log("Creating Room");
+
+        var roomOptions = new RoomOptions { IsVisible = true, IsOpen = true, MaxPlayers = (byte)(GameSettings.Instance.numPlayer) };
+        PhotonNetwork.CreateRoom(GameSettings.Instance.getSceneName(), roomOptions);
     }
 
     public override void OnCreatedRoom()
     {
+        Debug.Log("Created Room");
+
         base.OnCreatedRoom();
         roomNumber++;
     }

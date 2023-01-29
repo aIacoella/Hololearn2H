@@ -4,26 +4,28 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class TemperatureGenerator : MonoBehaviour {
+public class TemperatureGenerator : MonoBehaviour
+{
 
     public int MinRange;
     public int MaxRange;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
-        
+
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public void GenerateTemperature()
     {
         Transform weather = GameObject.Find("Weather").transform;
-        DressUpManager manager = (DressUpManager)TaskManager.Instance;
+        DressUpManager manager = (DressUpManager)DressUpManager.Instance;
 
         Vector3 temperaturePostion = weather.TransformPoint(0.4f, 0f, 0f);
         Vector3 relativePos = temperaturePostion - Camera.main.transform.position;
