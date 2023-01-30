@@ -14,6 +14,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private int userIdCount;
 
+    //0 = scene loaded, 1 = QR Code Scanned => Joined/Created
+    private bool isConnectedToMaster = false;
+
     private void Awake()
     {
         if (lobby == null)
@@ -37,6 +40,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to master");
+        this.isConnectedToMaster = true;
+    }
+
+    public void OnQRCodeScanned()
+    {
+        if (!isConnectedToMaster)
+        {
+            throw new System.Exception("Connection to master failed before QR Code scan");
+        }
 
         var randomUserId = Random.Range(0, 999999);
         PhotonNetwork.AutomaticallySyncScene = true;

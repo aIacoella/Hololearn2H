@@ -27,6 +27,8 @@ public class BagCollisionManager : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("On Trigger Enter");
+        DressUpManager manager = (DressUpManager)DressUpManager.Instance;
+
 
         //TODO This is deprecated
         if (other.gameObject.name != "SurfacePlane(Clone)")
@@ -37,8 +39,8 @@ public class BagCollisionManager : MonoBehaviour
                 return;
             }
             List<string> tags = other.transform.GetComponent<TagsContainer>().tags;
-            string weather = GameObject.Find("Weather").transform.GetChild(0).GetChild(0).tag;
-            string temperature = GameObject.Find("Weather").transform.GetChild(0).GetChild(1).tag;
+            string weather = manager.getWeather();
+            string temperature = manager.getTemerature();
 
             foreach (string tag in tags)
             {

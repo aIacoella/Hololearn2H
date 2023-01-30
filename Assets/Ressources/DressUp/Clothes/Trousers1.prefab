@@ -29,7 +29,7 @@ GameObject:
   - component: {fileID: 1097967940326903149}
   m_Layer: 0
   m_Name: Trousers1
-  m_TagString: Untagged
+  m_TagString: ObjectsToBePlaced
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

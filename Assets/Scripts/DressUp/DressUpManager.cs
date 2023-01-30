@@ -21,7 +21,9 @@ public class DressUpManager : RoomManager
     public GameObject TemperatureTextPrefab;
     public GameObject[] ClothesPrefabs;
     public GameObject[] BagsPrefabs;
-    public GameObject[] VirtualAssistantsPrefabs;
+    public GameObject[] MinionVirtualAssistantsPrefabs;
+    public GameObject[] TYVirtualAssistantsPrefabs;
+
 
     private int numberOfLevel;
     private int numberOfClothes;
@@ -34,8 +36,6 @@ public class DressUpManager : RoomManager
 
     private string weathertag;
     private string temperaturetag;
-
-
 
     // Use this for initialization
     public void Start()
@@ -82,9 +82,17 @@ public class DressUpManager : RoomManager
                 }
             }
 
-            if (VirtualAssistantsPrefabs != null)
+            if (MinionVirtualAssistantsPrefabs != null)
             {
-                foreach (GameObject va in VirtualAssistantsPrefabs)
+                foreach (GameObject va in MinionVirtualAssistantsPrefabs)
+                {
+                    pool.ResourceCache.Add(va.name, va);
+                }
+            }
+
+            if (TYVirtualAssistantsPrefabs != null)
+            {
+                foreach (GameObject va in TYVirtualAssistantsPrefabs)
                 {
                     pool.ResourceCache.Add(va.name, va);
                 }
@@ -95,7 +103,8 @@ public class DressUpManager : RoomManager
 
         LoadSettings();
 
-        virtualAssistant = VirtualAssistantsPrefabs[selectedAssistant].transform.GetChild(assistantBehaviour - 1);
+        GameObject[] vaFamily = selectedAssistant == 0 ? MinionVirtualAssistantsPrefabs : TYVirtualAssistantsPrefabs;
+        virtualAssistant = vaFamily[assistantBehaviour - 1].transform;
     }
 
 
@@ -217,18 +226,14 @@ public class DressUpManager : RoomManager
 
     public override GameObject GetClosestObject()
     {
-        Rigidbody[] remainingObjects = GameObject.FindGameObjectWithTag("ObjectsToBePlaced").GetComponentsInChildren<Rigidbody>();
-        List<GameObject> targets = new List<GameObject>();
+        GameObject[] remainingObjects = GameObject.FindGameObjectsWithTag("ObjectsToBePlaced");
+        Debug.Log("Remaining Object: " + remainingObjects.Length);
 
-        foreach (Rigidbody target in remainingObjects)
+        List<GameObject> targets = remainingObjects.Where(obj =>
         {
-            List<string> tags = target.gameObject.GetComponent<TagsContainer>().tags;
-            if (target.gameObject.GetComponent<ObjectManipulator>().enabled == true &&
-                (tags.Contains(weathertag) || tags.Contains(weathertag)))
-            {
-                targets.Add(target.gameObject);
-            }
-        }
+            List<string> tags = obj.GetComponent<TagsContainer>().tags;
+            return tags.Contains(weathertag) || tags.Contains(weathertag);
+        }).ToList();
 
         SortByDistance(targets);
 
@@ -256,5 +261,15 @@ public class DressUpManager : RoomManager
         Destroy(GameObject.Find("Weather"));
         Destroy(GameObject.Find("Clothes"));
         Destroy(GameObject.Find("Bag"));
+    }
+
+    public string getTemerature()
+    {
+        return temperaturetag;
+    }
+
+    public string getWeather()
+    {
+        return weathertag;
     }
 }

@@ -22,9 +22,9 @@ namespace HoloLearn
 
         public void BackToMainMenu()
         {
-            TaskManager.Instance.DestroyObjects();
+            RoomManager.Instance.DestroyObjects();
 
-            Destroy(TaskManager.Instance.gameObject);
+            Destroy(RoomManager.Instance.gameObject);
             Destroy(GameObject.Find("SpatialMapping"));
             Destroy(GameObject.Find("SpatialProcessing"));
 
@@ -41,7 +41,7 @@ namespace HoloLearn
 
         public void RestartScene()
         {
-            TaskManager.Instance.DestroyObjects();
+            RoomManager.Instance.DestroyObjects();
             GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().ScanningComplete();
         }
     }
