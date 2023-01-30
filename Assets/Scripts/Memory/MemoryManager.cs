@@ -1,80 +1,82 @@
-﻿
-
+﻿using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Input;
+using UnityEngine.XR.ARFoundation;
+using Photon.Realtime;
+using Photon.Pun;
 
-public class MemoryManager : TaskManager
+public class MemoryManager : RoomManager
 {
     public GameObject BoxPrefab;
-    public GameObject ObjectsPrefabs;
+    public GameObject[] ObjectsPrefabs;
     public GameObject PlayModesPrefabs;
-    public GameObject VirtualAssistantsPrefabs;
+    public GameObject[] VirtualAssistantsPrefabs;
 
     private int playMode;
     private int numberOfBoxes;
     private int waitingTime;
     private int assistantPresence;
+    private int assistantBehaviour;
     private int selectedAssistant;
+
+
+    public static MemoryManager Room;
 
     private Transform virtualAssistant;
 
     private Player[] photonPlayers;
 
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        base.OnPlayerEnteredRoom(newPlayer);
-        photonPlayers = PhotonNetwork.PlayerList;
-        playersInRoom++;
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-        if (Room == null)
-        {
-            Room = this;
-        }
-        else
-        {
-            if (Room != this)
-            {
-                Destroy(Room.gameObject);
-                Room = this;
-            }
-        }
-    }
-
-
-    public override void OnEnable()
-    {
-        base.OnEnable();
-        PhotonNetwork.AddCallbackTarget(this);
-    }
-
-    public override void OnDisable()
-    {
-        base.OnDisable();
-        PhotonNetwork.RemoveCallbackTarget(this);
-    }
 
 
     // Use this for initialization
-    public override void Start()
+    public void Start()
     {
+        base.Start();
+
+        // Allow prefabs not in a Resources folder
+        if (PhotonNetwork.PrefabPool is DefaultPool pool)
+        {
+            Debug.Log("Caching all prefabs");
+
+            if (ObjectsPrefabs != null)
+            {
+                foreach (GameObject obj in ObjectsPrefabs)
+                {
+                    pool.ResourceCache.Add(obj.name, obj);
+                }
+            }
+
+            if(BoxPrefab != null)
+            {
+                pool.ResourceCache.Add(BoxPrefab.name, BoxPrefab);
+            }
+
+            if (VirtualAssistantsPrefabs != null)
+            {
+                foreach (GameObject va in VirtualAssistantsPrefabs)
+                {
+                    pool.ResourceCache.Add(va.name, va);
+                }
+            }
+        }
         LoadSettings();
 
-        Instantiate(PlayModesPrefabs.transform.GetChild(playMode), GameObject.Find("MemoryManager").transform);
+        //Instantiate(PlayModesPrefabs.transform.GetChild(playMode), GameObject.Find("MemoryManager").transform);
 
-        virtualAssistant = VirtualAssistantsPrefabs.transform.GetChild(selectedAssistant + 1).GetChild(0);
+        //virtualAssistant = VirtualAssistantsPrefabs.transform.GetChild(selectedAssistant + 1).GetChild(0);
 
-        GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
+        //virtualAssistant = VirtualAssistantsPrefabs[selectedAssistant].transform.GetChild(assistantBehaviour - 1);
+
+        //GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
     }
 
     // Update is called once per frame
-    public override void Update()
+    public void Update()
     {
 
     }
@@ -125,9 +127,11 @@ public class MemoryManager : TaskManager
             Transform elem = new GameObject("Element").transform;
             elem.parent = elems;
             elem.position = elems.TransformPoint(new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0f));
-            GameObject box = Instantiate(BoxPrefab, elem.position, BoxPrefab.transform.rotation, elem);
+            //GameObject box = Instantiate(BoxPrefab, elem.position, BoxPrefab.transform.rotation, elem);
+            GameObject box = PhotonNetwork.Instantiate(BoxPrefab.name, elem.position, BoxPrefab.transform.rotation, 0);
             int j = rnd.Next(0, objs.Count);
-            Transform obj = Instantiate(objs.ElementAt(j), box.transform.position, box.transform.rotation, elem);
+            //Transform obj = Instantiate(objs.ElementAt(j), box.transform.position, box.transform.rotation, elem);
+            Transform obj = PhotonNetwork.Instantiate(objs.ElementAt(j).name, box.transform.position, box.transform.rotation, 0).transform;
             obj.gameObject.SetActive(false);
             objs.RemoveAt(j);
 

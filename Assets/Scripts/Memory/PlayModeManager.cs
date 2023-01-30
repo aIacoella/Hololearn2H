@@ -17,7 +17,7 @@ public abstract class PlayModeManager : MonoBehaviour
 		
 	}
 
-    public abstract List<Transform> GenerateObjects(GameObject ObjectsPrefabs, int numberOfBoxes);
+    public abstract List<Transform> GenerateObjects(GameObject[] ObjectsPrefabs, int numberOfBoxes);
 
     public abstract void StartGame(int waitingTime);
 

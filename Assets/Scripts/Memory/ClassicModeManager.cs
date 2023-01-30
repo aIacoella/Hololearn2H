@@ -82,7 +82,7 @@ public class ClassicModeManager : PlayModeManager
     }
 
 
-    public override List<Transform> GenerateObjects(GameObject ObjectsPrefabs, int numberOfBoxes)
+    public override List<Transform> GenerateObjects(GameObject[] ObjectsPrefabs, int numberOfBoxes)
     {
         System.Random rnd = new System.Random();
 
@@ -90,14 +90,18 @@ public class ClassicModeManager : PlayModeManager
         List<string> createdObjs = new List<string>();
         for (int i = 1; i <= numberOfBoxes / 2;)
         {
-            int j = rnd.Next(0, ObjectsPrefabs.transform.childCount);
-            Transform obj = ObjectsPrefabs.transform.GetChild(j);
+            //int j = rnd.Next(0, ObjectsPrefabs.transform.childCount);
+            int j = rnd.Next(0, ObjectsPrefabs.Length);
+            //Transform obj = ObjectsPrefabs.transform.GetChild(j);
+            Transform obj = ObjectsPrefabs[j].transform;
 
-            if (!createdObjs.Contains(ObjectsPrefabs.transform.GetChild(j).name))
+            //if (!createdObjs.Contains(ObjectsPrefabs.transform.GetChild(j).name))
+            if (!createdObjs.Contains(ObjectsPrefabs[j].name))
             {
                 objs.Add(obj);
                 objs.Add(obj);
-                createdObjs.Add(ObjectsPrefabs.transform.GetChild(j).name);
+                //createdObjs.Add(ObjectsPrefabs.transform.GetChild(j).name);
+                createdObjs.Add(ObjectsPrefabs[j].name);
                 i++;
             }
         }
