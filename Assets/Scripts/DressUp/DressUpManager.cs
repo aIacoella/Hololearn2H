@@ -24,7 +24,6 @@ public class DressUpManager : RoomManager
     public GameObject[] MinionVirtualAssistantsPrefabs;
     public GameObject[] TYVirtualAssistantsPrefabs;
 
-
     private int numberOfLevel;
     private int numberOfClothes;
     private int assistantPresence;

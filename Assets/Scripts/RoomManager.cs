@@ -38,6 +38,11 @@ public abstract class RoomManager : Singleton<RoomManager>, IInRoomCallbacks
         base.OnPlayerEnteredRoom(newPlayer);
         photonPlayers = PhotonNetwork.PlayerList;
         playersInRoom++;
+
+        if (GameSettings.Instance.isMultiplayer && PhotonNetwork.IsMasterClient && playersInRoom == GameSettings.Instance.numPlayer)
+        {
+            this.GenerateObjectsInWorld();
+        }
     }
 
     protected override void Awake()
