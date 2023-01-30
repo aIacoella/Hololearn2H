@@ -291,7 +291,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901575491670301563}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
@@ -316,9 +316,10 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 1
-  observableSearch: 0
+  OwnershipTransfer: 0
+  observableSearch: 2
   ObservedComponents:
+  - {fileID: 4367806601534162929}
   - {fileID: -6543361574887100329}
   sceneViewId: 0
   InstantiationId: 0
