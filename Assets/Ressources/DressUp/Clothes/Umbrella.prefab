@@ -230,7 +230,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 3851905029531951303}
+  constraintsManager: {fileID: 5147470324419654899, guid: dcc227e42ed63b245b340134733682eb, type: 3}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -275,7 +275,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9183360292320803397}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
@@ -300,19 +300,9 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-<<<<<<< HEAD
   OwnershipTransfer: 1
-<<<<<<< HEAD
-  observableSearch: 2
-=======
   observableSearch: 0
->>>>>>> c1e22b772a51884435b89dbb08665207768cc2d9
-=======
-  OwnershipTransfer: 0
-  observableSearch: 2
->>>>>>> parent of c1e22b7 (test dressup #2)
   ObservedComponents:
-  - {fileID: 3854525747333958678}
   - {fileID: -128398075328379858}
   sceneViewId: 0
   InstantiationId: 0
