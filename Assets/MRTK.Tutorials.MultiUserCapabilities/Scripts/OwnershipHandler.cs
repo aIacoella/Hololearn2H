@@ -20,6 +20,7 @@ namespace MRTK.Tutorials.MultiUserCapabilities
 
         public void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer)
         {
+            Debug.Log("OnOwnershipRequest");
             targetView.TransferOwnership(requestingPlayer);
         }
 
