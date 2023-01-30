@@ -300,7 +300,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4251107728422914101}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
@@ -326,9 +326,12 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 1
+<<<<<<< HEAD
   observableSearch: 2
+=======
+  observableSearch: 0
+>>>>>>> c1e22b772a51884435b89dbb08665207768cc2d9
   ObservedComponents:
-  - {fileID: 6580488641965609671}
   - {fileID: 6558283608572947900}
   sceneViewId: 0
   InstantiationId: 0
