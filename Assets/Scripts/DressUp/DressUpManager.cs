@@ -15,9 +15,7 @@ using Photon.Pun;
 public class DressUpManager : RoomManager
 {
     public GameObject[] WheatherPrefabsLvl1;
-
     public GameObject[] WheatherPrefabsLvl2;
-
     public GameObject TemperatureTextPrefab;
     public GameObject[] ClothesPrefabs;
     public GameObject[] BagsPrefabs;
@@ -37,7 +35,7 @@ public class DressUpManager : RoomManager
     private string temperaturetag;
 
     // Use this for initialization
-    public void Start()
+    public new void Start()
     {
         base.Start();
 
@@ -98,17 +96,16 @@ public class DressUpManager : RoomManager
             }
         }
 
-
-
         LoadSettings();
 
         GameObject[] vaFamily = selectedAssistant == 0 ? MinionVirtualAssistantsPrefabs : TYVirtualAssistantsPrefabs;
         virtualAssistant = vaFamily[assistantBehaviour - 1].transform;
     }
 
-
     public override void GenerateObjectsInWorld()
     {
+        
+
         //Seleziono il pavimento
         //Transform floor = SpatialProcessing.Instance.floors.ElementAt(0).transform;
         //SurfacePlane plane = floor.GetComponent<SurfacePlane>();
@@ -148,18 +145,10 @@ public class DressUpManager : RoomManager
 
         Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
 
-        Transform weather = new GameObject("Weather").transform;
-        weather.parent = sceneRoot;
-        weather.position = weatherPosition;
 
         GameObject[] selectedLevel = numberOfLevel == 1 ? WheatherPrefabsLvl1 : WheatherPrefabsLvl2;
         GameObject selectedWeatherObj = selectedLevel[rnd.Next(0, selectedLevel.Length)];
-        //Instantiate(selectedWeather, weather.TransformPoint(-0.2f, 0f, 0f), rotation, weather);
-        GameObject selectedWeather = PhotonNetwork.Instantiate(selectedWeatherObj.transform.name, weather.TransformPoint(-0.2f, 0f, 0f), rotation, 0);
-
-
-        TemperatureGenerator temperatureGenerator = selectedWeather.transform.GetChild(1).GetComponent<TemperatureGenerator>();
-        selectedWeather.transform.GetChild(1).GetComponent<TemperatureGenerator>().GenerateTemperature();
+        GameObject selectedWeather = PhotonNetwork.Instantiate(selectedWeatherObj.transform.name, weatherPosition, rotation);
 
         weathertag = selectedWeather.transform.GetChild(0).tag;
         temperaturetag = selectedWeather.transform.GetChild(1).tag;
@@ -195,16 +184,12 @@ public class DressUpManager : RoomManager
         }
         Debug.Log("Number of clothes: " + numberOfClothes + ", correct clothes: " + counter);
 
-        Transform bag = new GameObject("Bag").transform;
-        bag.parent = sceneRoot;
-        bag.tag = "Targets";
-
         Vector3 bagPosition = weatherPosition;
         bagPosition.y = floorPosition.y + 0.1f;
 
         PhotonNetwork.Instantiate(BagsPrefabs[(rnd.Next(0, BagsPrefabs.Length))].transform.name, bagPosition, rotation);
 
-        Debug.DrawLine(clothesPosition, bagPosition, Color.blue, 30f);
+        //Debug.DrawLine(clothesPosition, bagPosition, Color.blue, 30f);
 
         Counter.Instance.InitializeCounter(counter);
 
@@ -219,9 +204,17 @@ public class DressUpManager : RoomManager
             VirtualAssistantManager.Instance.patience = assistantPatience;
             VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
         }
-
     }
 
+    [PunRPC]
+    public override void OnGameStarted()
+    {
+        //Set weather and temperature tag
+        GameObject weatherObj = GameObject.FindGameObjectWithTag("Weather");
+
+        weathertag = weatherObj.transform.GetChild(0).tag;
+        temperaturetag = weatherObj.transform.GetChild(1).tag;
+    }
 
     public override GameObject GetClosestObject()
     {
@@ -249,7 +242,6 @@ public class DressUpManager : RoomManager
         assistantBehaviour = VirtualAssistantSettings.Instance.assistantBehaviour;
         assistantPatience = VirtualAssistantSettings.Instance.assistantPatience;
     }
-
 
     public override void DestroyObjects()
     {

@@ -16,6 +16,16 @@ TagManager:
   - ObjectsToBePlaced
   - Targets
   - Menu
+  - Bullet
+  - Glass
+  - Knife
+  - Fork
+  - Plate
+  - Bottle
+  - Tablespoon
+  - Paper
+  - Plastic
+  - Weather
   layers:
   - Default
   - TransparentFX

@@ -13,7 +13,7 @@ public class TemperatureGenerator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        this.GenerateTemperature();
     }
 
     // Update is called once per frame
@@ -22,9 +22,9 @@ public class TemperatureGenerator : MonoBehaviour
 
     }
 
-    public void GenerateTemperature()
+    private void GenerateTemperature()
     {
-        Transform weather = GameObject.Find("Weather").transform;
+        Transform weather = gameObject.transform.parent;
         DressUpManager manager = (DressUpManager)DressUpManager.Instance;
 
         Vector3 temperaturePostion = weather.TransformPoint(0.4f, 0f, 0f);
@@ -48,6 +48,5 @@ public class TemperatureGenerator : MonoBehaviour
         Instantiate(manager.WeatherPrefabs.transform.GetChild(0).GetChild(unit), temperaturePostion + new Vector3(0.1f, 0f, 0f), temperatureRotation, weather.GetChild(0).GetChild(1));
         Instantiate(manager.WeatherPrefabs.transform.GetChild(0).GetChild(manager.WeatherPrefabs.transform.GetChild(0).childCount - 2), temperaturePostion + new Vector3(0.2f, 0f, 0f), temperatureRotation, weather.GetChild(0).GetChild(1));
         Instantiate(manager.WeatherPrefabs.transform.GetChild(0).GetChild(manager.WeatherPrefabs.transform.GetChild(0).childCount - 1), temperaturePostion + new Vector3(0.3f, 0f, 0f), temperatureRotation, weather.GetChild(0).GetChild(1));*/
-
     }
 }

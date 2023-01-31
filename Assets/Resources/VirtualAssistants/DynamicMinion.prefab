@@ -366,6 +366,7 @@ GameObject:
   - component: {fileID: 1741339022335419377}
   - component: {fileID: -8448988110883909560}
   - component: {fileID: 3614366900344106362}
+  - component: {fileID: -523326288814479484}
   m_Layer: 0
   m_Name: DynamicMinion
   m_TagString: Untagged
@@ -555,7 +556,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 3614366900344106362}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -575,6 +577,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &-523326288814479484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477432976532893758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1477442397395909780
 GameObject:
   m_ObjectHideFlags: 0

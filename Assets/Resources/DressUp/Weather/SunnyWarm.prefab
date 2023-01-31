@@ -722,7 +722,7 @@ GameObject:
   - component: {fileID: 8422408119639413885}
   m_Layer: 0
   m_Name: SunnyWarm
-  m_TagString: Untagged
+  m_TagString: Weather
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

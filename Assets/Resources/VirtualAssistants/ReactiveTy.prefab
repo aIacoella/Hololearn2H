@@ -1744,6 +1744,7 @@ GameObject:
   - component: {fileID: 252018057810243543}
   - component: {fileID: 6394263428674686788}
   - component: {fileID: 3056731830751115421}
+  - component: {fileID: 3092790217854739422}
   m_Layer: 0
   m_Name: ReactiveTy
   m_TagString: Untagged
@@ -1869,6 +1870,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &3092790217854739422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211130129102594879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &211136499939493337
 GameObject:
   m_ObjectHideFlags: 0

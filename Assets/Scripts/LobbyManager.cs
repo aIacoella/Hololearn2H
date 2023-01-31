@@ -10,12 +10,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public static LobbyManager lobby;
 
+    public GameObject tableAnchor;
+
     private int roomNumber = 1;
 
     private int userIdCount;
 
     //0 = scene loaded, 1 = QR Code Scanned => Joined/Created
     private bool isConnectedToMaster = false;
+
 
     private void Awake()
     {
@@ -45,6 +48,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnQRCodeScanned()
     {
+        //To be replaced with QR Code
+        tableAnchor.transform.position = Camera.main.transform.position;
+
         if (!isConnectedToMaster)
         {
             throw new System.Exception("Connection to master failed before QR Code scan");
@@ -72,11 +78,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
+        Debug.LogWarning(message);
         CreateRoom();
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
+        Debug.LogWarning(message);
         CreateRoom();
     }
 
@@ -85,7 +93,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log("Creating Room");
 
         var roomOptions = new RoomOptions { IsVisible = true, IsOpen = true, MaxPlayers = (byte)(GameSettings.Instance.numPlayer) };
-        PhotonNetwork.CreateRoom(GameSettings.Instance.getSceneName(), roomOptions);
+        PhotonNetwork.CreateRoom(GameSettings.Instance.getSceneName() + Random.Range(0, 999999), roomOptions);
     }
 
     public override void OnCreatedRoom()
