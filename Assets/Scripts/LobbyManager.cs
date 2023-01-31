@@ -52,6 +52,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void Start()
     {
         QRCodesManager.Instance.QRCodeAdded += OnQRCodeAdded;
+
+        debug.GetComponent<TextMesh>().text = "Waiting for QR Code";
     }
 
     public override void OnConnectedToMaster()
@@ -64,9 +66,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         QRCode qrCode = e.Data;
         string CodeText = qrCode.Data;
-        Debug.Log("New QR Code Added: " + CodeText);
 
-        debug.GetComponent<TextMesh>().text = CodeText;
+        Id = qrCode.Id;
+
+        Debug.Log("New QR Code Added AAA: " + CodeText);
+
+        Debug.Log(node + " " + Id);
 
         if (node == null || node.Id != Id)
         {
@@ -82,6 +87,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             }
 
             Debug.Log("Id= " + Id + " QRPose = " + pose.position.ToString("F7") + " QRRot = " + pose.rotation.ToString("F7"));
+            tableAnchor.transform.position = pose.position;
+            tableAnchor.transform.rotation = pose.rotation;
+
+            OnQRCodeScanned();
+
         }
         else
         {
@@ -93,7 +103,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void OnQRCodeScanned()
     {
         //To be replaced with QR Code
-        tableAnchor.transform.position = Camera.main.transform.position;
+        //tableAnchor.transform.position = Camera.main.transform.position;
 
         if (!isConnectedToMaster)
         {
