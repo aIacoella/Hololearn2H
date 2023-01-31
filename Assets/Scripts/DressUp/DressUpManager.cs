@@ -104,47 +104,39 @@ public class DressUpManager : RoomManager
 
     public override void GenerateObjectsInWorld()
     {
-
-
         //Seleziono il pavimento
         //Transform floor = SpatialProcessing.Instance.floors.ElementAt(0).transform;
         //SurfacePlane plane = floor.GetComponent<SurfacePlane>();
 
-
+        Transform anchorPosition = this.tableAnchor.transform;
         System.Random rnd = new System.Random();
 
+        //Might need to "AdjustPositionWithSpatialMap"
 
         //Vector3 floorPosition = floor.transform.position + (plane.PlaneThickness * plane.SurfaceNormal);
         //floorPosition = AdjustPositionWithSpatialMap(floorPosition, plane.SurfaceNormal);
 
-        //TODO: Remove This
-        Transform floor = gameObject.transform;
-        floor.position = Vector3.zero;
-        Vector3 floorPosition = Vector3.zero;
-        //TODO: Remove this
+        /*
+                Vector3 gazePosition = new Vector3(0f, 0f, 0f);
+                RaycastHit hitInfo;
+                if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitInfo, 20f, Physics.DefaultRaycastLayers))
+                {
+                    gazePosition = hitInfo.point;
+                }
 
-        Vector3 gazePosition = new Vector3(0f, 0f, 0f);
-        RaycastHit hitInfo;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitInfo, 20f, Physics.DefaultRaycastLayers))
-        {
-            gazePosition = hitInfo.point;
-        }
+                Vector3 weatherPosition = gazePosition;
+                weatherPosition.y = floorPosition.y + 1f;
+                Debug.DrawLine(Camera.main.transform.position, weatherPosition, Color.black, 30f);
+        */
 
-        Vector3 weatherPosition = gazePosition;
-        weatherPosition.y = floorPosition.y + 1f;
-        Debug.DrawLine(Camera.main.transform.position, weatherPosition, Color.black, 30f);
+        Vector3 weatherPosition = anchorPosition.position;
+        weatherPosition.y = weatherPosition.y + 1f;
 
-
-        //Vector3 relativePos = Camera.main.transform.position - gazePosition;
         Vector3 relativePos = Camera.main.transform.position;
 
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         rotation.x = 0f;
         rotation.z = 0f;
-
-
-        Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
-
 
         GameObject[] selectedLevel = numberOfLevel == 1 ? WheatherPrefabsLvl1 : WheatherPrefabsLvl2;
         GameObject selectedWeatherObj = selectedLevel[rnd.Next(0, selectedLevel.Length)];
@@ -156,9 +148,8 @@ public class DressUpManager : RoomManager
         Debug.Log("Weather: " + weathertag);
         Debug.Log("Temperature: " + temperaturetag);
 
-        Vector3 clothesPosition = weatherPosition;
-        clothesPosition.y = floorPosition.y + 0.1f;
-        Debug.DrawLine(weatherPosition, clothesPosition, Color.red, 30f);
+        Vector3 clothesPosition = anchorPosition.position;
+        clothesPosition.y = clothesPosition.y + 0.1f;
 
         int counter = 0;
         for (int i = 0; i < numberOfClothes; i++)
@@ -166,6 +157,8 @@ public class DressUpManager : RoomManager
             Transform currentClothe = ClothesPrefabs[(rnd.Next(0, ClothesPrefabs.Length))].transform;
             List<string> tags = currentClothe.GetComponent<TagsContainer>().tags;
             currentClothe.tag = "ObjectsToBePlaced";
+
+            Vector3 currentClothePosition = currentClothe.position + clothesPosition;
 
             if (counter <= Math.Floor((double)numberOfClothes / 3))
             {
@@ -175,7 +168,7 @@ public class DressUpManager : RoomManager
                     continue;
                 }
             }
-            PhotonNetwork.Instantiate(currentClothe.name, currentClothe.position, currentClothe.rotation);
+            PhotonNetwork.Instantiate(currentClothe.name, currentClothePosition, currentClothe.rotation);
 
             if (tags.Contains(weathertag) || tags.Contains(temperaturetag))
             {
@@ -185,7 +178,7 @@ public class DressUpManager : RoomManager
         Debug.Log("Number of clothes: " + numberOfClothes + ", correct clothes: " + counter);
 
         Vector3 bagPosition = weatherPosition;
-        bagPosition.y = floorPosition.y + 0.1f;
+        bagPosition.y = anchorPosition.position.y + 0.1f;
 
         PhotonNetwork.Instantiate(BagsPrefabs[(rnd.Next(0, BagsPrefabs.Length))].transform.name, bagPosition, rotation);
 
@@ -194,8 +187,7 @@ public class DressUpManager : RoomManager
         Counter.Instance.InitializeCounter(counter);
 
         Vector3 assistantPosition = new Vector3(-0.3f, 0f, 0.3f) + bagPosition;
-        assistantPosition.y = floor.position.y;
-        Debug.DrawLine(bagPosition, assistantPosition, Color.green, 30f);
+        assistantPosition.y = anchorPosition.position.y;
 
         if (assistantPresence != 0)
         {
