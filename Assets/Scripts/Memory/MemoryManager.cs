@@ -17,6 +17,7 @@ public class MemoryManager : RoomManager
     public GameObject PlayModesPrefabs;
     public GameObject[] MinionVirtualAssistantsPrefabs;
     public GameObject[] TYVirtualAssistantsPrefabs;
+    public GameObject ElementsPrefab;
 
     private int playMode;
     private int numberOfBoxes;
@@ -56,6 +57,11 @@ public class MemoryManager : RoomManager
             if(BoxPrefab != null)
             {
                 pool.ResourceCache.Add(BoxPrefab.name, BoxPrefab);
+            }
+
+            if (ElementsPrefab != null)
+            {
+                pool.ResourceCache.Add(ElementsPrefab.name, ElementsPrefab);
             }
 
             if (MinionVirtualAssistantsPrefabs != null)
@@ -141,7 +147,9 @@ public class MemoryManager : RoomManager
         Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
 
         System.Random rnd = new System.Random();
-        Transform elems = new GameObject("Elements").transform;
+        //Transform elems = new GameObject("Elements").transform;
+
+        Transform elems = PhotonNetwork.Instantiate(ElementsPrefab.name, Vector3.zero, Quaternion.identity).transform;
         
         //elems.parent = sceneRoot;
         elems.parent = GameObject.Find("SharedPlayground").transform.GetChild(0).transform;

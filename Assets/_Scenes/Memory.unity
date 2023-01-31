@@ -563,6 +563,7 @@ MonoBehaviour:
   - {fileID: 2100352647366920678, guid: 1e97d8a97f6b22547b82dedb8233bdce, type: 3}
   - {fileID: 161881273643272960, guid: db901febe4bd37745b846c5e1650f11c, type: 3}
   - {fileID: 211130129102594879, guid: b101f4d3d80de3642826363bb0afcd18, type: 3}
+  ElementsPrefab: {fileID: 4118878594372990827, guid: 2c00ac09f3be1e9468847f51d78054c2, type: 3}
 --- !u!114 &1426379847
 MonoBehaviour:
   m_ObjectHideFlags: 0
