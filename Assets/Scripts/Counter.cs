@@ -16,6 +16,7 @@ public class Counter : Singleton<Counter> {
 
     public void Decrement()
     {
+        Debug.Log(count);
         count--;
         if (count == 0)
         {
@@ -23,6 +24,7 @@ public class Counter : Singleton<Counter> {
             {
                 VirtualAssistantManager.Instance.GetComponent<Animator>().SetTrigger("EndGame");
             }
+            Debug.Log("End Game");
         }
     }
 

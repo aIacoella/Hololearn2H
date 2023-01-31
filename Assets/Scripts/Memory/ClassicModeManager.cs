@@ -37,7 +37,7 @@ public class ClassicModeManager : PlayModeManager
                 secondElement = null;
 
                 Counter.Instance.Decrement();
-                Counter.Instance.Decrement();
+                //Counter.Instance.Decrement();
 
                 if (VirtualAssistantManager.Instance != null)
                 {
@@ -110,7 +110,7 @@ public class ClassicModeManager : PlayModeManager
         }
 
         //Counter.Instance.InitializeCounter(objs.Count);
-        //Counter.Instance.InitializeCounter(objects.Count);
+        Counter.Instance.InitializeCounter(objects.Count);
 
         //return objs;
 

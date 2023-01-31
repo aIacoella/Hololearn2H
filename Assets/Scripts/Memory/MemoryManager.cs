@@ -127,44 +127,40 @@ public class MemoryManager : RoomManager
         elems.parent = GameObject.Find("SharedPlayground").transform.GetChild(0).transform;
         for (int i = 1; i <= numberOfBoxes / 2; i++)
         {
-            Transform elem = new GameObject("Element").transform;
-            elem.parent = elems;
-            elem.position = elems.TransformPoint(new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0f));
+            //Transform elem = new GameObject("Element").transform;
+            //elem.parent = elems;
+            //elem.position = elems.TransformPoint(new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0f));
             //GameObject box = Instantiate(BoxPrefab, elem.position, BoxPrefab.transform.rotation, elem);
-            GameObject box = PhotonNetwork.Instantiate(BoxPrefab.name, elem.position, BoxPrefab.transform.rotation);
-            yield return new WaitForSeconds(0.5f);
-            box.transform.parent = elem;
+            //GameObject box = PhotonNetwork.Instantiate(BoxPrefab.name, elem.position, BoxPrefab.transform.rotation);
+            //box.transform.parent = elem;
             int j = rnd.Next(0, objs.Count);
             //Transform obj = Instantiate(objs.ElementAt(j), box.transform.position, box.transform.rotation, elem);
-            GameObject obj = PhotonNetwork.Instantiate(objs.ElementAt(j).name, box.transform.position, box.transform.rotation);
-            yield return new WaitForSeconds(0.5f);
-            obj.transform.parent = elem;
-            obj.SetActive(false);
+            GameObject obj = PhotonNetwork.Instantiate(objs.ElementAt(i-1).name, /*box.transform.position*/ new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0f), BoxPrefab.transform.rotation);
+            //obj.transform.parent = elem;
+            //ob    j.SetActive(false);
             //objs.RemoveAt(j);
 
-            Transform elem2 = new GameObject("Element").transform;
-            elem2.parent = elems;
-            elem2.position = elems.TransformPoint(new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0.3f));
+            //Transform elem2 = new GameObject("Element").transform;
+            //elem2.parent = elems;
+            //elem2.position = elems.TransformPoint(new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0.3f));
             //GameObject box2 = Instantiate(BoxPrefab, elem2.position, BoxPrefab.transform.rotation, elem2);
-            GameObject box2 = PhotonNetwork.Instantiate(BoxPrefab.name, elem2.position, BoxPrefab.transform.rotation);
-            yield return new WaitForSeconds(0.5f);
-            box2.transform.parent = elem2;
+            //GameObject box2 = PhotonNetwork.Instantiate(BoxPrefab.name, elem2.position, BoxPrefab.transform.rotation);
+            //box2.transform.parent = elem2;
             int k = rnd.Next(0, objs.Count);
             //Transform obj2 = Instantiate(objs.ElementAt(k), elem2.position, box2.transform.rotation, elem2);
-            GameObject obj2 = PhotonNetwork.Instantiate(objs.ElementAt(k).name, elem2.position, box2.transform.rotation);
-            yield return new WaitForSeconds(0.5f);
-            obj2.transform.parent = elem2;
+            GameObject obj2 = PhotonNetwork.Instantiate(objs.ElementAt(i-1).name, /*elem2.position*/ new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0.3f), BoxPrefab.transform.rotation);
+            //obj2.transform.parent = elem2;
             //box2.transform.parent = elem2;
-            obj2.SetActive(false);
-            objs.RemoveAt(k);
+            //obj2.SetActive(false);
+            //objs.RemoveAt(k);
         }
 
         elems.Translate(boxesPosition);
         elems.Rotate(rotation.eulerAngles);
 
 
-        Vector3 assistantPosition = elems.GetChild(elems.childCount - 2).TransformPoint(0.3f * (float)Math.Pow(-1, elems.childCount / 2 % 2), 0f, 0f);
-        assistantPosition.y = floor.position.y;
+        /*Vector3 assistantPosition = elems.GetChild(elems.childCount - 2).TransformPoint(0.3f * (float)Math.Pow(-1, elems.childCount / 2 % 2), 0f, 0f);
+        assistantPosition.y = floor.position.y;*/
 
         /*if (assistantPresence != 0)
         {
