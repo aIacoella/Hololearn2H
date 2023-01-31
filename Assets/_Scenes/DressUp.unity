@@ -947,12 +947,30 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4264537199477353910, guid: ac043e6b474766a4a93e025d2ade8333, type: 3}
   m_PrefabInstance: {fileID: 958584650336098982}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 958584650336098984}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c92fe740fe248f4f9b9af2f700f17ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &958584650336098984 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 958584650794572349, guid: ac043e6b474766a4a93e025d2ade8333, type: 3}
+  m_PrefabInstance: {fileID: 958584650336098982}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &958584650336098985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958584650336098984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e3dba1c7ba8d248988004541859eff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoStartQRTracking: 1
 --- !u!1001 &1315105019672784026
 PrefabInstance:
   m_ObjectHideFlags: 0
