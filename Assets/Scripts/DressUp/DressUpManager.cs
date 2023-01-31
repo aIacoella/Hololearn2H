@@ -104,7 +104,7 @@ public class DressUpManager : RoomManager
 
     public override void GenerateObjectsInWorld()
     {
-        
+
 
         //Seleziono il pavimento
         //Transform floor = SpatialProcessing.Instance.floors.ElementAt(0).transform;
@@ -224,7 +224,7 @@ public class DressUpManager : RoomManager
         List<GameObject> targets = remainingObjects.Where(obj =>
         {
             List<string> tags = obj.GetComponent<TagsContainer>().tags;
-            return tags.Contains(weathertag) || tags.Contains(weathertag);
+            return tags.Contains(weathertag) || tags.Contains(temperaturetag);
         }).ToList();
 
         SortByDistance(targets);
