@@ -18,17 +18,22 @@ public abstract class RoomManager : Singleton<RoomManager>, IInRoomCallbacks
 
     [SerializeField] private GameObject photonUserPrefab = default;
 
-    private Transform taskAnchorPosition = default;
+    public GameObject tableAnchor;
 
     private Player[] photonPlayers;
 
     private int playersInRoom;
     private int myNumberInRoom;
 
+    //Called by the host when all players connect to the room
     public abstract void GenerateObjectsInWorld();
 
+    //Called by each client when he leaves the room
     public abstract void DestroyObjects();
 
+    //Called by each client when game started RPC arrives (after GenerateObjectsInWorld)
+    [PunRPC]
+    public abstract void OnGameStarted();
 
     /* Room Logic */
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -38,6 +43,11 @@ public abstract class RoomManager : Singleton<RoomManager>, IInRoomCallbacks
         base.OnPlayerEnteredRoom(newPlayer);
         photonPlayers = PhotonNetwork.PlayerList;
         playersInRoom++;
+
+        if (GameSettings.Instance.isMultiplayer && PhotonNetwork.IsMasterClient && playersInRoom == GameSettings.Instance.numPlayer)
+        {
+            this.startGame();
+        }
     }
 
     protected override void Awake()
@@ -100,13 +110,21 @@ public abstract class RoomManager : Singleton<RoomManager>, IInRoomCallbacks
         CreatePlayer();
         if (!GameSettings.Instance.isMultiplayer)
         {
-            this.GenerateObjectsInWorld();
+            this.startGame();
         }
     }
 
     private void CreatePlayer()
     {
         var player = PhotonNetwork.Instantiate(photonUserPrefab.name, Vector3.zero, Quaternion.identity);
+    }
+
+
+    //Only called by the host
+    private void startGame()
+    {
+        this.GenerateObjectsInWorld();
+        photonView.RPC("OnGameStarted", RpcTarget.All);
     }
 
     /* Virtual Assistant Logic */
@@ -130,15 +148,12 @@ public abstract class RoomManager : Singleton<RoomManager>, IInRoomCallbacks
 
     public virtual GameObject GetClosestObject()
     {
-        Rigidbody[] remainingObjects = GameObject.FindGameObjectWithTag("ObjectsToBePlaced").GetComponentsInChildren<Rigidbody>();
-        List<GameObject> targets = new List<GameObject>();
-        foreach (Rigidbody target in remainingObjects)
-        {
-            if (target.gameObject.GetComponent<ObjectManipulator>().enabled == true)
-            {
-                targets.Add(target.gameObject);
-            }
-        }
+        GameObject[] remainingObjects = GameObject.FindGameObjectsWithTag("ObjectsToBePlaced");
+        Debug.Log("Remaining Object: " + remainingObjects.Length);
+
+        List<GameObject> targets = remainingObjects.Where(obj =>
+            obj.gameObject.GetComponent<ObjectManipulator>().enabled == true
+        ).ToList();
 
         SortByDistance(targets);
 
@@ -148,18 +163,9 @@ public abstract class RoomManager : Singleton<RoomManager>, IInRoomCallbacks
     public virtual GameObject GetClosestTarget()
     {
         GameObject draggedObject = VirtualAssistantManager.Instance.targetObject.gameObject;
-        //Debug.Log(draggedObject);
         string tag = draggedObject.tag;
 
-        Rigidbody[] placements = GameObject.FindGameObjectWithTag("Targets").GetComponentsInChildren<Rigidbody>();
-        List<GameObject> targets = new List<GameObject>();
-        foreach (Rigidbody target in placements)
-        {
-            if (target.gameObject.tag == tag)
-            {
-                targets.Add(target.gameObject);
-            }
-        }
+        List<GameObject> targets = GameObject.FindGameObjectsWithTag("Targets").ToList();
 
         SortByDistance(targets);
         return targets[0];

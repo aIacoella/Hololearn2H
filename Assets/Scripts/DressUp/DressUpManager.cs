@@ -8,7 +8,7 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine.XR.ARFoundation;
 using Photon.Realtime;
-using Photon.Pun;
+using Photon.Pun;   
 
 public class DressUpManager : RoomManager
 {
@@ -94,6 +94,10 @@ public class DressUpManager : RoomManager
         LoadSettings();
 
         virtualAssistant = VirtualAssistantsPrefabs[selectedAssistant].transform.GetChild(assistantBehaviour - 1);
+    }
+
+    public override void OnGameStarted() {
+
     }
 
 

@@ -75,6 +75,10 @@ public class MemoryManager : RoomManager
         //GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
     }
 
+    public override void OnGameStarted() {
+
+    }
+
     // Update is called once per frame
     public void Update()
     {
