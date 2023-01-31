@@ -96,6 +96,8 @@ GameObject:
   - component: {fileID: 511023390950431814}
   - component: {fileID: -4318603488361006371}
   - component: {fileID: 6326587876089724773}
+  - component: {fileID: -7236846141986259588}
+  - component: {fileID: 3292100482271908508}
   m_Layer: 0
   m_Name: Car
   m_TagString: MemoryObjects
@@ -163,10 +165,10 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
+  OwnershipTransfer: 1
+  observableSearch: 0
   ObservedComponents:
-  - {fileID: 6326587876089724773}
+  - {fileID: -7236846141986259588}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -186,6 +188,31 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &-7236846141986259588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426072773083836632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &3292100482271908508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426072773083836632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130ef06c1c6d9a8408a37662e933b938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1426105566803607496
 GameObject:
   m_ObjectHideFlags: 0
