@@ -16,6 +16,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public GameObject tableAnchor;
 
+    public GameObject debug;
+
     private int roomNumber = 1;
 
     private int userIdCount;
@@ -25,7 +27,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private SpatialGraphNode node;
 
-    public System.Guid Id { get; set; }
+    private System.Guid Id { get; set; }
 
     private void Awake()
     {
@@ -64,8 +66,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         string CodeText = qrCode.Data;
         Debug.Log("New QR Code Added: " + CodeText);
 
-        long qpcTime = 0;
-        if (node.TryLocate(qpcTime, out Pose pose))
+        debug.GetComponent<TextMesh>().text = CodeText;
+
+        if (node == null || node.Id != Id)
+        {
+            node = (Id != System.Guid.Empty) ? SpatialGraphNode.FromStaticNodeId(Id) : null;
+            Debug.Log("Initialize SpatialGraphNode Id= " + Id);
+        }
+
+        if (node.TryLocate(FrameTime.OnUpdate, out Pose pose))
         {
             if (CameraCache.Main.transform.parent != null)
             {
