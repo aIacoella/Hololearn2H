@@ -37,7 +37,7 @@ public class ClassicModeManager : PlayModeManager
                 secondElement = null;
 
                 Counter.Instance.Decrement();
-                Counter.Instance.Decrement();
+                //Counter.Instance.Decrement();
 
                 if (VirtualAssistantManager.Instance != null)
                 {
@@ -82,29 +82,39 @@ public class ClassicModeManager : PlayModeManager
     }
 
 
-    public override List<Transform> GenerateObjects(GameObject ObjectsPrefabs, int numberOfBoxes)
+    public override List<GameObject> GenerateObjects(GameObject[] ObjectsPrefabs, int numberOfBoxes)
     {
         System.Random rnd = new System.Random();
 
         List<Transform> objs = new List<Transform>();
         List<string> createdObjs = new List<string>();
+
+        List<GameObject> objects = new List<GameObject>();
         for (int i = 1; i <= numberOfBoxes / 2;)
         {
-            int j = rnd.Next(0, ObjectsPrefabs.transform.childCount);
-            Transform obj = ObjectsPrefabs.transform.GetChild(j);
+            //int j = rnd.Next(0, ObjectsPrefabs.transform.childCount);
+            int j = rnd.Next(0, ObjectsPrefabs.Length);
+            //Transform obj = ObjectsPrefabs.transform.GetChild(j);
+            GameObject obj = ObjectsPrefabs[j];
 
-            if (!createdObjs.Contains(ObjectsPrefabs.transform.GetChild(j).name))
+            //if (!createdObjs.Contains(ObjectsPrefabs.transform.GetChild(j).name))
+            if (!createdObjs.Contains(ObjectsPrefabs[j].name))
             {
-                objs.Add(obj);
-                objs.Add(obj);
-                createdObjs.Add(ObjectsPrefabs.transform.GetChild(j).name);
+                //objs.Add(obj);
+                //objs.Add(obj);
+                //createdObjs.Add(ObjectsPrefabs.transform.GetChild(j).name);
+                createdObjs.Add(ObjectsPrefabs[j].name);
+                objects.Add(obj);
                 i++;
             }
         }
 
-        Counter.Instance.InitializeCounter(objs.Count);
+        //Counter.Instance.InitializeCounter(objs.Count);
+        Counter.Instance.InitializeCounter(objects.Count);
 
-        return objs;
+        //return objs;
+
+        return objects;
     }
 
 

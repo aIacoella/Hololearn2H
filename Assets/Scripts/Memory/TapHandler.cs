@@ -34,10 +34,12 @@ public class TapHandler : MonoBehaviour, IMixedRealityPointerHandler
 
     public void OnPointerClicked(MixedRealityPointerEventData eventData)
     {
-        PlayModeManager manager = GameObject.Find("MemoryManager").transform.GetChild(0).GetComponent<PlayModeManager>();
+        //PlayModeManager manager = GameObject.Find("TaskLobby").transform.GetChild(0).transform.GetChild(0).GetComponent<PlayModeManager>();
+        PlayModeManager manager = GameObject.Find("TaskLobby").transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<PlayModeManager>();
         if (!manager.IsBusy)
         {
-            GameObject.Find("MemoryManager").transform.GetChild(0).GetComponent<PlayModeManager>().HandleTap(transform.parent);
+            //GameObject.Find("TaskLobby").transform.GetChild(0).transform.GetChild(0).GetComponent<PlayModeManager>().HandleTap(transform.parent);
+            manager.HandleTap(transform.parent);
         }
     }
 }
