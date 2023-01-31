@@ -4,6 +4,10 @@ using UnityEngine;
 using Photon.Pun;
 using MRTK.Tutorials.MultiUserCapabilities;
 using Photon.Realtime;
+using Microsoft.MixedReality.QR;
+using Microsoft.MixedReality.SampleQRCodes;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.OpenXR;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -19,6 +23,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     //0 = scene loaded, 1 = QR Code Scanned => Joined/Created
     private bool isConnectedToMaster = false;
 
+    private SpatialGraphNode node;
+
+    public System.Guid Id { get; set; }
 
     private void Awake()
     {
@@ -40,10 +47,38 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         GenericNetworkManager.OnReadyToStartNetwork += StartNetwork;
     }
 
+    public void Start()
+    {
+        QRCodesManager.Instance.QRCodeAdded += OnQRCodeAdded;
+    }
+
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to master");
         this.isConnectedToMaster = true;
+    }
+
+    private void OnQRCodeAdded(object sender, QRCodeEventArgs<Microsoft.MixedReality.QR.QRCode> e)
+    {
+        QRCode qrCode = e.Data;
+        string CodeText = qrCode.Data;
+        Debug.Log("New QR Code Added: " + CodeText);
+
+        long qpcTime = 0;
+        if (node.TryLocate(qpcTime, out Pose pose))
+        {
+            if (CameraCache.Main.transform.parent != null)
+            {
+                pose = pose.GetTransformedBy(CameraCache.Main.transform.parent);
+            }
+
+            Debug.Log("Id= " + Id + " QRPose = " + pose.position.ToString("F7") + " QRRot = " + pose.rotation.ToString("F7"));
+        }
+        else
+        {
+            Debug.LogWarning("Cannot locate " + Id);
+        }
+
     }
 
     public void OnQRCodeScanned()
@@ -115,12 +150,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         lobby = this;
     }
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()
