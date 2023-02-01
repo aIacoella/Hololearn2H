@@ -84,9 +84,10 @@ public class MemoryManager : RoomManager
         LoadSettings();
 
         GameObject[] vaFamily = selectedAssistant == 0 ? MinionVirtualAssistantsPrefabs : TYVirtualAssistantsPrefabs;
-        virtualAssistant = vaFamily[assistantBehaviour - 1].transform;
 
-        Debug.Log("Virtual Assistant: " + virtualAssistant.name);
+        virtualAssistant = vaFamily[assistantBehaviour].transform;
+
+        //Debug.Log("Virtual Assistant: " + virtualAssistant.name);
 
         //Instantiate(PlayModesPrefabs.transform.GetChild(playMode), GameObject.Find("MemoryManager").transform);
 
@@ -215,7 +216,5 @@ public class MemoryManager : RoomManager
         }
         Destroy(GameObject.Find("Elements"));
     }
-
-
 
 }

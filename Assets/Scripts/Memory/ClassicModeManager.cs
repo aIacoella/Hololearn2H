@@ -135,7 +135,7 @@ public class ClassicModeManager : PlayModeManager
 
     public override void StartGame(int waitingTime)
     {
-        StartCoroutine(ShowObjects(waitingTime));
+       ShowObjects(waitingTime);
     }
 
     private IEnumerator ShowObjects(int waitingTime)

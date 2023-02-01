@@ -10,7 +10,7 @@ public class SetElementsToParent : MonoBehaviour
         transform.parent = GameObject.Find("Elements").transform;
         this.name = "Element";
         this.transform.GetChild(0).gameObject.SetActive(true);
-        this.transform.GetChild(1).gameObject.SetActive(true);
+        this.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     // Update is called once per frame
