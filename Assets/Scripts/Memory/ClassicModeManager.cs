@@ -24,7 +24,9 @@ public class ClassicModeManager : PlayModeManager
     }
 
     [PunRPC]
-    public void HandleTapRPC(Transform selectedElement) {
+    public void HandleTapRPC(int childNumber) {
+        Transform selectedElement = GameObject.Find("Elements").transform.GetChild(childNumber).transform;
+        
         selectedElement.GetChild(0).gameObject.SetActive(false);
         selectedElement.GetChild(1).gameObject.SetActive(true);
 
@@ -68,7 +70,10 @@ public class ClassicModeManager : PlayModeManager
 
     public override void HandleTap(Transform selectedElement)
     {
-        this.photonView.RPC("HandleTapRPC", RpcTarget.All, selectedElement);
+        //child number of selected element
+        int childNumber = selectedElement.GetSiblingIndex();
+
+        this.photonView.RPC("HandleTapRPC", RpcTarget.All, childNumber);
 
     }
 
