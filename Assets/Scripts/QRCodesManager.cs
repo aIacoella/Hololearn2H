@@ -92,8 +92,8 @@ namespace Microsoft.MixedReality.SampleQRCodes
                 IsTrackerRunning = false;
                 qrTracker.Added += QRCodeWatcher_Added;
                 qrTracker.Updated += QRCodeWatcher_Updated;
-                qrTracker.Removed += QRCodeWatcher_Removed;
-                qrTracker.EnumerationCompleted += QRCodeWatcher_EnumerationCompleted;
+                //qrTracker.Removed += QRCodeWatcher_Removed;
+                //qrTracker.EnumerationCompleted += QRCodeWatcher_EnumerationCompleted;
             }
             catch (Exception ex)
             {
@@ -143,6 +143,7 @@ namespace Microsoft.MixedReality.SampleQRCodes
             }
         }
 
+        //Not used   
         private void QRCodeWatcher_Removed(object sender, QRCodeRemovedEventArgs args)
         {
             Debug.Log("QRCodesManager QRCodeWatcher_Removed");
@@ -204,6 +205,7 @@ namespace Microsoft.MixedReality.SampleQRCodes
             }
         }
 
+        //Not used
         private void QRCodeWatcher_EnumerationCompleted(object sender, object e)
         {
             Debug.Log("QRCodesManager QrTracker_EnumerationCompleted");

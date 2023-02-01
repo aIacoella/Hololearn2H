@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using MRTK.Tutorials.MultiUserCapabilities;
 using Photon.Realtime;
 using Microsoft.MixedReality.QR;
 using Microsoft.MixedReality.SampleQRCodes;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.OpenXR;
+
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -25,9 +22,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     //0 = scene loaded, 1 = QR Code Scanned => Joined/Created
     private bool isConnectedToMaster = false;
 
-    private SpatialGraphNode node;
-
-    private System.Guid Id { get; set; }
+    private const string QR_CODE_TEXT = "HoloLearn2";
 
     private void Awake()
     {
@@ -52,6 +47,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void Start()
     {
         QRCodesManager.Instance.QRCodeAdded += OnQRCodeAdded;
+        QRCodesManager.Instance.QRCodeUpdated += OnQRCodeUpdated;
 
         debug.GetComponent<TextMesh>().text = "Waiting for QR Code";
     }
@@ -62,42 +58,33 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         this.isConnectedToMaster = true;
     }
 
+    private void OnQRCodeUpdated(object sender, QRCodeEventArgs<Microsoft.MixedReality.QR.QRCode> e)
+    {
+        QRCode qrCode = e.Data;
+        string CodeText = qrCode.Data;
+
+        if (CodeText == QR_CODE_TEXT)
+        {
+            Debug.Log("UpdatingHoloLearn2 QR Code " + qrCode.Id);
+            tableAnchor.GetComponent<SpatialGraphNodeTracker>().Id = qrCode.Id;
+        }
+    }
+
     private void OnQRCodeAdded(object sender, QRCodeEventArgs<Microsoft.MixedReality.QR.QRCode> e)
     {
         QRCode qrCode = e.Data;
         string CodeText = qrCode.Data;
 
-        Id = qrCode.Id;
-
-        Debug.Log("New QR Code Added AAA: " + CodeText);
-
-        Debug.Log(node + " " + Id);
-
-        if (node == null || node.Id != Id)
+        if (CodeText == QR_CODE_TEXT)
         {
-            node = (Id != System.Guid.Empty) ? SpatialGraphNode.FromStaticNodeId(Id) : null;
-            Debug.Log("Initialize SpatialGraphNode Id= " + Id);
-        }
-
-        if (node.TryLocate(FrameTime.OnUpdate, out Pose pose))
-        {
-            if (CameraCache.Main.transform.parent != null)
-            {
-                pose = pose.GetTransformedBy(CameraCache.Main.transform.parent);
-            }
-
-            Debug.Log("Id= " + Id + " QRPose = " + pose.position.ToString("F7") + " QRRot = " + pose.rotation.ToString("F7"));
-            tableAnchor.transform.position = pose.position;
-            tableAnchor.transform.rotation = pose.rotation;
-
-            OnQRCodeScanned();
-
+            Debug.Log("HoloLearn2 QR Code Found! " + qrCode.Id);
+            tableAnchor.GetComponent<SpatialGraphNodeTracker>().Id = qrCode.Id;
         }
         else
         {
-            Debug.LogWarning("Cannot locate " + Id);
-        }
+            Debug.Log("QR Code Found but text: " + CodeText);
 
+        }
     }
 
     public void OnQRCodeScanned()
