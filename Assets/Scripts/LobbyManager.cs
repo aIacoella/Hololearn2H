@@ -45,8 +45,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void Start()
     {
+        tableAnchor = GameObject.Find("TableAnchor");
+
         QRCodesManager.Instance.QRCodeAdded += OnQRCodeAdded;
         QRCodesManager.Instance.QRCodeUpdated += OnQRCodeUpdated;
+
+        tableAnchor = GameObject.Find("TableAnchor");
 
         debug.GetComponent<TextMesh>().text = "Waiting for QR Code";
     }
@@ -68,7 +72,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
             try
             {
-                GameObject.Find("TableAnchor").GetComponent<SpatialGraphNodeTracker>().Id = qrCode.Id;
+                tableAnchor.GetComponent<SpatialGraphNodeTracker>().Id = qrCode.Id;
             }
             catch (System.Exception error)
             {
@@ -88,12 +92,20 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (CodeText == QR_CODE_TEXT)
         {
             Debug.Log("HoloLearn2 QR Code Found! " + qrCode.Id);
-            tableAnchor.GetComponent<SpatialGraphNodeTracker>().Id = qrCode.Id;
+            try
+            {
+                tableAnchor.GetComponent<SpatialGraphNodeTracker>().Id = qrCode.Id;
+            }
+            catch (System.Exception error)
+            {
+                Debug.LogWarning(error.Message);
+            }
+
+            Debug.Log("What is table anchor? " + tableAnchor);
         }
         else
         {
             Debug.Log("QR Code Found but text: " + CodeText);
-
         }
     }
 
