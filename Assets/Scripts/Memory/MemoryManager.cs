@@ -86,6 +86,8 @@ public class MemoryManager : RoomManager
         GameObject[] vaFamily = selectedAssistant == 0 ? MinionVirtualAssistantsPrefabs : TYVirtualAssistantsPrefabs;
         virtualAssistant = vaFamily[assistantBehaviour - 1].transform;
 
+        Debug.Log("Virtual Assistant: " + virtualAssistant.name);
+
         //Instantiate(PlayModesPrefabs.transform.GetChild(playMode), GameObject.Find("MemoryManager").transform);
 
         //virtualAssistant = VirtualAssistantsPrefabs.transform.GetChild(selectedAssistant + 1).GetChild(0);
@@ -150,44 +152,34 @@ public class MemoryManager : RoomManager
         //Transform elems = new GameObject("Elements").transform;
 
         Transform elems = PhotonNetwork.Instantiate(ElementsPrefab.name, Vector3.zero, Quaternion.identity).transform;
+
+        List<int> list = new List<int>();
+        for (int i = 1; i <= numberOfBoxes / 2; i++)
+        {
+            list.Add(i);
+            list.Add(i);
+        }
+
+        //shuffle the list
+        list = list.OrderBy(x => rnd.Next()).ToList();
         
         //elems.parent = sceneRoot;
         elems.parent = GameObject.Find("SharedPlayground").transform.GetChild(0).transform;
         for (int i = 1; i <= numberOfBoxes / 2; i++)
         {
-            //Transform elem = new GameObject("Element").transform;
-            //elem.parent = elems;
-            //elem.position = elems.TransformPoint(new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0f));
-            //GameObject box = Instantiate(BoxPrefab, elem.position, BoxPrefab.transform.rotation, elem);
-            //GameObject box = PhotonNetwork.Instantiate(BoxPrefab.name, elem.position, BoxPrefab.transform.rotation);
-            //box.transform.parent = elem;
-            int j = rnd.Next(0, objs.Count);
-            //Transform obj = Instantiate(objs.ElementAt(j), box.transform.position, box.transform.rotation, elem);
-            GameObject obj = PhotonNetwork.Instantiate(objs.ElementAt(i-1).name, /*box.transform.position*/ new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0f), BoxPrefab.transform.rotation);
-            //obj.transform.parent = elem;
-            //ob    j.SetActive(false);
-            //objs.RemoveAt(j);
+            int obj_index_1 = list.ElementAt(i * 2 - 2) - 1;
+            int obj_index_2 = list.ElementAt(i * 2 - 1) - 1;
 
-            //Transform elem2 = new GameObject("Element").transform;
-            //elem2.parent = elems;
-            //elem2.position = elems.TransformPoint(new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0.3f));
-            //GameObject box2 = Instantiate(BoxPrefab, elem2.position, BoxPrefab.transform.rotation, elem2);
-            //GameObject box2 = PhotonNetwork.Instantiate(BoxPrefab.name, elem2.position, BoxPrefab.transform.rotation);
-            //box2.transform.parent = elem2;
-            int k = rnd.Next(0, objs.Count);
-            //Transform obj2 = Instantiate(objs.ElementAt(k), elem2.position, box2.transform.rotation, elem2);
-            GameObject obj2 = PhotonNetwork.Instantiate(objs.ElementAt(i-1).name, /*elem2.position*/ new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0.3f), BoxPrefab.transform.rotation);
-            //obj2.transform.parent = elem2;
-            //box2.transform.parent = elem2;
-            //obj2.SetActive(false);
-            //objs.RemoveAt(k);
+            GameObject obj = PhotonNetwork.Instantiate(objs.ElementAt(obj_index_1).name, new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0f), BoxPrefab.transform.rotation);
+            GameObject obj2 = PhotonNetwork.Instantiate(objs.ElementAt(obj_index_2).name, new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0.3f), BoxPrefab.transform.rotation);
         }
 
         elems.Translate(boxesPosition);
         elems.Rotate(rotation.eulerAngles);
 
 
-        Vector3 assistantPosition = elems.GetChild(elems.childCount - 2).TransformPoint(0.3f * (float)Math.Pow(-1, elems.childCount / 2 % 2), 0f, 0f);
+        //Vector3 assistantPosition = elems.GetChild(elems.childCount - 2).TransformPoint(0.3f * (float)Math.Pow(-1, elems.childCount / 2 % 2), 0f, 0f);
+        Vector3 assistantPosition = elems.gameObject.transform.position;;
         assistantPosition.y = floor.position.y;
 
         if (assistantPresence != 0)

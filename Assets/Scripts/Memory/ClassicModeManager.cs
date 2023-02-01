@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Photon.Realtime;
+using Photon.Pun;
 
 public class ClassicModeManager : PlayModeManager
 {
@@ -21,8 +23,8 @@ public class ClassicModeManager : PlayModeManager
 
     }
 
-    public override void HandleTap(Transform selectedElement)
-    {
+    [PunRPC]
+    public void HandleTapRPC(Transform selectedElement) {
         selectedElement.GetChild(0).gameObject.SetActive(false);
         selectedElement.GetChild(1).gameObject.SetActive(true);
 
@@ -62,6 +64,11 @@ public class ClassicModeManager : PlayModeManager
         {
             firstElement = selectedElement.GetChild(1);
         }
+    }
+
+    public override void HandleTap(Transform selectedElement)
+    {
+        this.photonView.RPC("HandleTapRPC", RpcTarget.All, selectedElement);
 
     }
 
@@ -114,7 +121,10 @@ public class ClassicModeManager : PlayModeManager
 
         //return objs;
 
-        return objects;
+        //shuflle the game objects list
+        List<GameObject> shuffledObjs = objects.OrderBy(x => rnd.Next()).ToList();
+
+        return shuffledObjs;
     }
 
 
