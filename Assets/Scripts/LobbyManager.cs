@@ -5,7 +5,6 @@ using Photon.Realtime;
 using Microsoft.MixedReality.QR;
 using Microsoft.MixedReality.SampleQRCodes;
 
-
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
 
@@ -66,9 +65,20 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (CodeText == QR_CODE_TEXT)
         {
             Debug.Log("UpdatingHoloLearn2 QR Code " + qrCode.Id);
-            tableAnchor.GetComponent<SpatialGraphNodeTracker>().Id = qrCode.Id;
+
+            try
+            {
+                GameObject.Find("TableAnchor").GetComponent<SpatialGraphNodeTracker>().Id = qrCode.Id;
+            }
+            catch (System.Exception error)
+            {
+                Debug.LogWarning(error.Message);
+            }
+
+            Debug.Log(tableAnchor);
         }
     }
+
 
     private void OnQRCodeAdded(object sender, QRCodeEventArgs<Microsoft.MixedReality.QR.QRCode> e)
     {
