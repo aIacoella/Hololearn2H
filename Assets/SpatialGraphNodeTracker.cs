@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.OpenXR;
 
 class SpatialGraphNodeTracker : MonoBehaviour
 {
@@ -20,11 +21,15 @@ class SpatialGraphNodeTracker : MonoBehaviour
             {
                 Debug.Log("Node successfully initialized");
             }
+            else
+            {
+                Debug.Log("Can't initialize node");
+            }
         }
 
         if (node != null)
         {
-            if (node.TryLocate(out Pose pose))
+            if (node.TryLocate(FrameTime.OnUpdate, out Pose pose))
             {
                 // If there is a parent to the camera that means we are using teleport and we should not apply the teleport
                 // to these objects so apply the inverse
