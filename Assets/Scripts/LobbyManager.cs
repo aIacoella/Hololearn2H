@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using MRTK.Tutorials.MultiUserCapabilities;
 using Photon.Realtime;
+using MRTK.Tutorials.MultiUserCapabilities;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-
     public static LobbyManager lobby;
 
-    public GameObject tableAnchor;
+    public GameObject debug;
 
     private int roomNumber = 1;
 
@@ -19,6 +16,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     //0 = scene loaded, 1 = QR Code Scanned => Joined/Created
     private bool isConnectedToMaster = false;
 
+    private GameObject tableAnchor;
 
     private void Awake()
     {
@@ -40,16 +38,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         GenericNetworkManager.OnReadyToStartNetwork += StartNetwork;
     }
 
+    public void Start()
+    {
+        tableAnchor = GameObject.Find("TableAnchor");
+    }
+
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to master");
         this.isConnectedToMaster = true;
     }
 
+
     public void OnQRCodeScanned()
     {
-        //To be replaced with QR Code
-        tableAnchor.transform.position = Camera.main.transform.position;
+        Transform qrCodeTransform = Microsoft.MixedReality.SampleQRCodes.QRCode.Instance.transform;
+        tableAnchor.transform.SetPositionAndRotation(qrCodeTransform.transform.position, qrCodeTransform.transform.rotation);
 
         if (!isConnectedToMaster)
         {
@@ -115,16 +119,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         lobby = this;
     }
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
-
     }
 }

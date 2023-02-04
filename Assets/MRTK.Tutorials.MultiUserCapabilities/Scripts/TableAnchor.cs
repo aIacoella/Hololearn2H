@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Microsoft.MixedReality.SampleQRCodes;
+using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
 namespace MRTK.Tutorials.MultiUserCapabilities
