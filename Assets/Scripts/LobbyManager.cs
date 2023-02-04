@@ -1,17 +1,11 @@
 using UnityEngine;
 using Photon.Pun;
-using MRTK.Tutorials.MultiUserCapabilities;
 using Photon.Realtime;
-using Microsoft.MixedReality.QR;
-using Microsoft.MixedReality.SampleQRCodes;
-using System.Collections.Generic;
+using MRTK.Tutorials.MultiUserCapabilities;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-
     public static LobbyManager lobby;
-
-    public GameObject tableAnchor;
 
     public GameObject debug;
 
@@ -22,27 +16,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     //0 = scene loaded, 1 = QR Code Scanned => Joined/Created
     private bool isConnectedToMaster = false;
 
-    private const string QR_CODE_TEXT = "HoloLearn2";
-
-    struct ActionData
-    {
-        public enum Type
-        {
-            Added,
-            Updated,
-            Removed
-        };
-        public Type type;
-        public Microsoft.MixedReality.QR.QRCode qrCode;
-
-        public ActionData(Type type, Microsoft.MixedReality.QR.QRCode qRCode) : this()
-        {
-            this.type = type;
-            qrCode = qRCode;
-        }
-    }
-
-    private Queue<ActionData> pendingActions = new Queue<ActionData>();
+    private GameObject tableAnchor;
 
     private void Awake()
     {
@@ -67,13 +41,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void Start()
     {
         tableAnchor = GameObject.Find("TableAnchor");
-
-        QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
-        QRCodesManager.Instance.QRCodeUpdated += Instance_QRCodeUpdated;
-
-        tableAnchor = GameObject.Find("TableAnchor");
-
-        debug.GetComponent<TextMesh>().text = "Waiting for QR Code";
     }
 
     public override void OnConnectedToMaster()
@@ -82,76 +49,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         this.isConnectedToMaster = true;
     }
 
-    private void Instance_QRCodeAdded(object sender, QRCodeEventArgs<Microsoft.MixedReality.QR.QRCode> e)
-    {
-        Debug.Log("QRCodesVisualizer Instance_QRCodeAdded");
-
-        lock (pendingActions)
-        {
-            pendingActions.Enqueue(new ActionData(ActionData.Type.Added, e.Data));
-        }
-    }
-
-    private void Instance_QRCodeUpdated(object sender, QRCodeEventArgs<Microsoft.MixedReality.QR.QRCode> e)
-    {
-        Debug.Log("QRCodesVisualizer Instance_QRCodeUpdated");
-
-        lock (pendingActions)
-        {
-            pendingActions.Enqueue(new ActionData(ActionData.Type.Updated, e.Data));
-        }
-    }
-
-    private void OnQRCodeUpdated(QRCode qrCode)
-    {
-        string CodeText = qrCode.Data;
-
-        if (CodeText == QR_CODE_TEXT)
-        {
-            Debug.Log("UpdatingHoloLearn2 QR Code " + qrCode.Id);
-
-            try
-            {
-                tableAnchor.GetComponent<SpatialGraphNodeTracker>().Id = qrCode.Id;
-            }
-            catch (System.Exception error)
-            {
-                Debug.LogWarning(error.Message);
-            }
-
-            Debug.Log(tableAnchor);
-        }
-    }
-
-
-    private void OnQRCodeAdded(QRCode qrCode)
-    {
-        string CodeText = qrCode.Data;
-
-        if (CodeText == QR_CODE_TEXT)
-        {
-            Debug.Log("HoloLearn2 QR Code Found! " + qrCode.Id);
-            try
-            {
-                tableAnchor.GetComponent<SpatialGraphNodeTracker>().Id = qrCode.Id;
-            }
-            catch (System.Exception error)
-            {
-                Debug.LogWarning(error.Message);
-            }
-
-            Debug.Log("What is table anchor? " + tableAnchor);
-        }
-        else
-        {
-            Debug.Log("QR Code Found but text: " + CodeText);
-        }
-    }
 
     public void OnQRCodeScanned()
     {
-        //To be replaced with QR Code
-        //tableAnchor.transform.position = Camera.main.transform.position;
+        Transform qrCodeTransform = Microsoft.MixedReality.SampleQRCodes.QRCode.Instance.transform;
+        tableAnchor.transform.SetPositionAndRotation(qrCodeTransform.transform.position, qrCodeTransform.transform.rotation);
 
         if (!isConnectedToMaster)
         {
@@ -217,29 +119,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         lobby = this;
     }
 
-    private void HandleEvents()
-    {
-        lock (pendingActions)
-        {
-            while (pendingActions.Count > 0)
-            {
-                var action = pendingActions.Dequeue();
-                if (action.type == ActionData.Type.Added)
-                {
-                    OnQRCodeAdded(action.qrCode);
-                }
-                else if (action.type == ActionData.Type.Updated)
-                {
-                    OnQRCodeUpdated(action.qrCode);
-                }
-
-            }
-        }
-    }
-
     // Update is called once per frame
     void Update()
     {
-        HandleEvents();
     }
 }

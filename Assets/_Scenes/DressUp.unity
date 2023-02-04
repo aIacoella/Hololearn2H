@@ -450,7 +450,7 @@ Transform:
   m_GameObject: {fileID: 1286441091}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.11612, y: 0.11612, z: 0.11612}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1438406138}
@@ -534,18 +534,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be98ac4c5d0cfbe449727358153517da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1438406134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438406131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f4b8fc5cc230cc45bfcbd46b6e9890b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1438406138 stripped
@@ -638,7 +626,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114750426120364918, guid: d5e0e8cc740eb134789fd1f6bb5bb80a, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114750426120364918, guid: d5e0e8cc740eb134789fd1f6bb5bb80a, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -1093,30 +1081,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4264537199477353910, guid: ac043e6b474766a4a93e025d2ade8333, type: 3}
   m_PrefabInstance: {fileID: 958584650336098982}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958584650336098984}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c92fe740fe248f4f9b9af2f700f17ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &958584650336098984 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 958584650794572349, guid: ac043e6b474766a4a93e025d2ade8333, type: 3}
-  m_PrefabInstance: {fileID: 958584650336098982}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &958584650336098985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958584650336098984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60e3dba1c7ba8d248988004541859eff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AutoStartQRTracking: 1
 --- !u!1001 &1315105019672784026
 PrefabInstance:
   m_ObjectHideFlags: 0
