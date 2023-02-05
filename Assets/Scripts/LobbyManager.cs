@@ -7,7 +7,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static LobbyManager lobby;
 
-    public GameObject debug;
+    public GameObject ScanQRCodeOverlay;
+
+    public GameObject GameOverOverlay;
+
+    public GameObject MainMenu;
 
     private int roomNumber = 1;
 
@@ -47,12 +51,56 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Connected to master");
         this.isConnectedToMaster = true;
+
+        if (QRCode.Instance.isInitialized)
+        {
+            ScanQRCodeOverlay.SetActive(false);
+            JoinOrCreateRoomIntent();
+        }
+    }
+
+    public void GameOver()
+    {
+        GameOverOverlay.SetActive(true);
+    }
+
+    public void QuitGame()
+    {
+        //Leave Room
+        try
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+        catch (System.Exception)
+        {
+            Debug.Log("Failed to leave room");
+        }
+
+        //Disconnect from master
+        try
+        {
+            PhotonNetwork.Disconnect();
+        }
+        catch (System.Exception)
+        {
+            Debug.Log("Failed to disconnect from master");
+        }
+        //Delete SharedPlayground
+        Destroy(GameObject.Find("SharedPlayground"));
+
+        //Open MainMenu
+        BrodcastedContent.Instance.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+
+        //Delete this
+        Destroy(gameObject);
     }
 
 
-    public void OnQRCodeScanned()
+    public void JoinOrCreateRoomIntent()
     {
-        Transform qrCodeTransform = Microsoft.MixedReality.SampleQRCodes.QRCode.Instance.transform;
+        Debug.Log("Join room intent");
+
+        Transform qrCodeTransform = QRCode.Instance.transform;
         tableAnchor.transform.SetPositionAndRotation(qrCodeTransform.transform.position, qrCodeTransform.transform.rotation);
 
         if (!isConnectedToMaster)
