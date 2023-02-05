@@ -19,6 +19,8 @@ public class MemoryManager : RoomManager
     public GameObject[] TYVirtualAssistantsPrefabs;
     public GameObject ElementsPrefab;
 
+    public GameObject[] ObjectsToFindPrefabs;
+
     private int playMode;
     private int numberOfBoxes;
     private int waitingTime;
@@ -49,6 +51,14 @@ public class MemoryManager : RoomManager
             if (ObjectsPrefabs != null)
             {
                 foreach (GameObject obj in ObjectsPrefabs)
+                {
+                    pool.ResourceCache.Add(obj.name, obj);
+                }
+            }
+
+            if (ObjectsToFindPrefabs != null)
+            {
+                foreach (GameObject obj in ObjectsToFindPrefabs)
                 {
                     pool.ResourceCache.Add(obj.name, obj);
                 }

@@ -69,20 +69,23 @@ public class FindMeModeManager : PlayModeManager
 
     private IEnumerator ShowObjectToFind(int waitingTime)
     {
+        yield return new WaitForSeconds(waitingTime); 
         Debug.Log("ShowObjectToFind");
         System.Random rnd = new System.Random();
 
         Transform elems = GameObject.Find("Elements").transform;
-        objectToFind = elems.GetChild(rnd.Next(0, elems.childCount));
-        Debug.Log("objectToFind: " + objectToFind.gameObject.name);
+        string objectToFind_string = elems.GetChild(rnd.Next(0, elems.childCount)).GetChild(1).name;
         //Instantiate(objectToFind, transform.GetChild(0).position + new Vector3(0f, -0.2f, 0f), transform.GetChild(0).rotation, transform.GetChild(0));
-        GameObject obj = PhotonNetwork.Instantiate(objectToFind.gameObject.name, transform.GetChild(0).position + new Vector3(0f, -0.2f, 0f), transform.GetChild(0).rotation, 0);
+        GameObject obj = PhotonNetwork.Instantiate(objectToFind_string, transform.GetChild(0).position + new Vector3(0f, -0.2f, 0f), transform.GetChild(0).rotation, 0);
+        
         //transform.GetChild(0).gameObject.SetActive(true);
         //transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
   
         yield return new WaitForSeconds(waitingTime);
+        obj.name = objectToFind_string; 
+        objectToFind = obj.transform;
 
-        Destroy(obj.gameObject);
+        obj.SetActive(false);
 
         //transform.GetChild(0).gameObject.SetActive(false);
     }
