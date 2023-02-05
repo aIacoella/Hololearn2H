@@ -37,21 +37,25 @@ public class FindMeModeManager : PlayModeManager
     }
 
 
-    public override List<Transform> GenerateObjects(GameObject ObjectsPrefabs, int numberOfBoxes)
+    public override List<GameObject> GenerateObjects(GameObject[] ObjectsPrefabs, int numberOfBoxes)
     {
         System.Random rnd = new System.Random();
 
         List<Transform> objs = new List<Transform>();
         for (int i = 1; i <= numberOfBoxes; i++)
         {
-            int j = rnd.Next(0, ObjectsPrefabs.transform.childCount);
-            Transform obj = ObjectsPrefabs.transform.GetChild(j);
+            //int j = rnd.Next(0, ObjectsPrefabs.transform.childCount);
+            int j = rnd.Next(0, ObjectsPrefabs.Length);
+            //Transform obj = ObjectsPrefabs.transform.GetChild(j);
+            Transform obj = ObjectsPrefabs[j].transform;
             objs.Add(obj);
         }
 
         Counter.Instance.InitializeCounter(1);
 
-        return objs;
+        //return objs;
+
+        return objs.Select(o => o.gameObject).ToList();
     }
 
 

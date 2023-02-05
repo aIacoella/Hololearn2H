@@ -48,7 +48,10 @@ public class DressUpManager : RoomManager
             {
                 foreach (GameObject wheather in WheatherPrefabsLvl1)
                 {
-                    pool.ResourceCache.Add(wheather.name, wheather);
+                    if (!pool.ResourceCache.ContainsKey(wheather.name))
+                    {
+                        pool.ResourceCache.Add(wheather.name, wheather);
+                    }
                 }
             }
 
@@ -61,13 +64,22 @@ public class DressUpManager : RoomManager
                 }
             }
 
-            if (TemperatureTextPrefab != null) pool.ResourceCache.Add(TemperatureTextPrefab.name, TemperatureTextPrefab);
+            if (TemperatureTextPrefab != null)
+            {
+                if (!pool.ResourceCache.ContainsKey(TemperatureTextPrefab.name))
+                {
+                    pool.ResourceCache.Add(TemperatureTextPrefab.name, TemperatureTextPrefab);
+                }
+            }
 
             if (ClothesPrefabs != null)
             {
                 foreach (GameObject clothes in ClothesPrefabs)
                 {
-                    pool.ResourceCache.Add(clothes.name, clothes);
+                    if (!pool.ResourceCache.ContainsKey(clothes.name))
+                    {
+                        pool.ResourceCache.Add(clothes.name, clothes);
+                    }
                 }
             }
 
@@ -75,7 +87,10 @@ public class DressUpManager : RoomManager
             {
                 foreach (GameObject bags in BagsPrefabs)
                 {
-                    pool.ResourceCache.Add(bags.name, bags);
+                    if (!pool.ResourceCache.ContainsKey(bags.name))
+                    {
+                        pool.ResourceCache.Add(bags.name, bags);
+                    }
                 }
             }
 
@@ -83,7 +98,10 @@ public class DressUpManager : RoomManager
             {
                 foreach (GameObject va in MinionVirtualAssistantsPrefabs)
                 {
-                    pool.ResourceCache.Add(va.name, va);
+                    if (!pool.ResourceCache.ContainsKey(va.name))
+                    {
+                        pool.ResourceCache.Add(va.name, va);
+                    }
                 }
             }
 
@@ -91,7 +109,10 @@ public class DressUpManager : RoomManager
             {
                 foreach (GameObject va in TYVirtualAssistantsPrefabs)
                 {
-                    pool.ResourceCache.Add(va.name, va);
+                    if (!pool.ResourceCache.ContainsKey(va.name))
+                    {
+                        pool.ResourceCache.Add(va.name, va);
+                    }
                 }
             }
         }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public abstract class PlayModeManager : MonoBehaviour
+public abstract class PlayModeManager : MonoBehaviourPun
 {
     public bool IsBusy;
 
@@ -17,7 +18,7 @@ public abstract class PlayModeManager : MonoBehaviour
 		
 	}
 
-    public abstract List<Transform> GenerateObjects(GameObject ObjectsPrefabs, int numberOfBoxes);
+    public abstract List<GameObject> GenerateObjects(GameObject[] ObjectsPrefabs, int numberOfBoxes);
 
     public abstract void StartGame(int waitingTime);
 
