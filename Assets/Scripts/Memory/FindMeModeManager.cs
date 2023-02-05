@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Photon.Realtime;
+using Photon.Pun;
 
 public class FindMeModeManager : PlayModeManager
 {
@@ -23,6 +25,7 @@ public class FindMeModeManager : PlayModeManager
 
     public override void HandleTap(Transform selectedElement)
     {
+        Debug.Log("HandleTap");
         IsBusy = true;
 
         selectedElement.GetChild(0).gameObject.SetActive(false);
@@ -66,17 +69,22 @@ public class FindMeModeManager : PlayModeManager
 
     private IEnumerator ShowObjectToFind(int waitingTime)
     {
+        Debug.Log("ShowObjectToFind");
         System.Random rnd = new System.Random();
 
         Transform elems = GameObject.Find("Elements").transform;
-        objectToFind = elems.GetChild(rnd.Next(0, elems.childCount)).GetChild(1);
-        Instantiate(objectToFind, transform.GetChild(0).position + new Vector3(0f, -0.2f, 0f), transform.GetChild(0).rotation, transform.GetChild(0));
-        transform.GetChild(0).gameObject.SetActive(true);
-        transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
+        objectToFind = elems.GetChild(rnd.Next(0, elems.childCount));
+        Debug.Log("objectToFind: " + objectToFind.gameObject.name);
+        //Instantiate(objectToFind, transform.GetChild(0).position + new Vector3(0f, -0.2f, 0f), transform.GetChild(0).rotation, transform.GetChild(0));
+        GameObject obj = PhotonNetwork.Instantiate(objectToFind.gameObject.name, transform.GetChild(0).position + new Vector3(0f, -0.2f, 0f), transform.GetChild(0).rotation, 0);
+        //transform.GetChild(0).gameObject.SetActive(true);
+        //transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
   
         yield return new WaitForSeconds(waitingTime);
 
-        transform.GetChild(0).gameObject.SetActive(false);
+        Destroy(obj.gameObject);
+
+        //transform.GetChild(0).gameObject.SetActive(false);
     }
 
 

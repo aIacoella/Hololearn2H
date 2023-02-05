@@ -193,7 +193,8 @@ public class MemoryManager : RoomManager
             VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
         }
 
-        transform.GetComponentInChildren<PlayModeManager>().StartGame(waitingTime);
+        //transform.GetComponentInChildren<PlayModeManager>().StartGame(waitingTime);
+        transform.GetChild(0).GetChild(playMode).GetComponent<PlayModeManager>().StartGame(waitingTime);
 
     }
 
@@ -217,6 +218,11 @@ public class MemoryManager : RoomManager
             Destroy(VirtualAssistantManager.Instance.gameObject);
         }
         Destroy(GameObject.Find("Elements"));
+    }
+
+    public int GetPlayMode()
+    {
+        return playMode;
     }
 
 }
