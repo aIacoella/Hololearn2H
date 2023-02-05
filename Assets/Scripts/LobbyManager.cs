@@ -11,8 +11,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public GameObject GameOverOverlay;
 
-    public GameObject MainMenu;
-
     private int roomNumber = 1;
 
     private int userIdCount;

@@ -15,9 +15,7 @@ public class ClothesPositionManager : ObjectPositionManager
     {
         hasCollided = false;
         targetPosition = new Vector3();
-        //floorPosition = GameObject.Find("SurfacePlane(Clone)").transform.position;
-        //TODO: Remove This
-        floorPosition = Vector3.zero;
+        floorPosition = GameObject.Find("TableAnchor").transform.position;
 
     }
 
@@ -25,10 +23,9 @@ public class ClothesPositionManager : ObjectPositionManager
     public override void Update()
     {
 
-        if (transform.position.y < floorPosition.y)
+        if (Mathf.Abs(transform.position.y - floorPosition.y) > 5)
         {
-            //Debug.Log("Re-aligning");
-            //transform.position = new Vector3(transform.position.x, floorPosition.y + 0.01f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, floorPosition.y + 1f, transform.position.z);
         }
 
         if (hasCollided)
