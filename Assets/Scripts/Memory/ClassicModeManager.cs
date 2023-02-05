@@ -140,6 +140,7 @@ public class ClassicModeManager : PlayModeManager
 
     private IEnumerator ShowObjects(int waitingTime)
     {
+        Debug.Log("ShowObjects");
         Transform elems = GameObject.Find("Elements").transform;
 
         for (int i = 0; i < elems.childCount; i++)
