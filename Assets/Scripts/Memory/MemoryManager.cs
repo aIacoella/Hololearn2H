@@ -152,7 +152,9 @@ public class MemoryManager : RoomManager
         System.Random rnd = new System.Random();
         //Transform elems = new GameObject("Elements").transform;
 
-        Transform elems = PhotonNetwork.Instantiate(ElementsPrefab.name, Vector3.zero, Quaternion.identity).transform;
+        Transform qrcode_position = GameObject.Find("QRCode").transform;
+
+        Transform elems = PhotonNetwork.Instantiate(ElementsPrefab.name, qrcode_position.position, Quaternion.identity).transform;
 
         List<int> list = new List<int>();
         for (int i = 1; i <= numberOfBoxes / 2; i++)
@@ -171,8 +173,8 @@ public class MemoryManager : RoomManager
             int obj_index_1 = list.ElementAt(i * 2 - 2) - 1;
             int obj_index_2 = list.ElementAt(i * 2 - 1) - 1;
 
-            GameObject obj = PhotonNetwork.Instantiate(objs.ElementAt(obj_index_1).name, new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0f), BoxPrefab.transform.rotation);
-            GameObject obj2 = PhotonNetwork.Instantiate(objs.ElementAt(obj_index_2).name, new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0.3f), BoxPrefab.transform.rotation);
+            GameObject obj = PhotonNetwork.Instantiate(objs.ElementAt(obj_index_1).name, new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0f) + qrcode_position.position, BoxPrefab.transform.rotation);
+            GameObject obj2 = PhotonNetwork.Instantiate(objs.ElementAt(obj_index_2).name, new Vector3((float)Math.Pow(-1, i) * 0.3f * (i / 2), 0f, 0.3f) + qrcode_position.position , BoxPrefab.transform.rotation);
         }
 
         elems.Translate(boxesPosition);
@@ -180,7 +182,7 @@ public class MemoryManager : RoomManager
 
 
         //Vector3 assistantPosition = elems.GetChild(elems.childCount - 2).TransformPoint(0.3f * (float)Math.Pow(-1, elems.childCount / 2 % 2), 0f, 0f);
-        Vector3 assistantPosition = elems.gameObject.transform.position;;
+        Vector3 assistantPosition = elems.gameObject.transform.position + new Vector3(0f, -10f, 0f);
         assistantPosition.y = floor.position.y;
 
         if (assistantPresence != 0)
