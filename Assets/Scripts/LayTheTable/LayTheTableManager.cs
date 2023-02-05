@@ -9,11 +9,12 @@ using System.IO;
 
 //using Microsoft.MixedReality.Toolkit;
 
-public class LayTheTableManager : TaskManager
+public class LayTheTableManager : RoomManager
 {
     public GameObject LevelsPrefabs;
     public GameObject ObjectsPrefabs;
-    public GameObject VirtualAssistantsPrefabs;
+    public GameObject[] MinionVirtualAssistantsPrefabs;
+    public GameObject[] TYVirtualAssistantsPrefabs;
     public GameObject PlacementsManagerPrefabs;
 
     private int numberOfLevel;
@@ -28,25 +29,17 @@ public class LayTheTableManager : TaskManager
     private Transform selectedLevel;
 
     // Use this for initialization
-    public override void Start()
+    public new void Start()
     {
+        base.Start();
+
         LoadSettings();
 
-        selectedLevel = LevelsPrefabs.transform.GetChild(numberOfLevel - 1);
-        virtualAssistant = VirtualAssistantsPrefabs.transform.GetChild(selectedAssistant + 1).GetChild(assistantBehaviour - 1);
+        GameObject[] vaFamily = selectedAssistant == 0 ? MinionVirtualAssistantsPrefabs : TYVirtualAssistantsPrefabs;
+        virtualAssistant = vaFamily[assistantBehaviour - 1].transform;
 
         Instantiate(PlacementsManagerPrefabs.transform.GetChild(targetsVisibility), GameObject.Find("LayTheTableManager").transform);
-
-        GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
     }
-
-    // Update is called once per frame
-    public override void Update()
-    {
-
-    }
-
-
 
     public override void GenerateObjectsInWorld()
     {
@@ -56,8 +49,8 @@ public class LayTheTableManager : TaskManager
         //Bounds tableColliderBounds = table.GetColliderBounds();
 
         //TODO: Remove This
-        Transform table = gameObject.transform;
-        Bounds tableColliderBounds = GetComponent<Collider>().bounds;
+        Transform table = this.tableAnchor.transform;
+        Vector3 tableCenter = table.position;
         //TODO: Remove this
 
         Vector3 tableEdge1 = table.TransformPoint(0.4f, 0f, 0f);
@@ -67,25 +60,24 @@ public class LayTheTableManager : TaskManager
 
 
         List<Vector3> tableEdges = new List<Vector3>() { tableEdge1, tableEdge2, tableEdge3, tableEdge4 };
-        Debug.DrawLine(tableEdge1, tableColliderBounds.center, Color.black, 30f);
-        Debug.DrawLine(tableEdge2, tableColliderBounds.center, Color.black, 30f);
-        Debug.DrawLine(tableEdge3, tableColliderBounds.center, Color.red, 30f);
-        Debug.DrawLine(tableEdge4, tableColliderBounds.center, Color.red, 30f);
+        Debug.DrawLine(tableEdge1, tableCenter, Color.black, 30f);
+        Debug.DrawLine(tableEdge2, tableCenter, Color.black, 30f);
+        Debug.DrawLine(tableEdge3, tableCenter, Color.red, 30f);
+        Debug.DrawLine(tableEdge4, tableCenter, Color.red, 30f);
 
         List<Quaternion> rotations = new List<Quaternion>();
 
         for (int i = 0; i < tableEdges.Count; i++)
         {
-            Vector3 relativeDirection = tableColliderBounds.center - tableEdges.ElementAt(i);
+            Vector3 relativeDirection = tableCenter - tableEdges.ElementAt(i);
             Quaternion rotation = Quaternion.LookRotation(relativeDirection);
             rotations.Add(rotation);
         }
 
 
-        Transform objectsToBePlaced = selectedLevel.gameObject.GetComponent<ObjectsGenerator>().GenerateObjects(ObjectsPrefabs.transform, numberOfPeople);
-        objectsToBePlaced.Translate(tableEdge1);
-        objectsToBePlaced.Rotate(rotations.ElementAt(0).eulerAngles);
-
+        Transform objectsToBePlaced = selectedLevel.gameObject.GetComponent<ObjectsGenerator>().GenerateObjects(ObjectsPrefabs.transform, numberOfPeople, tableEdge1, rotations.ElementAt(0).eulerAngles);
+        //objectsToBePlaced.Translate(tableEdge1);
+        //objectsToBePlaced.Rotate(rotations.ElementAt(0).eulerAngles);
 
         Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
 
@@ -100,11 +92,9 @@ public class LayTheTableManager : TaskManager
         }
 
         Transform beveragesPlacements = selectedLevel.Find("BeveragesPlacement");
-        Instantiate(beveragesPlacements.gameObject, tableColliderBounds.center + new Vector3(0f, 0.01f, 0f), beveragesPlacements.transform.rotation, tablePlacements);
+        Instantiate(beveragesPlacements.gameObject, tableCenter + new Vector3(0f, 0.01f, 0f), beveragesPlacements.transform.rotation, tablePlacements);
 
         Counter.Instance.InitializeCounter(objectsToBePlaced.GetComponentsInChildren<Rigidbody>().Length);
-
-
 
         Vector3 assistantPosition = table.TransformPoint(-0.2f, 0f, 0f);
 
@@ -172,5 +162,10 @@ public class LayTheTableManager : TaskManager
         }
         Destroy(GameObject.Find("ObjectsToBePlaced"));
         Destroy(GameObject.Find("TableMates"));
+    }
+
+    public override void OnGameStarted()
+    {
+        throw new NotImplementedException();
     }
 }

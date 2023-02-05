@@ -31,8 +31,6 @@ namespace Microsoft.MixedReality.SampleQRCodes
 
         private Queue<ActionData> pendingActions = new Queue<ActionData>();
 
-        private GameObject qrCode;
-
         private const string QR_CODE_TEXT = "HoloLearn2";
 
 
@@ -41,7 +39,6 @@ namespace Microsoft.MixedReality.SampleQRCodes
         {
             Debug.Log("QRCodesVisualizer start");
             qrCodesObjectsList = new SortedDictionary<System.Guid, GameObject>();
-            qrCode = GameObject.Find("QRCode");
 
             QRCodesManager.Instance.QRCodesTrackingStateChanged += Instance_QRCodesTrackingStateChanged;
             QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
@@ -98,8 +95,7 @@ namespace Microsoft.MixedReality.SampleQRCodes
                     {
                         if (action.qrCode.Data == QR_CODE_TEXT)
                         {
-                            qrCode.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
-                            qrCode.GetComponent<QRCode>().qrCode = action.qrCode;
+                            QRCode.Instance.setQrCode(action.qrCode);
                         }
                         else
                         {
@@ -110,8 +106,7 @@ namespace Microsoft.MixedReality.SampleQRCodes
                     {
                         if (action.qrCode.Data == QR_CODE_TEXT)
                         {
-                            qrCode.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
-                            qrCode.GetComponent<QRCode>().qrCode = action.qrCode;
+                            QRCode.Instance.setQrCode(action.qrCode);
                         }
                         else
                         {

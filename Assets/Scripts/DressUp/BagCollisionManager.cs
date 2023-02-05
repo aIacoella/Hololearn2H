@@ -30,41 +30,38 @@ public class BagCollisionManager : MonoBehaviour
         DressUpManager manager = (DressUpManager)DressUpManager.Instance;
 
 
-        //TODO This is deprecated
-        if (other.gameObject.name != "SurfacePlane(Clone)")
+        TagsContainer tagsContainer = other.transform.GetComponent<TagsContainer>();
+        if (tagsContainer == null)
         {
-            TagsContainer tagsContainer = other.transform.GetComponent<TagsContainer>();
-            if (tagsContainer == null)
-            {
-                return;
-            }
-            List<string> tags = other.transform.GetComponent<TagsContainer>().tags;
-            string weather = manager.getWeather();
-            string temperature = manager.getTemerature();
+            return;
+        }
+        List<string> tags = other.transform.GetComponent<TagsContainer>().tags;
+        string weather = manager.getWeather();
+        string temperature = manager.getTemerature();
 
-            foreach (string tag in tags)
+        foreach (string tag in tags)
+        {
+            if (tags.Contains(weather) || tags.Contains(temperature))
             {
-                if (tags.Contains(weather) || tags.Contains(temperature))
+                Counter.Instance.Decrement();
+
+                if (VirtualAssistantManager.Instance != null)
                 {
-                    Counter.Instance.Decrement();
-
-                    if (VirtualAssistantManager.Instance != null)
-                    {
-                        VirtualAssistantManager.Instance.Jump();
-                        VirtualAssistantManager.Instance.ObjectDropped();
-                    }
-
-                    other.transform.GetComponent<ObjectPositionManager>().HasCollided(transform);
+                    VirtualAssistantManager.Instance.Jump();
+                    VirtualAssistantManager.Instance.ObjectDropped();
                 }
-                else
+
+                other.transform.GetComponent<ObjectPositionManager>().HasCollided(transform);
+            }
+            else
+            {
+                if (VirtualAssistantManager.Instance != null && !VirtualAssistantManager.Instance.IsBusy)
                 {
-                    if (VirtualAssistantManager.Instance != null && !VirtualAssistantManager.Instance.IsBusy)
-                    {
-                        VirtualAssistantManager.Instance.ShakeHead();
-                    }
+                    VirtualAssistantManager.Instance.ShakeHead();
                 }
             }
         }
+
 
     }
 

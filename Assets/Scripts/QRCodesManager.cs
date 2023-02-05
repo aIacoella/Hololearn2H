@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.SampleQRCodes
         }
     }
 
-    public class QRCodesManager : Singleton<QRCodesManager>
+    public class QRCodesManager : SingletonLight<QRCodesManager>
     {
         [Tooltip("Determines if the QR codes scanner should be automatically started.")]
         public bool AutoStartQRTracking = true;

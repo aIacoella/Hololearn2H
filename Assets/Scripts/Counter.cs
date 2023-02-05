@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Counter : Singleton<Counter> {
+public class Counter : Singleton<Counter>
+{
 
     private int count;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
-        
-	}
+
+    }
 
     public void Decrement()
     {
@@ -23,6 +24,7 @@ public class Counter : Singleton<Counter> {
             {
                 VirtualAssistantManager.Instance.GetComponent<Animator>().SetTrigger("EndGame");
             }
+            LobbyManager.lobby.GameOver();
         }
     }
 
@@ -31,8 +33,8 @@ public class Counter : Singleton<Counter> {
         this.count = count;
     }
 
-   
-     
-        
+
+
+
 
 }

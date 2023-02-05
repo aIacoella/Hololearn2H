@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.SampleQRCodes
             if (node == null || node.Id != Id)
             {
                 node = (Id != System.Guid.Empty) ? SpatialGraphNode.FromStaticNodeId(Id) : null;
-                //Debug.Log("Initialize SpatialGraphNode Id= " + Id);
+                Debug.Log("Initialize SpatialGraphNode Id= " + Id);
             }
 
             if (node != null)
