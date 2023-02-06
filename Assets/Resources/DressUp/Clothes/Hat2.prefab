@@ -22,10 +22,9 @@ GameObject:
   - component: {fileID: 1772267816495562534}
   - component: {fileID: 5990002966950521989}
   - component: {fileID: 3138692838363393530}
-  - component: {fileID: -8748710648366895969}
   - component: {fileID: -644432740887238412}
   - component: {fileID: -4561555331794488067}
-  - component: {fileID: -8301975007608060916}
+  - component: {fileID: -7696366990977517715}
   m_Layer: 0
   m_Name: Hat2
   m_TagString: ObjectsToBePlaced
@@ -230,7 +229,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 5147470324419654899, guid: dcc227e42ed63b245b340134733682eb, type: 3}
+  constraintsManager: {fileID: 726102751157672498, guid: f6cca8fe16e56734994fd66925c839ce, type: 3}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -321,18 +320,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-8748710648366895969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6280871360064521273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-644432740887238412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 130ef06c1c6d9a8408a37662e933b938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-8301975007608060916
+--- !u!114 &-7696366990977517715
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -367,6 +354,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6280871360064521273}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentName: Clothes

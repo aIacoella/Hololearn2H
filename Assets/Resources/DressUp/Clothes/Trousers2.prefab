@@ -23,10 +23,9 @@ GameObject:
   - component: {fileID: 3487725018117712268}
   - component: {fileID: 6064157230256719712}
   - component: {fileID: 8981263268592847385}
-  - component: {fileID: -4515648207113431324}
   - component: {fileID: 5428539948005509711}
   - component: {fileID: 1573057351106175047}
-  - component: {fileID: -3842035120907540539}
+  - component: {fileID: 8032290227045488872}
   m_Layer: 0
   m_Name: Trousers2
   m_TagString: ObjectsToBePlaced
@@ -242,7 +241,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 5147470324419654899, guid: dcc227e42ed63b245b340134733682eb, type: 3}
+  constraintsManager: {fileID: 726102751157672498}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -333,18 +332,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-4515648207113431324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 201137685578981488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5428539948005509711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,7 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 130ef06c1c6d9a8408a37662e933b938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-3842035120907540539
+--- !u!114 &8032290227045488872
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -379,6 +366,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 201137685578981488}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentName: Clothes

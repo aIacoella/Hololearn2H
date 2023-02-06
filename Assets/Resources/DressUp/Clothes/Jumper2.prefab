@@ -23,10 +23,9 @@ GameObject:
   - component: {fileID: 293846502100567051}
   - component: {fileID: 3728898049634692495}
   - component: {fileID: 9172675758826897380}
-  - component: {fileID: -8138978755985920046}
   - component: {fileID: -3563471459759769610}
   - component: {fileID: 4519520734794044123}
-  - component: {fileID: -8310068793555515543}
+  - component: {fileID: -8692264119838875193}
   m_Layer: 0
   m_Name: Jumper2
   m_TagString: ObjectsToBePlaced
@@ -241,7 +240,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 5147470324419654899, guid: dcc227e42ed63b245b340134733682eb, type: 3}
+  constraintsManager: {fileID: 726102751157672498, guid: f6cca8fe16e56734994fd66925c839ce, type: 3}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -332,18 +331,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-8138978755985920046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7746417510847903295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-3563471459759769610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,7 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 130ef06c1c6d9a8408a37662e933b938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-8310068793555515543
+--- !u!114 &-8692264119838875193
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -378,6 +365,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7746417510847903295}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentName: Clothes

@@ -2251,9 +2251,37 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919828634056065323, guid: 85e64b03c6513944aa39c4f56cde74ef, type: 3}
+      propertyPath: BagsPrefabs
+      value: 
+      objectReference: {fileID: 1256371271362260, guid: 11c4683f02417434c8c993b4c97392c3, type: 3}
+    - target: {fileID: 5919828634056065323, guid: 85e64b03c6513944aa39c4f56cde74ef, type: 3}
       propertyPath: tableAnchor
       value: 
       objectReference: {fileID: 1438406131}
+    - target: {fileID: 5919828634056065323, guid: 85e64b03c6513944aa39c4f56cde74ef, type: 3}
+      propertyPath: ClothesPrefabs
+      value: 
+      objectReference: {fileID: 1858990561776124, guid: be6d2324ec5354e49b7cd0f5bb0d9897, type: 3}
+    - target: {fileID: 5919828634056065323, guid: 85e64b03c6513944aa39c4f56cde74ef, type: 3}
+      propertyPath: WeatherPrefabs
+      value: 
+      objectReference: {fileID: 1835916060619404, guid: e30d9fb7dff376c45804df9fd1b306a7, type: 3}
+    - target: {fileID: 5919828634056065323, guid: 85e64b03c6513944aa39c4f56cde74ef, type: 3}
+      propertyPath: BagContainerPrefab
+      value: 
+      objectReference: {fileID: 1256164608883332666, guid: 1e3eed07885f2954b8d7ac2e902dcd54, type: 3}
+    - target: {fileID: 5919828634056065323, guid: 85e64b03c6513944aa39c4f56cde74ef, type: 3}
+      propertyPath: ClothesContainerPrefab
+      value: 
+      objectReference: {fileID: 1256164608883332666, guid: e4669cb294f31e045bbd2c339f4d4836, type: 3}
+    - target: {fileID: 5919828634056065323, guid: 85e64b03c6513944aa39c4f56cde74ef, type: 3}
+      propertyPath: WeatherContainerPrefab
+      value: 
+      objectReference: {fileID: 1256164608883332666, guid: 13ed254a8f8aaab4d9dd2420e4efd6d9, type: 3}
+    - target: {fileID: 5919828634056065323, guid: 85e64b03c6513944aa39c4f56cde74ef, type: 3}
+      propertyPath: VirtualAssistantsPrefabs
+      value: 
+      objectReference: {fileID: 1045368810623730, guid: 0edf9946c73504b4eae7d8b331adba23, type: 3}
     - target: {fileID: 5919828634056065323, guid: 85e64b03c6513944aa39c4f56cde74ef, type: 3}
       propertyPath: TYVirtualAssistantsPrefabs.Array.size
       value: 3

@@ -9,6 +9,8 @@ public class QRCode : SingletonLight<QRCode>
 {
     private Microsoft.MixedReality.QR.QRCode qrCode;
 
+    private GameObject qrCodeCube;
+
     private SpatialGraphNode node;
 
     public System.Guid Id { get; set; }
@@ -40,7 +42,8 @@ public class QRCode : SingletonLight<QRCode>
         node = (Id != System.Guid.Empty) ? SpatialGraphNode.FromStaticNodeId(Id) : null;
         Debug.Log("Initialize SpatialGraphNode Id= " + Id);
 
-        gameObject.GetComponent<MeshRenderer>().enabled = true;
+        qrCodeCube = gameObject.transform.Find("Cube").gameObject;
+        qrCodeCube.GetComponent<MeshRenderer>().enabled = true;
 
         isInitialized = true;
     }
@@ -77,9 +80,11 @@ public class QRCode : SingletonLight<QRCode>
                     pose = pose.GetTransformedBy(CameraCache.Main.transform.parent);
                 }
 
-                gameObject.transform.rotation = pose.rotation;
-                gameObject.transform.position = pose.position - new Vector3(PhysicalSize / 2.0f, PhysicalSize / 2.0f, 0.0f);
-                gameObject.transform.localScale = new Vector3(PhysicalSize, PhysicalSize, 0.005f);
+                gameObject.transform.SetPositionAndRotation(pose.position, pose.rotation);
+
+                qrCodeCube.transform.localPosition = new Vector3(PhysicalSize / 2.0f, PhysicalSize / 2.0f, 0.0f);
+                qrCodeCube.transform.localScale = new Vector3(PhysicalSize, PhysicalSize, 0.005f);
+
 
                 Debug.Log("Id= " + Id + " QRPose = " + pose.position.ToString("F7") + " QRRot = " + pose.rotation.ToString("F7"));
             }
@@ -96,7 +101,5 @@ public class QRCode : SingletonLight<QRCode>
         this.qrCode = qr;
         this.Id = qr.SpatialGraphNodeId;
     }
-
-
 }
 

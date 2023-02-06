@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 1669015178229763834}
   - component: {fileID: 3623788980101516518}
   - component: {fileID: -2612996629582435882}
-  - component: {fileID: 8005977881408294531}
+  - component: {fileID: 2270006477368622629}
   m_Layer: 0
   m_Name: RainyCold
   m_TagString: Weather
@@ -324,7 +324,7 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8005977881408294531
+--- !u!114 &2270006477368622629
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -333,9 +333,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1673918624741578564}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentName: Weather
 --- !u!1 &1674221581536738824
 GameObject:
   m_ObjectHideFlags: 0

@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 237048347749348907}
   - component: {fileID: 6021839368571827330}
   - component: {fileID: 3865979173087903654}
-  - component: {fileID: -3837963013773312154}
+  - component: {fileID: 4452724723610761277}
   m_Layer: 0
   m_Name: RainyWarm
   m_TagString: Weather
@@ -241,7 +241,7 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &-3837963013773312154
+--- !u!114 &4452724723610761277
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -250,9 +250,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 234328335095754891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentName: Weather
 --- !u!1 &234330489160164173
 GameObject:
   m_ObjectHideFlags: 0

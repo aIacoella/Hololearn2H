@@ -21,11 +21,10 @@ GameObject:
   - component: {fileID: 6270022891797849049}
   - component: {fileID: 3854525747333958678}
   - component: {fileID: 3083684030397670534}
-  - component: {fileID: -1937754963691935298}
   - component: {fileID: -128398075328379858}
   - component: {fileID: -1468890525230420544}
-  - component: {fileID: -6075748502152948358}
   - component: {fileID: -4554815940823355025}
+  - component: {fileID: 6037728886128065380}
   m_Layer: 0
   m_Name: Umbrella
   m_TagString: ObjectsToBePlaced
@@ -230,7 +229,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 5147470324419654899, guid: dcc227e42ed63b245b340134733682eb, type: 3}
+  constraintsManager: {fileID: 726102751157672498, guid: f6cca8fe16e56734994fd66925c839ce, type: 3}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -307,18 +306,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-1937754963691935298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9183360292320803397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-128398075328379858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,18 +331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 130ef06c1c6d9a8408a37662e933b938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-6075748502152948358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9183360292320803397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-4554815940823355025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,3 +345,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 0
   IsBoundsHandles: 0
+--- !u!114 &6037728886128065380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9183360292320803397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentName: Clothes

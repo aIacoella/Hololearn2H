@@ -22,10 +22,9 @@ GameObject:
   - component: {fileID: 2437317256684448238}
   - component: {fileID: 399590771097212329}
   - component: {fileID: 7136630667543530493}
-  - component: {fileID: 8265267532045835863}
   - component: {fileID: 8026929024403433955}
   - component: {fileID: 1684556603602139403}
-  - component: {fileID: -8146238017955903179}
+  - component: {fileID: -3836765914182970993}
   m_Layer: 0
   m_Name: Sunglasses
   m_TagString: ObjectsToBePlaced
@@ -229,7 +228,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 5147470324419654899, guid: dcc227e42ed63b245b340134733682eb, type: 3}
+  constraintsManager: {fileID: 726102751157672498, guid: f6cca8fe16e56734994fd66925c839ce, type: 3}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -320,18 +319,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8265267532045835863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8490483601482509655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8026929024403433955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,7 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 130ef06c1c6d9a8408a37662e933b938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-8146238017955903179
+--- !u!114 &-3836765914182970993
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -366,6 +353,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8490483601482509655}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentName: Clothes

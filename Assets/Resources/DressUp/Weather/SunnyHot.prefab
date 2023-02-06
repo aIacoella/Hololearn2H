@@ -848,7 +848,7 @@ GameObject:
   - component: {fileID: 6615848255345339786}
   - component: {fileID: 5593933088829438382}
   - component: {fileID: -5878463136202325762}
-  - component: {fileID: 4869857168910362163}
+  - component: {fileID: 1036079372848000526}
   m_Layer: 0
   m_Name: SunnyHot
   m_TagString: Weather
@@ -912,7 +912,7 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &4869857168910362163
+--- !u!114 &1036079372848000526
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -921,9 +921,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6618942124839086900}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentName: Weather
 --- !u!1 &6619020990487608312
 GameObject:
   m_ObjectHideFlags: 0

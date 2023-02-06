@@ -381,7 +381,7 @@ GameObject:
   - component: {fileID: 2615816612282599949}
   - component: {fileID: -739038698391107005}
   - component: {fileID: 51359338271746017}
-  - component: {fileID: -1852602526874206115}
+  - component: {fileID: 8198870157013710142}
   m_Layer: 0
   m_Name: SnowyFreezingcold
   m_TagString: Weather
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &-1852602526874206115
+--- !u!114 &8198870157013710142
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -454,9 +454,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2619339354697059657}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentName: Weather
 --- !u!1 &2619538320004291885
 GameObject:
   m_ObjectHideFlags: 0
