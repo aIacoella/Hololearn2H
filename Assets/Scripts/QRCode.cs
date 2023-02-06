@@ -9,7 +9,7 @@ public class QRCode : SingletonLight<QRCode>
 {
     private Microsoft.MixedReality.QR.QRCode qrCode;
 
-    private GameObject qrCodeCube;
+    public GameObject qrCodeCube;
 
     private SpatialGraphNode node;
 
@@ -42,8 +42,7 @@ public class QRCode : SingletonLight<QRCode>
         node = (Id != System.Guid.Empty) ? SpatialGraphNode.FromStaticNodeId(Id) : null;
         Debug.Log("Initialize SpatialGraphNode Id= " + Id);
 
-        qrCodeCube = gameObject.transform.Find("Cube").gameObject;
-        qrCodeCube.GetComponent<MeshRenderer>().enabled = true;
+        qrCodeCube.SetActive(true);
 
         isInitialized = true;
     }
