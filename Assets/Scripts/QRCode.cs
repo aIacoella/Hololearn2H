@@ -78,7 +78,7 @@ public class QRCode : SingletonLight<QRCode>
                 }
 
                 gameObject.transform.rotation = pose.rotation;
-                gameObject.transform.position = pose.position + new Vector3(PhysicalSize / 2.0f, PhysicalSize / 2.0f, 0.0f);
+                gameObject.transform.position = pose.position - new Vector3(PhysicalSize / 2.0f, PhysicalSize / 2.0f, 0.0f);
                 gameObject.transform.localScale = new Vector3(PhysicalSize, PhysicalSize, 0.005f);
 
                 Debug.Log("Id= " + Id + " QRPose = " + pose.position.ToString("F7") + " QRRot = " + pose.rotation.ToString("F7"));

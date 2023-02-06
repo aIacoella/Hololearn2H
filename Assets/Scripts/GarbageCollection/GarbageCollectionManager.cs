@@ -77,27 +77,15 @@ public class GarbageCollectionManager : RoomManager
         //Vector3 floorPosition = floor.transform.position + (plane.PlaneThickness * plane.SurfaceNormal);
         //floorPosition = AdjustPositionWithSpatialMap(floorPosition, plane.SurfaceNormal);
 
-        Vector3 gazePosition = new Vector3(0f, 0f, 0f);
-        RaycastHit hitInfo;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitInfo, 20f, Physics.DefaultRaycastLayers))
-        {
-            gazePosition = hitInfo.point;
-        }
-
         Vector3 binsPosition = anchorPosition.position;
         //binsPosition.y = floorPosition.y;
-
-        Vector3 relativePos = Camera.main.transform.position - gazePosition;
-        Quaternion rotation = Quaternion.LookRotation(relativePos);
-        rotation.x = 0f;
-        rotation.z = 0f;
 
         //Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
 
         //Transform bins = new GameObject("Bins").transform;
         //bins.parent = sceneRoot;
         //bins.tag = "Targets";
-        Transform bins = PhotonNetwork.Instantiate(BinsContainerPrefab.name, binsPosition, rotation).transform;
+        Transform bins = PhotonNetwork.Instantiate(BinsContainerPrefab.name, binsPosition, Quaternion.identity).transform;
 
         activeBins = new List<string>();
         for (int i = 1; i <= numberOfBins;)
@@ -125,7 +113,7 @@ public class GarbageCollectionManager : RoomManager
         Vector3 wastePosition = Vector3.Lerp(Camera.main.transform.position, bins.position, 0.5f);
         wastePosition.y = anchorPosition.position.y + 0.1f;
 
-        Transform waste = PhotonNetwork.Instantiate(WasteContainerPrefab.name, wastePosition, rotation).transform;
+        Transform waste = PhotonNetwork.Instantiate(WasteContainerPrefab.name, wastePosition, Quaternion.identity).transform;
 
         for (int i = 0; i < numberOfWaste;)
         {
