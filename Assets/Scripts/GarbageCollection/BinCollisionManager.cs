@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Photon.Pun;
 using UnityEngine;
 
 public class BinCollisionManager : MonoBehaviour
@@ -8,6 +9,8 @@ public class BinCollisionManager : MonoBehaviour
     public AudioClip clip;
 
     private AudioSource audioSource;
+
+    private PhotonView photonView;
     // Use this for initialization
     void Start()
     {
@@ -16,6 +19,8 @@ public class BinCollisionManager : MonoBehaviour
         floorPosition = Vector3.zero;
 
         this.audioSource = GetComponent<AudioSource>();
+
+        this.photonView = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -30,7 +35,19 @@ public class BinCollisionManager : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(gameObject.tag))
+        if (other.transform.parent && other.transform.parent.tag == "ObjectsToBePlaced")
+        {
+            photonView.RPC("remoteOnTriggerEnter", RpcTarget.All, other.transform.GetSiblingIndex());
+        }
+    }
+
+    [PunRPC]
+    void remoteOnTriggerEnter(int itemIndex)
+    {
+        GameObject waste = GameObject.FindGameObjectWithTag("ObjectsToBePlaced");
+        GameObject item = waste.transform.GetChild(itemIndex).gameObject;
+
+        if (item.CompareTag(gameObject.tag))
         {
             Counter.Instance.Decrement();
 
@@ -44,14 +61,14 @@ public class BinCollisionManager : MonoBehaviour
                 VirtualAssistantManager.Instance.ObjectDropped();
             }
 
-            other.transform.GetComponent<ObjectPositionManager>().HasCollided(transform);
+            item.transform.GetComponent<ObjectPositionManager>().HasCollided(transform);
         }
         else
         {
             GarbageCollectionManager manager = (GarbageCollectionManager)RoomManager.Instance;
             if (VirtualAssistantManager.Instance != null)
             {
-                if (manager.activeBins.Contains(other.tag) && !VirtualAssistantManager.Instance.IsBusy)
+                if (manager.activeBins.Contains(item.tag) && !VirtualAssistantManager.Instance.IsBusy)
                 {
                     VirtualAssistantManager.Instance.ShakeHead();
                 }

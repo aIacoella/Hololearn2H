@@ -1505,6 +1505,10 @@ PrefabInstance:
       propertyPath: observableSearch
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4211465622255008811, guid: cc5c80cbb974e7a4a8dcb4b60d3e507d, type: 3}
+      propertyPath: constraintsManager
+      value: 
+      objectReference: {fileID: 2004704364377931119}
     - target: {fileID: 5833413253407511334, guid: cc5c80cbb974e7a4a8dcb4b60d3e507d, type: 3}
       propertyPath: m_Name
       value: PizzaBox
@@ -1560,6 +1564,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5835882394508719272, guid: cc5c80cbb974e7a4a8dcb4b60d3e507d, type: 3}
   m_PrefabInstance: {fileID: 5832972859082157900}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2004704364377931119 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5413540153127719459, guid: cc5c80cbb974e7a4a8dcb4b60d3e507d, type: 3}
+  m_PrefabInstance: {fileID: 5832972859082157900}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5946680451366137327
 PrefabInstance:
   m_ObjectHideFlags: 0

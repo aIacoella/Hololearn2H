@@ -98,9 +98,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Join room intent");
 
-        Transform qrCodeTransform = QRCode.Instance.transform;
-        tableAnchor.transform.SetPositionAndRotation(qrCodeTransform.transform.position, qrCodeTransform.transform.rotation);
-
         if (!isConnectedToMaster)
         {
             throw new System.Exception("Connection to master failed before QR Code scan");

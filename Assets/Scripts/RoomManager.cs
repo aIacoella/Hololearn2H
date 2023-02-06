@@ -125,6 +125,15 @@ public abstract class RoomManager : Singleton<RoomManager>, IInRoomCallbacks
     {
         this.GenerateObjectsInWorld();
         photonView.RPC("OnGameStarted", RpcTarget.All);
+        photonView.RPC("AllignWithAnchorPoint", RpcTarget.Others);
+
+    }
+
+    private void AllignWithAnchorPoint()
+    {
+        Transform qrCodeTransform = QRCode.Instance.transform;
+        tableAnchor.transform.SetPositionAndRotation(qrCodeTransform.transform.position, qrCodeTransform.transform.rotation);
+        Debug.Log("Allignment completed");
     }
 
     /* Virtual Assistant Logic */

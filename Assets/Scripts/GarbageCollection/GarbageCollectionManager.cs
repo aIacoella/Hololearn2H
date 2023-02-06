@@ -71,6 +71,8 @@ public class GarbageCollectionManager : RoomManager
         //SurfacePlane plane = floor.GetComponent<SurfacePlane>();
 
         Transform anchorPosition = this.tableAnchor.transform;
+        Quaternion anchorRotation = anchorPosition.rotation;
+
 
         System.Random rnd = new System.Random();
 
@@ -78,6 +80,7 @@ public class GarbageCollectionManager : RoomManager
         //floorPosition = AdjustPositionWithSpatialMap(floorPosition, plane.SurfaceNormal);
 
         Vector3 binsPosition = anchorPosition.position;
+
         //binsPosition.y = floorPosition.y;
 
         //Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
@@ -85,7 +88,7 @@ public class GarbageCollectionManager : RoomManager
         //Transform bins = new GameObject("Bins").transform;
         //bins.parent = sceneRoot;
         //bins.tag = "Targets";
-        Transform bins = PhotonNetwork.Instantiate(BinsContainerPrefab.name, binsPosition, Quaternion.identity).transform;
+        Transform bins = PhotonNetwork.Instantiate(BinsContainerPrefab.name, binsPosition, anchorRotation).transform;
 
         activeBins = new List<string>();
         for (int i = 1; i <= numberOfBins;)
@@ -94,7 +97,8 @@ public class GarbageCollectionManager : RoomManager
             string currentBinTag = bin.gameObject.tag;
             if (!activeBins.Contains(currentBinTag))
             {
-                PhotonNetwork.Instantiate(bin.name, new Vector3((float)Math.Pow(-1, i) * 0.4f * (i / 2), 0f, 0f), bin.rotation);
+                Vector3 currentBinPosition = binsPosition + new Vector3((float)Math.Pow(-1, i) * 0.4f * (i / 2), 0f, 0f);
+                PhotonNetwork.Instantiate(bin.name, currentBinPosition, anchorRotation);
                 activeBins.Add(bin.gameObject.tag);
                 i++;
             }
@@ -103,7 +107,6 @@ public class GarbageCollectionManager : RoomManager
         //bins.Translate(binsPosition);
         //bins.Rotate(rotation.eulerAngles);
 
-        //Transform waste = PhotonNetwork.Instantiate(BinsContainerPrefab.name, binsPosition, rotation).transform;
         //waste.parent = sceneRoot;
         //waste.tag = "ObjectsToBePlaced";
 
@@ -124,7 +127,7 @@ public class GarbageCollectionManager : RoomManager
             if (activeBins.Contains(currentWasteTag))
             {
                 //Instantiate(currentWaste.gameObject, currentWaste.position, currentWaste.rotation, waste);
-                PhotonNetwork.Instantiate(currentWaste.name, currentWaste.position, currentWaste.rotation);
+                PhotonNetwork.Instantiate(currentWaste.name, wastePosition + currentWaste.position, currentWaste.rotation);
                 i++;
             }
         }
@@ -152,7 +155,7 @@ public class GarbageCollectionManager : RoomManager
         */
 
         Vector3 assistantPosition = new Vector3(-0.3f, 0f, 0.3f) + bins.position;
-        assistantPosition.y = anchorPosition.position.y;
+        //assistantPosition.y = anchorPosition.position.y;
 
         if (assistantPresence != 0)
         {
@@ -166,6 +169,25 @@ public class GarbageCollectionManager : RoomManager
                 VirtualAssistantManager.Instance.ExplainTaskGoal();
             }
         }
+    }
+
+    public override GameObject GetClosestTarget()
+    {
+        GameObject draggedObject = VirtualAssistantManager.Instance.targetObject.gameObject;
+        string tag = draggedObject.tag;
+
+        BoxCollider[] placements = GameObject.FindGameObjectWithTag("Targets").GetComponentsInChildren<BoxCollider>();
+        List<GameObject> targets = new List<GameObject>();
+        foreach (BoxCollider target in placements)
+        {
+            if (target.gameObject.tag == tag)
+            {
+                targets.Add(target.gameObject);
+            }
+        }
+
+        SortByDistance(targets);
+        return targets[0];
     }
 
 
