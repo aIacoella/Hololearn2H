@@ -1,7 +1,9 @@
 ﻿using System.Collections;
+using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
 
-public class PlacementCollisionManager : MonoBehaviour {
+public class PlacementCollisionManager : MonoBehaviour
+{
 
     // Use this for initialization
     void Start()
@@ -17,10 +19,10 @@ public class PlacementCollisionManager : MonoBehaviour {
 
 
     void OnTriggerEnter(Collider other)
-    { 
+    {
         if (other.gameObject.CompareTag(gameObject.tag))
         {
-            //other.gameObject.GetComponent<CustomHandDraggable>().IsDraggingEnabled = false;
+            other.gameObject.GetComponent<ObjectManipulator>().enabled = false;
 
             Counter.Instance.Decrement();
 
@@ -29,7 +31,7 @@ public class PlacementCollisionManager : MonoBehaviour {
                 VirtualAssistantManager.Instance.Jump();
                 VirtualAssistantManager.Instance.ObjectDropped();
             }
-            
+
             if (other.gameObject.GetComponent<ObjectPositionManager>() != null)
             {
                 other.gameObject.GetComponent<ObjectPositionManager>().HasCollided(transform);
@@ -45,5 +47,5 @@ public class PlacementCollisionManager : MonoBehaviour {
             }
         }
     }
-    
+
 }

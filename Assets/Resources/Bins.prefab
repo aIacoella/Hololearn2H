@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 4841113314880038045}
   - component: {fileID: 384362676636804106}
   m_Layer: 0
-  m_Name: ObjectsToBePlaced
-  m_TagString: ObjectsToBePlaced
+  m_Name: Bins
+  m_TagString: Targets
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,4 +80,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d587ff1f6408384497298fd1648fe49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NameToBe: ObjectsToBePlaced
+  NameToBe: Bins

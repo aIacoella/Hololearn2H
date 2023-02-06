@@ -18,6 +18,7 @@ public class Counter : Singleton<Counter>
     public void Decrement()
     {
         count--;
+
         if (count == 0)
         {
             if (VirtualAssistantManager.Instance != null)

@@ -48,14 +48,14 @@ public class BinCollisionManager : MonoBehaviour
         }
         else
         {
-            /*GarbageCollectionManager manager = (GarbageCollectionManager)TaskManager.Instance;
+            GarbageCollectionManager manager = (GarbageCollectionManager)RoomManager.Instance;
             if (VirtualAssistantManager.Instance != null)
             {
                 if (manager.activeBins.Contains(other.tag) && !VirtualAssistantManager.Instance.IsBusy)
                 {
                     VirtualAssistantManager.Instance.ShakeHead();
                 }
-            }*/
+            }
         }
     }
 

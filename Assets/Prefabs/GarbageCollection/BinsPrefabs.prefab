@@ -89,8 +89,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7287679288944384396, guid: f844382d1eedf454686520c1d51c4a3e, type: 3}
+      propertyPath: OwnershipTransfer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7287679288944384396, guid: f844382d1eedf454686520c1d51c4a3e, type: 3}
+      propertyPath: ObservedComponentsFoldoutOpen
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f844382d1eedf454686520c1d51c4a3e, type: 3}
+--- !u!1 &1102530395279368 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 839799986581897615, guid: f844382d1eedf454686520c1d51c4a3e, type: 3}
+  m_PrefabInstance: {fileID: 838930798135939463}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8403731937590863118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102530395279368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentName: Bins
 --- !u!4 &4352978425936240 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 840779084644346103, guid: f844382d1eedf454686520c1d51c4a3e, type: 3}
@@ -103,6 +129,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4669311702599820}
     m_Modifications:
+    - target: {fileID: 832724506926562824, guid: 292b83d022579ac4ba7b67d44a9bc60b, type: 3}
+      propertyPath: OwnershipTransfer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 832724506926562824, guid: 292b83d022579ac4ba7b67d44a9bc60b, type: 3}
+      propertyPath: ObservedComponentsFoldoutOpen
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4716452667676914350, guid: 292b83d022579ac4ba7b67d44a9bc60b, type: 3}
       propertyPath: m_Name
       value: GlassBin
@@ -153,6 +187,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 292b83d022579ac4ba7b67d44a9bc60b, type: 3}
+--- !u!1 &1172731658331156 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4716452667676914350, guid: 292b83d022579ac4ba7b67d44a9bc60b, type: 3}
+  m_PrefabInstance: {fileID: 4715301940114364090}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7089726029895400749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172731658331156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentName: Bins
 --- !u!4 &4478259183868802 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4719762317567839544, guid: 292b83d022579ac4ba7b67d44a9bc60b, type: 3}
@@ -165,6 +217,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4669311702599820}
     m_Modifications:
+    - target: {fileID: -1140419307371274749, guid: e5d4c379078db4243abf78c7cc20fc32, type: 3}
+      propertyPath: OwnershipTransfer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1140419307371274749, guid: e5d4c379078db4243abf78c7cc20fc32, type: 3}
+      propertyPath: ObservedComponentsFoldoutOpen
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5524929638789773603, guid: e5d4c379078db4243abf78c7cc20fc32, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -215,6 +275,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5d4c379078db4243abf78c7cc20fc32, type: 3}
+--- !u!1 &1454075450199860 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5528650911813492755, guid: e5d4c379078db4243abf78c7cc20fc32, type: 3}
+  m_PrefabInstance: {fileID: 5529466855500541735}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7136221264262582839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454075450199860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84926c78eddd9fb4fabb49106dd554ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentName: Bins
 --- !u!4 &4753141361841668 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5524929638789773603, guid: e5d4c379078db4243abf78c7cc20fc32, type: 3}

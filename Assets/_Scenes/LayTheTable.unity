@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 958584650794572347, guid: ac043e6b474766a4a93e025d2ade8333, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 958584650794572347, guid: ac043e6b474766a4a93e025d2ade8333, type: 3}
       propertyPath: m_LocalPosition.x
@@ -492,7 +492,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4811619524086768577, guid: 4aeabbb233e1c2b4ba1fe9294d3a28d0, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4811619524086768577, guid: 4aeabbb233e1c2b4ba1fe9294d3a28d0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1622,66 +1622,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1115564883}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1230394286
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4750096435058976, guid: bc3257faa81cfc94cbc9585c56b247c1, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4750096435058976, guid: bc3257faa81cfc94cbc9585c56b247c1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4750096435058976, guid: bc3257faa81cfc94cbc9585c56b247c1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4750096435058976, guid: bc3257faa81cfc94cbc9585c56b247c1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4750096435058976, guid: bc3257faa81cfc94cbc9585c56b247c1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4750096435058976, guid: bc3257faa81cfc94cbc9585c56b247c1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4750096435058976, guid: bc3257faa81cfc94cbc9585c56b247c1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4750096435058976, guid: bc3257faa81cfc94cbc9585c56b247c1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114416143409921036, guid: bc3257faa81cfc94cbc9585c56b247c1, type: 3}
-  m_SourcePrefab: {fileID: 100100000, guid: bc3257faa81cfc94cbc9585c56b247c1, type: 3}
---- !u!1 &1230394287 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1931866485075700, guid: bc3257faa81cfc94cbc9585c56b247c1, type: 3}
-  m_PrefabInstance: {fileID: 1230394286}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1230394288
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1230394287}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1332242350
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2921,7 +2861,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 2
+  sceneViewId: 3
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &5739420083731834465
@@ -2948,7 +2888,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49efa5b09752f3349a4dbf80da5bb40a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelsPrefabs: {fileID: 0}
-  ObjectsPrefabs: {fileID: 0}
-  VirtualAssistantsPrefabs: {fileID: 0}
-  PlacementsManagerPrefabs: {fileID: 0}
+  photonUserPrefab: {fileID: 3000569307421430844, guid: 77681e113a66a094ca9b8d6e673d84e0, type: 3}
+  tableAnchor: {fileID: 1332242351}
+  LevelsPrefabs: {fileID: 1588299813679386, guid: a9d4788573d6b004083a23ae73f62f67, type: 3}
+  ObjectsPrefabs: {fileID: 1009877187314458, guid: e568ba6ec03758e4eb697849f6dec35b, type: 3}
+  VirtualAssistantsPrefabs: {fileID: 1045368810623730, guid: 0edf9946c73504b4eae7d8b331adba23, type: 3}
+  PlacementsManagerPrefabs: {fileID: 1525975831328444, guid: 22bb2ef25799ef44c9fc292f5c8496fe, type: 3}
+  TableMatsPrefab: {fileID: 1256164608883332666, guid: 3456a7d4964e2aa47957c97956a0250d, type: 3}
+  objectsToBePlacedPrefab: {fileID: 1256164608883332666, guid: a844bbd807be70446ac0b7eca1259893, type: 3}

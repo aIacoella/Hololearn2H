@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6210838883794702724}
   - component: {fileID: 8344585804082072710}
-  - component: {fileID: 4841113314880038045}
-  - component: {fileID: 384362676636804106}
+  - component: {fileID: 8533089338562262706}
+  - component: {fileID: 7219953703961993114}
   m_Layer: 0
-  m_Name: ObjectsToBePlaced
-  m_TagString: ObjectsToBePlaced
+  m_Name: TableMats
+  m_TagString: Targets
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb4dc7a07d590fa4d99529717b4a87ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4841113314880038045
+--- !u!114 &8533089338562262706
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,7 +68,7 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &384362676636804106
+--- !u!114 &7219953703961993114
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -80,4 +80,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d587ff1f6408384497298fd1648fe49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NameToBe: ObjectsToBePlaced
+  NameToBe: TableMats

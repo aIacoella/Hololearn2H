@@ -16,13 +16,11 @@ public class ClothesPositionManager : ObjectPositionManager
         hasCollided = false;
         targetPosition = new Vector3();
         floorPosition = GameObject.Find("TableAnchor").transform.position;
-
     }
 
     // Update is called once per frame
     public override void Update()
     {
-
         if (Mathf.Abs(transform.position.y - floorPosition.y) > 5)
         {
             transform.position = new Vector3(transform.position.x, floorPosition.y + 1f, transform.position.z);

@@ -13,16 +13,14 @@ using Photon.Pun;
 public class GarbageCollectionManager : RoomManager
 {
 
-    public GameObject[] BinsPrefabs;
-    public GameObject[] WasteGlassPrefabs;
-    public GameObject[] WastePaperPrefabs;
-    public GameObject[] WastePlasticPrefabs;
-    public GameObject[] MinionVirtualAssistantsPrefabs;
-    public GameObject[] TYVirtualAssistantsPrefabs;
-    public GameObject WastePrefab;
+    public GameObject BinsPrefabs;
+    public GameObject WastePrefabs;
+    public GameObject VirtualAssistantsPrefabs;
 
+    public GameObject BinsContainerPrefab;
 
-    private GameObject[][] WastePrefabs;
+    public GameObject WasteContainerPrefab;
+
     private int numberOfBins;
     private int numberOfWaste;
     private int assistantPresence;
@@ -30,8 +28,6 @@ public class GarbageCollectionManager : RoomManager
     private int explainTaskGoal;
     private int assistantBehaviour;
     private int assistantPatience;
-
-    private Transform waste;
 
     private Transform virtualAssistant;
 
@@ -42,83 +38,11 @@ public class GarbageCollectionManager : RoomManager
     {
         base.Start();
 
-        //initializing the array of arrays
-        WastePrefabs = new GameObject[3][];
-
-        // Allow prefabs not in a Resources folder
-        if (PhotonNetwork.PrefabPool is DefaultPool pool)
-        {
-            Debug.Log("Caching all prefabs");
-
-            if (BinsPrefabs != null)
-            {
-                foreach (GameObject bin in BinsPrefabs)
-                {
-                    pool.ResourceCache.Add(bin.name, bin);
-                }
-            }
-
-            if (WasteGlassPrefabs != null)
-            {
-                foreach (GameObject waste in WasteGlassPrefabs)
-                {
-                    pool.ResourceCache.Add(waste.name, waste);
-                }
-            }
-
-            if (WastePaperPrefabs != null)
-            {
-                foreach (GameObject waste in WastePaperPrefabs)
-                {
-                    pool.ResourceCache.Add(waste.name, waste);
-                }
-            }
-
-            if (WastePlasticPrefabs != null)
-            {
-                foreach (GameObject waste in WastePlasticPrefabs)
-                {
-                    pool.ResourceCache.Add(waste.name, waste);
-                }
-            }
-
-            if (MinionVirtualAssistantsPrefabs != null)
-            {
-                foreach (GameObject assistant in MinionVirtualAssistantsPrefabs)
-                {
-                    pool.ResourceCache.Add(assistant.name, assistant);
-                }
-            }
-
-            if (TYVirtualAssistantsPrefabs != null)
-            {
-                foreach (GameObject assistant in TYVirtualAssistantsPrefabs)
-                {
-                    pool.ResourceCache.Add(assistant.name, assistant);
-                }
-            }
-
-            if (WastePrefab != null)
-            {
-                pool.ResourceCache.Add(WastePrefab.name, WastePrefab);
-            }
-
-            WastePrefabs[0] = WasteGlassPrefabs;
-            WastePrefabs[1] = WastePaperPrefabs;
-            WastePrefabs[2] = WastePlasticPrefabs;
-        }
+        cachePrefabs();
 
         LoadSettings();
 
-
-
-        //virtualAssistant = VirtualAssistantsPrefabs.transform.GetChild(selectedAssistant + 1).GetChild(assistantBehaviour - 1);
-
-        GameObject[] vaFamily = selectedAssistant == 0 ? MinionVirtualAssistantsPrefabs : TYVirtualAssistantsPrefabs;
-        virtualAssistant = vaFamily[assistantBehaviour - 1].transform;
-
-
-        //GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
+        virtualAssistant = VirtualAssistantsPrefabs.transform.GetChild(selectedAssistant + 1).GetChild(assistantBehaviour - 1);
     }
 
     // Update is called once per frame
@@ -130,28 +54,28 @@ public class GarbageCollectionManager : RoomManager
     [PunRPC]
     public override void OnGameStarted()
     {
+        Counter.Instance.InitializeCounter(GameObject.Find("Waste").GetComponentsInChildren<Rigidbody>().Length);
+        activeBins = new List<string>();
+        foreach (Transform bin in GameObject.Find("Bins").transform)
+        {
+            activeBins.Add(bin.tag);
+            Debug.Log(bin.tag);
+        }
     }
 
 
     public override void GenerateObjectsInWorld()
     {
-
-        Debug.Log("Generating Objects in World");
         //Seleziono il pavimento
         //Transform floor = SpatialProcessing.Instance.floors.ElementAt(0).transform;
         //SurfacePlane plane = floor.GetComponent<SurfacePlane>();
+
+        Transform anchorPosition = this.tableAnchor.transform;
 
         System.Random rnd = new System.Random();
 
         //Vector3 floorPosition = floor.transform.position + (plane.PlaneThickness * plane.SurfaceNormal);
         //floorPosition = AdjustPositionWithSpatialMap(floorPosition, plane.SurfaceNormal);
-
-        //TODO: Remove This
-        Transform floor = gameObject.transform;
-        floor.position = Vector3.zero;
-        Vector3 floorPosition = Vector3.zero;
-        //TODO: Remove this
-
 
         Vector3 gazePosition = new Vector3(0f, 0f, 0f);
         RaycastHit hitInfo;
@@ -160,62 +84,59 @@ public class GarbageCollectionManager : RoomManager
             gazePosition = hitInfo.point;
         }
 
-        Vector3 binsPosition = gazePosition;
-        binsPosition.y = floorPosition.y;
-
+        Vector3 binsPosition = anchorPosition.position;
+        //binsPosition.y = floorPosition.y;
 
         Vector3 relativePos = Camera.main.transform.position - gazePosition;
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         rotation.x = 0f;
         rotation.z = 0f;
 
+        //Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
 
-        Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
-
-        Transform bins = new GameObject("Bins").transform;
-        bins.parent = sceneRoot;
-        bins.tag = "Targets";
+        //Transform bins = new GameObject("Bins").transform;
+        //bins.parent = sceneRoot;
+        //bins.tag = "Targets";
+        Transform bins = PhotonNetwork.Instantiate(BinsContainerPrefab.name, binsPosition, rotation).transform;
 
         activeBins = new List<string>();
         for (int i = 1; i <= numberOfBins;)
         {
-            Transform bin = BinsPrefabs[rnd.Next(0, BinsPrefabs.Length)].transform;
+            Transform bin = BinsPrefabs.transform.GetChild(rnd.Next(0, BinsPrefabs.transform.childCount));
             string currentBinTag = bin.gameObject.tag;
             if (!activeBins.Contains(currentBinTag))
             {
-                //Instantiate(bin, new Vector3((float)Math.Pow(-1, i) * 0.4f * (i / 2), 0f, 0f), bin.rotation, bins);
-                PhotonNetwork.Instantiate(bin.name, new Vector3((float)Math.Pow(-1, i) * 0.8f * (i / 2), 0f, 0f), bin.rotation, 0);
+                PhotonNetwork.Instantiate(bin.name, new Vector3((float)Math.Pow(-1, i) * 0.4f * (i / 2), 0f, 0f), bin.rotation);
                 activeBins.Add(bin.gameObject.tag);
                 i++;
             }
         }
 
-        bins.Translate(binsPosition);
-        bins.Rotate(rotation.eulerAngles);
+        //bins.Translate(binsPosition);
+        //bins.Rotate(rotation.eulerAngles);
 
-
-        //Transform waste = new GameObject("Waste").transform;
-        Transform waste = PhotonNetwork.Instantiate(WastePrefab.name, Vector3.zero, Quaternion.identity).transform;
-        //PhotonNetwork.Instantiate(WastePrefab.name, Vector3.zero, Quaternion.identity);
-        //waste.name = "Waste";
+        //Transform waste = PhotonNetwork.Instantiate(BinsContainerPrefab.name, binsPosition, rotation).transform;
         //waste.parent = sceneRoot;
         //waste.tag = "ObjectsToBePlaced";
 
-        Vector3 wastePosition = Vector3.Lerp(Camera.main.transform.position, bins.position + new Vector3(0f, 5f, 0f), 0.5f);
-        wastePosition.y = floorPosition.y + 0.1f;
+        //Vector3 wastePosition = Vector3.Lerp(Camera.main.transform.position, bins.position, 0.5f);
+        //wastePosition.y = floorPosition.y + 0.1f;
+
+        Vector3 wastePosition = Vector3.Lerp(Camera.main.transform.position, bins.position, 0.5f);
+        wastePosition.y = anchorPosition.position.y + 0.1f;
+
+        Transform waste = PhotonNetwork.Instantiate(WasteContainerPrefab.name, wastePosition, rotation).transform;
 
         for (int i = 0; i < numberOfWaste;)
         {
-            //Transform wasteGroup = WastePrefabs[rnd.Next(0, WastePrefabs.Length)].transform;
-            int wasteGroupIndex = rnd.Next(0, WastePrefabs.Length);
-            int groupSize = WastePrefabs[wasteGroupIndex].Length;
-            //Transform currentWaste = wasteGroup.GetChild(rnd.Next(0, groupSize));
-            GameObject currentWaste = WastePrefabs[wasteGroupIndex][rnd.Next(0, groupSize)];
+            Transform wasteGroup = WastePrefabs.transform.GetChild(rnd.Next(0, WastePrefabs.transform.childCount));
+            int groupSize = wasteGroup.GetComponentsInChildren<Rigidbody>().Length;
+            Transform currentWaste = wasteGroup.GetChild(rnd.Next(0, groupSize));
             string currentWasteTag = currentWaste.gameObject.tag;
             if (activeBins.Contains(currentWasteTag))
             {
                 //Instantiate(currentWaste.gameObject, currentWaste.position, currentWaste.rotation, waste);
-                PhotonNetwork.Instantiate(currentWaste.name, currentWaste.transform.position, currentWaste.transform.rotation, 0);
+                PhotonNetwork.Instantiate(currentWaste.name, currentWaste.position, currentWaste.rotation);
                 i++;
             }
         }
@@ -223,14 +144,13 @@ public class GarbageCollectionManager : RoomManager
         //waste.Translate(wastePosition);
         //waste.Rotate(rotation.eulerAngles);
 
+        Counter.Instance.InitializeCounter(waste.GetComponentsInChildren<Rigidbody>().Length);
 
-        //Counter.Instance.InitializeCounter(waste.GetComponentsInChildren<Rigidbody>().Length);
-
-
+        /*
         Vector3 assistantPosition = bins.TransformPoint(-0.3f, 0f, 0.3f);
         assistantPosition.y = floor.position.y;
 
-        /*if (assistantPresence != 0)
+        if (assistantPresence != 0)
         {
             Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, sceneRoot);
             VirtualAssistantManager.Instance.patience = assistantPatience;
@@ -240,16 +160,24 @@ public class GarbageCollectionManager : RoomManager
             {
                 VirtualAssistantManager.Instance.ExplainTaskGoal();
             }
-        }*/
+        }
+        */
+
+        Vector3 assistantPosition = new Vector3(-0.3f, 0f, 0.3f) + bins.position;
+        assistantPosition.y = anchorPosition.position.y;
 
         if (assistantPresence != 0)
         {
             PhotonNetwork.Instantiate(virtualAssistant.name, assistantPosition, virtualAssistant.transform.rotation);
 
             VirtualAssistantManager.Instance.patience = assistantPatience;
+            //TODO: Find a solution for this one. (Maybe in OnGameStarted)
             VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
+            if (explainTaskGoal == 1)
+            {
+                VirtualAssistantManager.Instance.ExplainTaskGoal();
+            }
         }
-
     }
 
 
@@ -273,5 +201,68 @@ public class GarbageCollectionManager : RoomManager
         }
         Destroy(GameObject.Find("Bins"));
         Destroy(GameObject.Find("Waste"));
+    }
+
+
+    private void cachePrefabs()
+    {
+        if (PhotonNetwork.PrefabPool is DefaultPool pool)
+        {
+            Debug.Log("Caching all prefabs");
+
+            if (BinsPrefabs != null)
+            {
+                foreach (Transform bin in BinsPrefabs.transform)
+                {
+
+                    if (!pool.ResourceCache.ContainsKey(bin.name))
+                    {
+                        pool.ResourceCache.Add(bin.name, bin.gameObject);
+                    }
+
+                }
+            }
+
+            if (WastePrefabs != null)
+            {
+                foreach (Transform wasteType in WastePrefabs.transform)
+                {
+                    foreach (Transform waste in wasteType)
+                    {
+                        if (!pool.ResourceCache.ContainsKey(waste.name))
+                        {
+                            pool.ResourceCache.Add(waste.name, waste.gameObject);
+                        }
+                    }
+                }
+            }
+
+            if (VirtualAssistantsPrefabs != null)
+            {
+                Transform[] VirtualAssistanModels = { VirtualAssistantsPrefabs.transform.Find("Minion"), VirtualAssistantsPrefabs.transform.Find("Ty") };
+                foreach (Transform virtualAssistantModel in VirtualAssistanModels)
+                {
+                    foreach (Transform virtualAssistant in virtualAssistantModel)
+                    {
+                        if (virtualAssistant.GetComponent<PhotonView>() != null && !pool.ResourceCache.ContainsKey(virtualAssistant.name))
+                        {
+                            pool.ResourceCache.Add(virtualAssistant.name, virtualAssistant.gameObject);
+                        }
+                    }
+                }
+            }
+
+            if (!pool.ResourceCache.ContainsKey(BinsContainerPrefab.name))
+            {
+                pool.ResourceCache.Add(BinsContainerPrefab.name, BinsContainerPrefab);
+            }
+
+            if (!pool.ResourceCache.ContainsKey(WasteContainerPrefab.name))
+            {
+                pool.ResourceCache.Add(WasteContainerPrefab.name, WasteContainerPrefab);
+            }
+
+        }
+
     }
 }

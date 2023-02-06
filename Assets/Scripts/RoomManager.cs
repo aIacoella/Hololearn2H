@@ -148,12 +148,15 @@ public abstract class RoomManager : Singleton<RoomManager>, IInRoomCallbacks
 
     public virtual GameObject GetClosestObject()
     {
-        GameObject[] remainingObjects = GameObject.FindGameObjectsWithTag("ObjectsToBePlaced");
-        Debug.Log("Remaining Object: " + remainingObjects.Length);
-
-        List<GameObject> targets = remainingObjects.Where(obj =>
-            obj.gameObject.GetComponent<ObjectManipulator>().enabled == true
-        ).ToList();
+        Rigidbody[] remainingObjects = GameObject.FindGameObjectWithTag("ObjectsToBePlaced").GetComponentsInChildren<Rigidbody>();
+        List<GameObject> targets = new List<GameObject>();
+        foreach (Rigidbody target in remainingObjects)
+        {
+            if (target.gameObject.GetComponent<ObjectManipulator>().enabled == true)
+            {
+                targets.Add(target.gameObject);
+            }
+        }
 
         SortByDistance(targets);
 
@@ -163,31 +166,21 @@ public abstract class RoomManager : Singleton<RoomManager>, IInRoomCallbacks
     public virtual GameObject GetClosestTarget()
     {
         GameObject draggedObject = VirtualAssistantManager.Instance.targetObject.gameObject;
+        Debug.Log(draggedObject);
         string tag = draggedObject.tag;
 
-        List<GameObject> targets = GameObject.FindGameObjectsWithTag("Targets").ToList();
+        Rigidbody[] placements = GameObject.FindGameObjectWithTag("Targets").GetComponentsInChildren<Rigidbody>();
+        List<GameObject> targets = new List<GameObject>();
+        foreach (Rigidbody target in placements)
+        {
+            if (target.gameObject.tag == tag)
+            {
+                targets.Add(target.gameObject);
+            }
+        }
 
         SortByDistance(targets);
         return targets[0];
-    }
-
-    protected virtual Vector3 AdjustPositionWithSpatialMap(Vector3 position, Vector3 surfaceNormal)
-    {
-        Vector3 newPosition = position;
-
-        /*
-        RaycastHit hitInfo;
-        float distance = 0.5f;
-
-        // Check to see if there is a SpatialMapping mesh occluding the object at its current position.
-        if (Physics.Raycast(position, surfaceNormal, out hitInfo, distance, SpatialMappingManager.Instance.LayerMask))
-        {
-            // If the object is occluded, reset its position.
-            newPosition = hitInfo.point;
-        }
-
-        */
-        return newPosition;
     }
 
 }

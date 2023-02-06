@@ -7,7 +7,7 @@ public class SetParent : MonoBehaviour
     public string ParentName;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         GameObject parent = GameObject.Find(ParentName);
         if (parent != null)
