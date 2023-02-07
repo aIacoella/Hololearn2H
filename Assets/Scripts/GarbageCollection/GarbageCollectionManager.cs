@@ -153,7 +153,7 @@ public class GarbageCollectionManager : RoomManager
         }
         */
 
-        Vector3 assistantPosition = new Vector3(-0.3f, 0f, 0.3f) + bins.position;
+        Vector3 assistantPosition = new Vector3(-0.3f, 0f, -0.5f) + bins.position;
         //assistantPosition.y = anchorPosition.position.y;
 
         if (assistantPresence != 0)

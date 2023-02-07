@@ -151,7 +151,8 @@ public class DressUpManager : RoomManager
 
         Counter.Instance.InitializeCounter(counter);
 
-        Vector3 assistantPosition = clothes.TransformPoint(-0.3f, 0f, 0.3f);
+        Vector3 assistantPosition = clothes.TransformPoint(-0.3f, 0f, -0.5f);
+
         assistantPosition.y = anchorPosition.position.y;
 
         Debug.DrawLine(bagPosition, assistantPosition, Color.green, 30f);
