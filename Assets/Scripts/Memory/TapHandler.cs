@@ -5,16 +5,18 @@ using UnityEngine;
 
 public class TapHandler : MonoBehaviour, IMixedRealityPointerHandler
 {
-    
+
     // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
 
     public void OnPointerUp(MixedRealityPointerEventData eventData)
@@ -36,9 +38,9 @@ public class TapHandler : MonoBehaviour, IMixedRealityPointerHandler
     {
         //PlayModeManager manager = GameObject.Find("TaskLobby").transform.GetChild(0).transform.GetChild(0).GetComponent<PlayModeManager>();
         //get the memory manager
-        MemoryManager memoryManager = GameObject.Find("TaskLobby").transform.GetChild(0).GetComponent<MemoryManager>();
+        MemoryManager memoryManager = (MemoryManager)MemoryManager.Instance;
         int playMode = memoryManager.GetPlayMode();
-        PlayModeManager manager = GameObject.Find("TaskLobby").transform.GetChild(0).transform.GetChild(0).transform.GetChild(playMode).GetComponent<PlayModeManager>();
+        PlayModeManager manager = memoryManager.GetPlayModeManager();
         if (!manager.IsBusy)
         {
             //GameObject.Find("TaskLobby").transform.GetChild(0).transform.GetChild(0).GetComponent<PlayModeManager>().HandleTap(transform.parent);

@@ -31,6 +31,7 @@ public class Counter : Singleton<Counter>
 
     public void InitializeCounter(int count)
     {
+        Debug.Log("InitializeCounter: " + count);
         this.count = count;
     }
 

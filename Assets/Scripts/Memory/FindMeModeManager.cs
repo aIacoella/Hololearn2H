@@ -14,14 +14,16 @@ public class FindMeModeManager : PlayModeManager
     public Transform objectToFind;
 
     // Use this for initialization
-    void Start() {
-        
+    void Start()
+    {
+
     }
 
     // Update is called once per frame
-    void Update () {
-		
-	}
+    void Update()
+    {
+
+    }
 
     public override void HandleTap(Transform selectedElement)
     {
@@ -69,14 +71,9 @@ public class FindMeModeManager : PlayModeManager
     }
 
 
-    public override void StartGame(int waitingTime)
+    public override IEnumerator ShowObjects(int waitingTime)
     {
-        StartCoroutine(ShowObjectToFind(waitingTime));
-    }
-
-    private IEnumerator ShowObjectToFind(int waitingTime)
-    {
-        yield return new WaitForSeconds(waitingTime); 
+        yield return new WaitForSeconds(waitingTime);
         Debug.Log("ShowObjectToFind");
         System.Random rnd = new System.Random();
 
@@ -84,12 +81,12 @@ public class FindMeModeManager : PlayModeManager
         string objectToFind_string = elems.GetChild(rnd.Next(0, elems.childCount)).GetChild(1).name;
         //Instantiate(objectToFind, transform.GetChild(0).position + new Vector3(0f, -0.2f, 0f), transform.GetChild(0).rotation, transform.GetChild(0));
         GameObject obj = PhotonNetwork.Instantiate(objectToFind_string, transform.GetChild(0).position + new Vector3(0f, -0.2f, 0f), transform.GetChild(0).rotation, 0);
-        
+
         //transform.GetChild(0).gameObject.SetActive(true);
         //transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
-  
+
         yield return new WaitForSeconds(waitingTime);
-        obj.name = objectToFind_string; 
+        obj.name = objectToFind_string;
         objectToFind = obj.transform;
 
         obj.SetActive(false);
@@ -135,4 +132,8 @@ public class FindMeModeManager : PlayModeManager
         IsBusy = false;
     }
 
+    public override void InitCounter()
+    {
+        throw new NotImplementedException();
+    }
 }

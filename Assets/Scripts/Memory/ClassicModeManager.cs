@@ -14,19 +14,22 @@ public class ClassicModeManager : PlayModeManager
     public Transform secondElement;
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
 
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
     }
 
     [PunRPC]
-    public void HandleTapRPC(int childNumber) {
+    public void HandleTapRPC(int childNumber)
+    {
         Transform selectedElement = GameObject.Find("Elements").transform.GetChild(childNumber).transform;
-        
+
         GameObject box = selectedElement.GetChild(0).gameObject;
         GameObject item = selectedElement.GetChild(1).gameObject;
 
@@ -78,9 +81,7 @@ public class ClassicModeManager : PlayModeManager
     {
         //child number of selected element
         int childNumber = selectedElement.GetSiblingIndex();
-
         this.photonView.RPC("HandleTapRPC", RpcTarget.All, childNumber);
-
     }
 
 
@@ -104,10 +105,9 @@ public class ClassicModeManager : PlayModeManager
     {
         System.Random rnd = new System.Random();
 
-        List<Transform> objs = new List<Transform>();
         List<string> createdObjs = new List<string>();
-
         List<GameObject> objects = new List<GameObject>();
+
         for (int i = 1; i <= numberOfBoxes / 2;)
         {
             //int j = rnd.Next(0, ObjectsPrefabs.transform.childCount);
@@ -128,8 +128,7 @@ public class ClassicModeManager : PlayModeManager
         }
 
         //Counter.Instance.InitializeCounter(objs.Count);
-        Counter.Instance.InitializeCounter(objects.Count);
-
+        //This has been moved to the MemoryManager
         //return objs;
 
         //shuflle the game objects list
@@ -138,13 +137,7 @@ public class ClassicModeManager : PlayModeManager
         return shuffledObjs;
     }
 
-
-    public override void StartGame(int waitingTime)
-    {
-       ShowObjects(waitingTime);
-    }
-
-    private IEnumerator ShowObjects(int waitingTime)
+    public override IEnumerator ShowObjects(int waitingTime)
     {
         Debug.Log("ShowObjects");
         Transform elems = GameObject.Find("Elements").transform;
@@ -162,5 +155,11 @@ public class ClassicModeManager : PlayModeManager
             elems.GetChild(i).GetChild(0).gameObject.SetActive(true);
             elems.GetChild(i).GetChild(1).gameObject.SetActive(false);
         }
+    }
+
+    public override void InitCounter()
+    {
+        int numberOfObject = GameObject.Find("Elements").transform.childCount;
+        Counter.Instance.InitializeCounter(numberOfObject);
     }
 }
