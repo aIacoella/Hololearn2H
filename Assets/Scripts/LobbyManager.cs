@@ -139,7 +139,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Creating Room");
 
-        var roomOptions = new RoomOptions { IsVisible = true, IsOpen = true, MaxPlayers = (byte)(GameSettings.Instance.numPlayer) };
+        var roomOptions = new RoomOptions { IsVisible = true, IsOpen = true, MaxPlayers = (byte)(GameSettings.Instance.numPlayer), EmptyRoomTtl = 1000 };
         PhotonNetwork.CreateRoom(GameSettings.Instance.getSceneName() + Random.Range(0, 999999), roomOptions);
     }
 
