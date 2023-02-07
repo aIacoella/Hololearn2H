@@ -33,6 +33,9 @@ public abstract class LayTheTableObjectsPositionManager : ObjectPositionManager
 
     public override void HasCollided(Transform target)
     {
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.detectCollisions = false;
+
         transform.position = target.position;
         transform.rotation = target.rotation;
 
