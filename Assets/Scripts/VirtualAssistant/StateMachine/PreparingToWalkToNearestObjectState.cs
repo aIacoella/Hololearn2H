@@ -10,7 +10,7 @@ public class PreparingToWalkToNearestObjectState : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        VirtualAssistantManager.Instance.targetObject = TaskManager.Instance.GetClosestObject().transform;
+        VirtualAssistantManager.Instance.targetObject = RoomManager.Instance.GetClosestObject().transform;
 
         //Debug.Log("walking to next object " + VirtualAssistantManager.Instance.targetObject);
         VirtualAssistantManager.Instance.Walk();

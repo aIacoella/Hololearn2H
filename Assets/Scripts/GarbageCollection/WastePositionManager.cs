@@ -8,24 +8,26 @@ public class WastePositionManager : ObjectPositionManager
     private bool hasCollided;
     private Vector3 targetPosition;
     private Vector3 floorPosition;
+    private Rigidbody rigidbody;
 
     // Use this for initialization
     public override void Start()
     {
         hasCollided = false;
         targetPosition = new Vector3();
-        //floorPosition = GameObject.Find("SurfacePlane(Clone)").transform.position;
-        //TODO: Remove This
-        floorPosition = Vector3.zero;
+        floorPosition = GameObject.Find("TableAnchor").transform.position;
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     public override void Update()
     {
-        if (transform.position.y < floorPosition.y && !hasCollided)
+        if (Mathf.Abs(transform.position.y - floorPosition.y) > 5)
         {
-            //transform.position = new Vector3(transform.position.x, floorPosition.y + 0.01f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, floorPosition.y + 1f, transform.position.z);
+            rigidbody.velocity = Vector3.zero;
         }
+
 
         if (hasCollided)
         {

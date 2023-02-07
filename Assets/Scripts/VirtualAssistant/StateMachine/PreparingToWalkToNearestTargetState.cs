@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PreparingToWalkToNearestTargetState : StateMachineBehaviour {
+public class PreparingToWalkToNearestTargetState : StateMachineBehaviour
+{
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        VirtualAssistantManager.Instance.targetObject = TaskManager.Instance.GetClosestTarget().transform;
+        VirtualAssistantManager.Instance.targetObject = RoomManager.Instance.GetClosestTarget().transform;
 
         Debug.Log("walking to next placement " + VirtualAssistantManager.Instance.targetObject);
         VirtualAssistantManager.Instance.Walk();
@@ -27,7 +28,8 @@ public class PreparingToWalkToNearestTargetState : StateMachineBehaviour {
     //}
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
-    override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+    override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
         Vector3 relativePos = Camera.main.transform.position - VirtualAssistantManager.Instance.transform.position;
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         rotation.x = 0f;

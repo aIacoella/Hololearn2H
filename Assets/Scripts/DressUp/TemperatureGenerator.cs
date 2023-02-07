@@ -1,40 +1,49 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class TemperatureGenerator : MonoBehaviour {
+public class TemperatureGenerator : MonoBehaviour
+{
 
     public int MinRange;
     public int MaxRange;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
-        
+        this.GenerateTemperature();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-    public void GenerateTemperature()
+    // Update is called once per frame
+    void Update()
     {
-        Transform weather = GameObject.Find("Weather").transform;
-        DressUpManager manager = (DressUpManager)TaskManager.Instance;
 
-        Vector3 temperaturePostion = weather.TransformPoint(0.4f, 0f, 0f);
-        Vector3 relativePos = temperaturePostion - Camera.main.transform.position;
+    }
+
+    public int GenerateTemperature()
+    {
+        return new System.Random().Next(MinRange, MaxRange);
+    }
+
+    public void DisplayTemperature()
+    {
+        Transform weather = transform.parent.parent;
+        DressUpManager manager = (DressUpManager)RoomManager.Instance;
+
+        Vector3 weatherPosition = weather.position;
+        Vector3 temperaturePosition = weatherPosition;
+        Vector3 relativePos = weatherPosition - Camera.main.transform.position;
         Quaternion temperatureRotation = Quaternion.LookRotation(relativePos);
         temperatureRotation.x = 0f;
         temperatureRotation.z = 0f;
 
-        Transform temperature = Instantiate(manager.WeatherPrefabs.transform.GetChild(0), temperaturePostion, temperatureRotation, weather.GetChild(0).GetChild(1));
+        temperaturePosition += (Vector3.Normalize(temperatureRotation.eulerAngles) * 0.3f);
 
-        int temperatureValue = new System.Random().Next(MinRange, MaxRange);
-        temperature.GetComponent<TextMesh>().text = temperatureValue + "°C";
+        Transform temperature = Instantiate(manager.WeatherPrefabs.transform.GetChild(0), temperaturePosition, temperatureRotation, weather.GetChild(0).GetChild(1));
 
+        temperature.GetComponent<TextMesh>().text = manager.getTemperatureValue() + "°C";
         /*int unit = temperature % 10;
         int dec = (temperature - unit) / 10;
 
@@ -45,6 +54,5 @@ public class TemperatureGenerator : MonoBehaviour {
         Instantiate(manager.WeatherPrefabs.transform.GetChild(0).GetChild(unit), temperaturePostion + new Vector3(0.1f, 0f, 0f), temperatureRotation, weather.GetChild(0).GetChild(1));
         Instantiate(manager.WeatherPrefabs.transform.GetChild(0).GetChild(manager.WeatherPrefabs.transform.GetChild(0).childCount - 2), temperaturePostion + new Vector3(0.2f, 0f, 0f), temperatureRotation, weather.GetChild(0).GetChild(1));
         Instantiate(manager.WeatherPrefabs.transform.GetChild(0).GetChild(manager.WeatherPrefabs.transform.GetChild(0).childCount - 1), temperaturePostion + new Vector3(0.3f, 0f, 0f), temperatureRotation, weather.GetChild(0).GetChild(1));*/
-
     }
 }

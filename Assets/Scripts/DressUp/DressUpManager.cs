@@ -8,13 +8,21 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
+using UnityEngine.XR.ARFoundation;
+using Photon.Realtime;
+using Photon.Pun;
 
-public class DressUpManager : TaskManager
+public class DressUpManager : RoomManager
 {
     public GameObject WeatherPrefabs;
     public GameObject ClothesPrefabs;
     public GameObject BagsPrefabs;
     public GameObject VirtualAssistantsPrefabs;
+    public GameObject WeatherContainerPrefab;
+    public GameObject ClothesContainerPrefab;
+    public GameObject BagContainerPrefab;
+    public GameObject TemperatureTextPrefab;
+
 
     private int numberOfLevel;
     private int numberOfClothes;
@@ -27,22 +35,17 @@ public class DressUpManager : TaskManager
 
     private string weathertag;
     private string temperaturetag;
-
-
+    private int temperatureValue;
     // Use this for initialization
-    public override void Start()
+    public new void Start()
     {
+        base.Start();
+
+        cachePrefabs();
+
         LoadSettings();
 
         virtualAssistant = VirtualAssistantsPrefabs.transform.GetChild(selectedAssistant + 1).GetChild(assistantBehaviour - 1);
-
-        GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().OverrideAndStartPlaying();
-    }
-
-    // Update is called once per frame
-    public override void Update()
-    {
-
     }
 
     public override void GenerateObjectsInWorld()
@@ -51,62 +54,59 @@ public class DressUpManager : TaskManager
         //Transform floor = SpatialProcessing.Instance.floors.ElementAt(0).transform;
         //SurfacePlane plane = floor.GetComponent<SurfacePlane>();
 
+        Transform anchorPosition = this.tableAnchor.transform;
         System.Random rnd = new System.Random();
-
 
         //Vector3 floorPosition = floor.transform.position + (plane.PlaneThickness * plane.SurfaceNormal);
         //floorPosition = AdjustPositionWithSpatialMap(floorPosition, plane.SurfaceNormal);
 
-        //TODO: Remove This
-        Transform floor = gameObject.transform;
-        floor.position = Vector3.zero;
-        Vector3 floorPosition = Vector3.zero;
-        //TODO: Remove this
+        //Vector3 gazePosition = new Vector3(0f, 0f, 0f);
+        //RaycastHit hitInfo;
+        //if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitInfo, 20f, Physics.DefaultRaycastLayers))
+        //{
+        //    gazePosition = hitInfo.point;
+        //}
 
-        Vector3 gazePosition = new Vector3(0f, 0f, 0f);
-        RaycastHit hitInfo;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitInfo, 20f, Physics.DefaultRaycastLayers))
-        {
-            gazePosition = hitInfo.point;
-        }
-
-        Vector3 weatherPosition = gazePosition;
-        weatherPosition.y = floorPosition.y + 1f;
+        Vector3 weatherPosition = anchorPosition.position;
+        weatherPosition.y = weatherPosition.y + 1f;
         Debug.DrawLine(Camera.main.transform.position, weatherPosition, Color.black, 30f);
 
-
         //Vector3 relativePos = Camera.main.transform.position - gazePosition;
-        Vector3 relativePos = Camera.main.transform.position;
-        
-        Quaternion rotation = Quaternion.LookRotation(relativePos);
-        rotation.x = 0f;
-        rotation.z = 0f;
+        //Quaternion rotation = Quaternion.LookRotation(relativePos);
+        //rotation.x = 0f;
+        //rotation.z = 0f;
 
+        //Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
 
-        Transform sceneRoot = GameObject.Find("Broadcasted Content").transform;
-
-        Transform weather = new GameObject("Weather").transform;
-        weather.parent = sceneRoot;
-        weather.position = weatherPosition;
+        //Transform weather = new GameObject("Weather").transform;
+        //weather.parent = sceneRoot;
+        //weather.position = weatherPosition;
+        Transform weather = PhotonNetwork.Instantiate(WeatherContainerPrefab.name, weatherPosition, Quaternion.identity).transform;
 
         Transform selectedLevel = WeatherPrefabs.transform.GetChild(numberOfLevel);
         Transform selectedWeather = selectedLevel.GetChild(rnd.Next(0, selectedLevel.childCount));
-        Instantiate(selectedWeather, weather.TransformPoint(-0.2f, 0f, 0f), rotation, weather);
+        //Instantiate(selectedWeather, weather.TransformPoint(-0.2f, 0f, 0f), rotation, weather);
+        PhotonNetwork.Instantiate(selectedWeather.name, weather.TransformPoint(-0.2f, 0f, 0f), Quaternion.identity);
 
-        selectedWeather.GetChild(1).GetComponent<TemperatureGenerator>().GenerateTemperature();
-
+        //selectedWeather.GetChild(1).GetComponent<TemperatureGenerator>().GenerateTemperature();
 
         weathertag = GameObject.Find("Weather").transform.GetChild(0).GetChild(0).tag;
         temperaturetag = GameObject.Find("Weather").transform.GetChild(0).GetChild(1).tag;
 
+        photonView.RPC("setRemoteTemperatureValue", RpcTarget.All, selectedWeather.GetChild(1).GetComponent<TemperatureGenerator>().GenerateTemperature());
 
-        Transform clothes = new GameObject("Clothes").transform;
-        clothes.parent = sceneRoot;
-        clothes.tag = "ObjectsToBePlaced";
+        Debug.Log(weathertag + " - " + temperaturetag + " - " + temperatureValue);
+
+        //Transform clothes = new GameObject("Clothes").transform;
+        //clothes.parent = sceneRoot;
+        //clothes.tag = "ObjectsToBePlaced";
 
         Vector3 clothesPosition = weatherPosition;
-        clothesPosition.y = floorPosition.y + 0.1f;
+        clothesPosition.y = anchorPosition.position.y + 0.1f;
+        clothesPosition.z = clothesPosition.z - 1f;
         Debug.DrawLine(weatherPosition, clothesPosition, Color.red, 30f);
+
+        Transform clothes = PhotonNetwork.Instantiate(ClothesContainerPrefab.name, weatherPosition, Quaternion.identity).transform;
 
         int counter = 0;
         for (int i = 0; i < numberOfClothes; i++)
@@ -122,7 +122,8 @@ public class DressUpManager : TaskManager
                     continue;
                 }
             }
-            Instantiate(currentClothe.gameObject, currentClothe.position, currentClothe.rotation, clothes);
+            //Instantiate(currentClothe.gameObject, currentClothe.position, currentClothe.rotation, clothes);
+            PhotonNetwork.Instantiate(currentClothe.name, currentClothe.position, currentClothe.rotation);
 
             if (tags.Contains(weathertag) || tags.Contains(temperaturetag))
             {
@@ -131,36 +132,64 @@ public class DressUpManager : TaskManager
         }
         Debug.Log("Number of clothes: " + numberOfClothes + ", correct clothes: " + counter);
 
-        clothes.Translate(clothesPosition);
-        clothes.Rotate(rotation.eulerAngles);
+        //clothes.Translate(clothesPosition);
+        //clothes.Rotate(rotation.eulerAngles);
 
-
-        Transform bag = new GameObject("Bag").transform;
-        bag.parent = sceneRoot;
-        bag.tag = "Targets";
+        //Transform bag = new GameObject("Bag").transform;
+        //bag.parent = sceneRoot;
+        //bag.tag = "Targets";
 
         Vector3 bagPosition = weatherPosition;
-        bagPosition.y = floorPosition.y + 0.1f;
-        Instantiate(BagsPrefabs.transform.GetChild(rnd.Next(0, BagsPrefabs.transform.childCount)).gameObject, bagPosition, rotation, bag);
-        Debug.DrawLine(clothesPosition, bagPosition, Color.blue, 30f);
+        bagPosition.y = anchorPosition.position.y + 0.1f;
 
+        Transform bag = PhotonNetwork.Instantiate(BagContainerPrefab.name, bagPosition, Quaternion.identity).transform;
+
+        //Instantiate(BagsPrefabs.transform.GetChild(rnd.Next(0, BagsPrefabs.transform.childCount)).gameObject, bagPosition, rotation, bag);
+        PhotonNetwork.Instantiate(BagsPrefabs.transform.GetChild(rnd.Next(0, BagsPrefabs.transform.childCount)).name, bagPosition, Quaternion.identity);
+
+        Debug.DrawLine(clothesPosition, bagPosition, Color.blue, 30f);
 
         Counter.Instance.InitializeCounter(counter);
 
+        Vector3 assistantPosition = clothes.TransformPoint(-0.3f, 0f, -0.5f);
 
-        Vector3 assistantPosition = clothes.TransformPoint(-0.3f, 0f, 0.3f);
-        assistantPosition.y = floor.position.y;
+        assistantPosition.y = anchorPosition.position.y;
+
         Debug.DrawLine(bagPosition, assistantPosition, Color.green, 30f);
 
         if (assistantPresence != 0)
         {
-            Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, sceneRoot);
+            //Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, sceneRoot);
+            PhotonNetwork.Instantiate(virtualAssistant.name, assistantPosition, virtualAssistant.transform.rotation);
+
             VirtualAssistantManager.Instance.patience = assistantPatience;
             VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
         }
-
     }
 
+    [PunRPC]
+    public override void OnGameStarted()
+    {
+        //Set weather and temperature tag
+        GameObject weatherObj = GameObject.FindGameObjectWithTag("Weather");
+
+        weathertag = weatherObj.transform.GetChild(0).tag;
+        temperaturetag = weatherObj.transform.GetChild(1).tag;
+
+        //Display Temperature
+        weatherObj.transform.GetChild(1).GetComponent<TemperatureGenerator>().DisplayTemperature();
+    }
+
+    [PunRPC]
+    public void setRemoteTemperatureValue(int temperatureValue)
+    {
+        this.temperatureValue = temperatureValue;
+    }
+
+    public int getTemperatureValue()
+    {
+        return this.temperatureValue;
+    }
 
     public override GameObject GetClosestObject()
     {
@@ -193,7 +222,6 @@ public class DressUpManager : TaskManager
         assistantPatience = VirtualAssistantSettings.Instance.assistantPatience;
     }
 
-
     public override void DestroyObjects()
     {
         if (VirtualAssistantManager.Instance != null)
@@ -203,5 +231,97 @@ public class DressUpManager : TaskManager
         Destroy(GameObject.Find("Weather"));
         Destroy(GameObject.Find("Clothes"));
         Destroy(GameObject.Find("Bag"));
+    }
+
+    public string getTemerature()
+    {
+        return temperaturetag;
+    }
+
+    public string getWeather()
+    {
+        return weathertag;
+    }
+
+
+
+    private void cachePrefabs()
+    {
+        if (PhotonNetwork.PrefabPool is DefaultPool pool)
+        {
+            Debug.Log("Caching all prefabs");
+
+            if (WeatherPrefabs != null)
+            {
+                foreach (Transform weatherLvl in WeatherPrefabs.transform)
+                {
+                    if (weatherLvl.transform.childCount > 0)
+                    {
+                        foreach (Transform weather in weatherLvl)
+                        {
+                            if (!pool.ResourceCache.ContainsKey(weather.name))
+                            {
+                                Debug.Log(weather.name);
+                                pool.ResourceCache.Add(weather.name, weather.gameObject);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (ClothesPrefabs != null)
+            {
+                foreach (Transform clothe in ClothesPrefabs.transform)
+                {
+                    if (!pool.ResourceCache.ContainsKey(clothe.name))
+                    {
+                        pool.ResourceCache.Add(clothe.name, clothe.gameObject);
+                    }
+                }
+            }
+
+            if (BagsPrefabs != null)
+            {
+                foreach (Transform clothe in BagsPrefabs.transform)
+                {
+                    if (!pool.ResourceCache.ContainsKey(clothe.name))
+                    {
+                        pool.ResourceCache.Add(clothe.name, clothe.gameObject);
+                    }
+                }
+            }
+
+            if (VirtualAssistantsPrefabs != null)
+            {
+                Transform[] VirtualAssistanModels = { VirtualAssistantsPrefabs.transform.Find("Minion"), VirtualAssistantsPrefabs.transform.Find("Ty") };
+                foreach (Transform virtualAssistantModel in VirtualAssistanModels)
+                {
+                    foreach (Transform virtualAssistant in virtualAssistantModel)
+                    {
+                        if (virtualAssistant.GetComponent<PhotonView>() != null && !pool.ResourceCache.ContainsKey(virtualAssistant.name))
+                        {
+                            pool.ResourceCache.Add(virtualAssistant.name, virtualAssistant.gameObject);
+                        }
+                    }
+                }
+            }
+
+            if (!pool.ResourceCache.ContainsKey(WeatherContainerPrefab.name))
+            {
+                pool.ResourceCache.Add(WeatherContainerPrefab.name, WeatherContainerPrefab);
+            }
+
+            if (!pool.ResourceCache.ContainsKey(ClothesContainerPrefab.name))
+            {
+                pool.ResourceCache.Add(ClothesContainerPrefab.name, ClothesContainerPrefab);
+            }
+
+            if (!pool.ResourceCache.ContainsKey(BagContainerPrefab.name))
+            {
+                pool.ResourceCache.Add(BagContainerPrefab.name, BagContainerPrefab);
+            }
+
+        }
+
     }
 }

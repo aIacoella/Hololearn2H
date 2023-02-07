@@ -22,9 +22,9 @@ namespace HoloLearn
 
         public void BackToMainMenu()
         {
-            TaskManager.Instance.DestroyObjects();
+            RoomManager.Instance.DestroyObjects();
 
-            Destroy(TaskManager.Instance.gameObject);
+            Destroy(RoomManager.Instance.gameObject);
             Destroy(GameObject.Find("SpatialMapping"));
             Destroy(GameObject.Find("SpatialProcessing"));
 
@@ -33,6 +33,7 @@ namespace HoloLearn
             GameObject.Find("MenuPrefab").transform.GetChild(0).gameObject.SetActive(true);
         }
 
+        //Previously this was going to load the scene. Now it is showing the game mode menu first
         public void ChangeScene(int scene)
         {
             SceneManager.LoadScene(scene, LoadSceneMode.Additive);
@@ -40,7 +41,7 @@ namespace HoloLearn
 
         public void RestartScene()
         {
-            TaskManager.Instance.DestroyObjects();
+            RoomManager.Instance.DestroyObjects();
             GameObject.Find("TaskMenu").GetComponent<TaskInteractionHandler>().ScanningComplete();
         }
     }

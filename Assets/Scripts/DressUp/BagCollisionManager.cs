@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class BagCollisionManager : MonoBehaviour
@@ -7,11 +8,16 @@ public class BagCollisionManager : MonoBehaviour
     Vector3 floorPosition;
 
     // Use this for initialization
+
+    private PhotonView photonView;
+
     void Start()
     {
         //floorPosition = GameObject.Find("SurfacePlane(Clone)").transform.position;
         //TODO: Remove This
-        floorPosition = Vector3.zero;
+        floorPosition = GameObject.Find("TableAnchor").transform.position;
+
+        this.photonView = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -19,50 +25,61 @@ public class BagCollisionManager : MonoBehaviour
     {
         if (transform.position.y < floorPosition.y)
         {
-            transform.position = new Vector3(transform.position.x, floorPosition.y + 0.01f, transform.position.z);
+            //transform.position = new Vector3(transform.position.x, floorPosition.y + 0.01f, transform.position.z);
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (photonView && other.transform.parent && other.transform.parent.tag == "ObjectsToBePlaced")
+        {
+            photonView.RPC("remoteOnTriggerEnter", RpcTarget.All, other.transform.GetSiblingIndex());
         }
     }
 
 
-    void OnTriggerEnter(Collider other)
+    [PunRPC]
+    void remoteOnTriggerEnter(int itemIndex)
     {
         Debug.Log("On Trigger Enter");
+        DressUpManager manager = (DressUpManager)DressUpManager.Instance;
 
-        //TODO This is deprecated
-        if (other.gameObject.name != "SurfacePlane(Clone)")
+        GameObject clothes = GameObject.FindGameObjectWithTag("ObjectsToBePlaced");
+        GameObject item = clothes.transform.GetChild(itemIndex).gameObject;
+
+
+        TagsContainer tagsContainer = item.transform.GetComponent<TagsContainer>();
+        if (tagsContainer == null)
         {
-            TagsContainer tagsContainer = other.transform.GetComponent<TagsContainer>();
-            if (tagsContainer == null)
-            {
-                return;
-            }
-            List<string> tags = other.transform.GetComponent<TagsContainer>().tags;
-            string weather = GameObject.Find("Weather").transform.GetChild(0).GetChild(0).tag;
-            string temperature = GameObject.Find("Weather").transform.GetChild(0).GetChild(1).tag;
+            return;
+        }
+        List<string> tags = item.transform.GetComponent<TagsContainer>().tags;
+        string weather = manager.getWeather();
+        string temperature = manager.getTemerature();
 
-            foreach (string tag in tags)
+        foreach (string tag in tags)
+        {
+            if (tags.Contains(weather) || tags.Contains(temperature))
             {
-                if (tags.Contains(weather) || tags.Contains(temperature))
+                Counter.Instance.Decrement();
+
+                if (VirtualAssistantManager.Instance != null)
                 {
-                    Counter.Instance.Decrement();
-
-                    if (VirtualAssistantManager.Instance != null)
-                    {
-                        VirtualAssistantManager.Instance.Jump();
-                        VirtualAssistantManager.Instance.ObjectDropped();
-                    }
-
-                    other.transform.GetComponent<ObjectPositionManager>().HasCollided(transform);
+                    VirtualAssistantManager.Instance.Jump();
+                    VirtualAssistantManager.Instance.ObjectDropped();
                 }
-                else
+
+                item.transform.GetComponent<ObjectPositionManager>().HasCollided(transform);
+            }
+            else
+            {
+                if (VirtualAssistantManager.Instance != null && !VirtualAssistantManager.Instance.IsBusy)
                 {
-                    if (VirtualAssistantManager.Instance != null && !VirtualAssistantManager.Instance.IsBusy)
-                    {
-                        VirtualAssistantManager.Instance.ShakeHead();
-                    }
+                    VirtualAssistantManager.Instance.ShakeHead();
                 }
             }
         }
+
 
     }
 

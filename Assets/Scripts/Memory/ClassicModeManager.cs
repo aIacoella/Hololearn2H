@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Photon.Realtime;
+using Photon.Pun;
 
 public class ClassicModeManager : PlayModeManager
 {
@@ -12,19 +14,30 @@ public class ClassicModeManager : PlayModeManager
     public Transform secondElement;
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
 
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
     }
 
-    public override void HandleTap(Transform selectedElement)
+    [PunRPC]
+    public void HandleTapRPC(int childNumber)
     {
-        selectedElement.GetChild(0).gameObject.SetActive(false);
-        selectedElement.GetChild(1).gameObject.SetActive(true);
+        Transform selectedElement = GameObject.Find("Elements").transform.GetChild(childNumber).transform;
+
+        GameObject box = selectedElement.GetChild(0).gameObject;
+        GameObject item = selectedElement.GetChild(1).gameObject;
+
+        box.SetActive(false);
+        item.SetActive(true);
+        item.transform.parent = selectedElement;
+        // selectedElement.GetChild(0).gameObject.SetActive(false);
+        // selectedElement.GetChild(1).gameObject.SetActive(true);
 
         if (firstElement != null)
         {
@@ -37,7 +50,7 @@ public class ClassicModeManager : PlayModeManager
                 secondElement = null;
 
                 Counter.Instance.Decrement();
-                Counter.Instance.Decrement();
+                //Counter.Instance.Decrement();
 
                 if (VirtualAssistantManager.Instance != null)
                 {
@@ -62,7 +75,13 @@ public class ClassicModeManager : PlayModeManager
         {
             firstElement = selectedElement.GetChild(1);
         }
+    }
 
+    public override void HandleTap(Transform selectedElement)
+    {
+        //child number of selected element
+        int childNumber = selectedElement.GetSiblingIndex();
+        this.photonView.RPC("HandleTapRPC", RpcTarget.All, childNumber);
     }
 
 
@@ -82,39 +101,45 @@ public class ClassicModeManager : PlayModeManager
     }
 
 
-    public override List<Transform> GenerateObjects(GameObject ObjectsPrefabs, int numberOfBoxes)
+    public override List<GameObject> GenerateObjects(GameObject[] ObjectsPrefabs, int numberOfBoxes)
     {
         System.Random rnd = new System.Random();
 
-        List<Transform> objs = new List<Transform>();
         List<string> createdObjs = new List<string>();
+        List<GameObject> objects = new List<GameObject>();
+
         for (int i = 1; i <= numberOfBoxes / 2;)
         {
-            int j = rnd.Next(0, ObjectsPrefabs.transform.childCount);
-            Transform obj = ObjectsPrefabs.transform.GetChild(j);
+            //int j = rnd.Next(0, ObjectsPrefabs.transform.childCount);
+            int j = rnd.Next(0, ObjectsPrefabs.Length);
+            //Transform obj = ObjectsPrefabs.transform.GetChild(j);
+            GameObject obj = ObjectsPrefabs[j];
 
-            if (!createdObjs.Contains(ObjectsPrefabs.transform.GetChild(j).name))
+            //if (!createdObjs.Contains(ObjectsPrefabs.transform.GetChild(j).name))
+            if (!createdObjs.Contains(ObjectsPrefabs[j].name))
             {
-                objs.Add(obj);
-                objs.Add(obj);
-                createdObjs.Add(ObjectsPrefabs.transform.GetChild(j).name);
+                //objs.Add(obj);
+                //objs.Add(obj);
+                //createdObjs.Add(ObjectsPrefabs.transform.GetChild(j).name);
+                createdObjs.Add(ObjectsPrefabs[j].name);
+                objects.Add(obj);
                 i++;
             }
         }
 
-        Counter.Instance.InitializeCounter(objs.Count);
+        //Counter.Instance.InitializeCounter(objs.Count);
+        //This has been moved to the MemoryManager
+        //return objs;
 
-        return objs;
+        //shuflle the game objects list
+        List<GameObject> shuffledObjs = objects.OrderBy(x => rnd.Next()).ToList();
+
+        return shuffledObjs;
     }
 
-
-    public override void StartGame(int waitingTime)
+    public override IEnumerator ShowObjects(int waitingTime)
     {
-        StartCoroutine(ShowObjects(waitingTime));
-    }
-
-    private IEnumerator ShowObjects(int waitingTime)
-    {
+        Debug.Log("ShowObjects");
         Transform elems = GameObject.Find("Elements").transform;
 
         for (int i = 0; i < elems.childCount; i++)
@@ -130,5 +155,11 @@ public class ClassicModeManager : PlayModeManager
             elems.GetChild(i).GetChild(0).gameObject.SetActive(true);
             elems.GetChild(i).GetChild(1).gameObject.SetActive(false);
         }
+    }
+
+    public override void InitCounter()
+    {
+        int numberOfObject = GameObject.Find("Elements").transform.childCount;
+        Counter.Instance.InitializeCounter(numberOfObject);
     }
 }
