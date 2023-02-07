@@ -28,8 +28,15 @@ public class FindMeModeManager : PlayModeManager
         Debug.Log("HandleTap");
         IsBusy = true;
 
-        selectedElement.GetChild(0).gameObject.SetActive(false);
-        selectedElement.GetChild(1).gameObject.SetActive(true);
+        GameObject box = selectedElement.GetChild(0).gameObject;
+        GameObject item = selectedElement.GetChild(1).gameObject;
+
+        box.SetActive(false);
+        item.SetActive(true);
+        item.transform.parent = selectedElement;
+
+        //selectedElement.GetChild(0).gameObject.SetActive(false);
+        //selectedElement.GetChild(1).gameObject.SetActive(true);
 
         this.selectedElement = selectedElement.GetChild(1);
 

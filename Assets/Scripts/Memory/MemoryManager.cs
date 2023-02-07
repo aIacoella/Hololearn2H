@@ -192,7 +192,7 @@ public class MemoryManager : RoomManager
 
 
         //Vector3 assistantPosition = elems.GetChild(elems.childCount - 2).TransformPoint(0.3f * (float)Math.Pow(-1, elems.childCount / 2 % 2), 0f, 0f);
-        Vector3 assistantPosition = elems.gameObject.transform.position + new Vector3(0f, -10f, 0f);
+        Vector3 assistantPosition = elems.gameObject.transform.position + new Vector3(.9f, 0f, 0f);
         assistantPosition.y = floor.position.y;
 
         if (assistantPresence != 0)
