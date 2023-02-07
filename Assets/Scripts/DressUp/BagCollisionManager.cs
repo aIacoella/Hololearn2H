@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class BagCollisionManager : MonoBehaviour
@@ -7,11 +8,16 @@ public class BagCollisionManager : MonoBehaviour
     Vector3 floorPosition;
 
     // Use this for initialization
+
+    private PhotonView photonView;
+
     void Start()
     {
         //floorPosition = GameObject.Find("SurfacePlane(Clone)").transform.position;
         //TODO: Remove This
-        floorPosition = Vector3.zero;
+        floorPosition = GameObject.Find("TableAnchor").transform.position;
+
+        this.photonView = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -23,19 +29,31 @@ public class BagCollisionManager : MonoBehaviour
         }
     }
 
-
     void OnTriggerEnter(Collider other)
+    {
+        if (photonView && other.transform.parent && other.transform.parent.tag == "ObjectsToBePlaced")
+        {
+            photonView.RPC("remoteOnTriggerEnter", RpcTarget.All, other.transform.GetSiblingIndex());
+        }
+    }
+
+
+    [PunRPC]
+    void remoteOnTriggerEnter(int itemIndex)
     {
         Debug.Log("On Trigger Enter");
         DressUpManager manager = (DressUpManager)DressUpManager.Instance;
 
+        GameObject clothes = GameObject.FindGameObjectWithTag("ObjectsToBePlaced");
+        GameObject item = clothes.transform.GetChild(itemIndex).gameObject;
 
-        TagsContainer tagsContainer = other.transform.GetComponent<TagsContainer>();
+
+        TagsContainer tagsContainer = clothes.transform.GetComponent<TagsContainer>();
         if (tagsContainer == null)
         {
             return;
         }
-        List<string> tags = other.transform.GetComponent<TagsContainer>().tags;
+        List<string> tags = item.transform.GetComponent<TagsContainer>().tags;
         string weather = manager.getWeather();
         string temperature = manager.getTemerature();
 
@@ -51,7 +69,7 @@ public class BagCollisionManager : MonoBehaviour
                     VirtualAssistantManager.Instance.ObjectDropped();
                 }
 
-                other.transform.GetComponent<ObjectPositionManager>().HasCollided(transform);
+                item.transform.GetComponent<ObjectPositionManager>().HasCollided(transform);
             }
             else
             {

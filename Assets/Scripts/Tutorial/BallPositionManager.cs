@@ -17,7 +17,7 @@ public class BallPositionManager : ObjectPositionManager
         targetPosition = new Vector3();
         //floorPosition = GameObject.Find("SurfacePlane(Clone)").transform.position;
         //TODO: Remove This
-        floorPosition = Vector3.zero;
+        floorPosition = GameObject.Find("TableAnchor").transform.position;
     }
 
     public override void Update()

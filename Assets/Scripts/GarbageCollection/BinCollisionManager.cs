@@ -16,7 +16,7 @@ public class BinCollisionManager : MonoBehaviour
     {
         //floorPosition = GameObject.Find("SurfacePlane(Clone)").transform.position;
         //TODO: Remove This
-        floorPosition = Vector3.zero;
+        floorPosition = GameObject.Find("TableAnchor").transform.position;
 
         this.audioSource = GetComponent<AudioSource>();
 
@@ -44,6 +44,7 @@ public class BinCollisionManager : MonoBehaviour
     [PunRPC]
     void remoteOnTriggerEnter(int itemIndex)
     {
+
         GameObject waste = GameObject.FindGameObjectWithTag("ObjectsToBePlaced");
         GameObject item = waste.transform.GetChild(itemIndex).gameObject;
 

@@ -126,8 +126,9 @@ public abstract class RoomManager : Singleton<RoomManager>, IInRoomCallbacks
         //photonView.RPC("AllignWithAnchorPoint", RpcTarget.Others);
         //this.AllignWithAnchorPoint();
         this.GenerateObjectsInWorld();
-        photonView.RPC("OnGameStarted", RpcTarget.All);
         photonView.RPC("AllignWithAnchorPoint", RpcTarget.All);
+        photonView.RPC("OnGameStarted", RpcTarget.All);
+
     }
 
     [PunRPC]
