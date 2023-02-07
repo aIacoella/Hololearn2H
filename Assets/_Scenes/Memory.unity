@@ -861,9 +861,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1829264781}
     - target: {fileID: 4264537199477353910, guid: ac043e6b474766a4a93e025d2ade8333, type: 3}
+      propertyPath: GameOverOverlay
+      value: 
+      objectReference: {fileID: 997662102}
+    - target: {fileID: 4264537199477353910, guid: ac043e6b474766a4a93e025d2ade8333, type: 3}
       propertyPath: ScanQRCodeOverlay
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 234630632}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac043e6b474766a4a93e025d2ade8333, type: 3}
 --- !u!4 &391506065 stripped
