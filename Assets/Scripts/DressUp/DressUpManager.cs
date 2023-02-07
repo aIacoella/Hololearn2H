@@ -21,7 +21,6 @@ public class DressUpManager : RoomManager
     public GameObject WeatherContainerPrefab;
     public GameObject ClothesContainerPrefab;
     public GameObject BagContainerPrefab;
-
     public GameObject TemperatureTextPrefab;
 
 
@@ -36,12 +35,13 @@ public class DressUpManager : RoomManager
 
     private string weathertag;
     private string temperaturetag;
+    private int temperatureValue;
     // Use this for initialization
     public new void Start()
     {
         base.Start();
 
-
+        cachePrefabs();
 
         LoadSettings();
 
@@ -71,7 +71,6 @@ public class DressUpManager : RoomManager
         weatherPosition.y = weatherPosition.y + 1f;
         Debug.DrawLine(Camera.main.transform.position, weatherPosition, Color.black, 30f);
 
-
         //Vector3 relativePos = Camera.main.transform.position - gazePosition;
         //Quaternion rotation = Quaternion.LookRotation(relativePos);
         //rotation.x = 0f;
@@ -94,12 +93,17 @@ public class DressUpManager : RoomManager
         weathertag = GameObject.Find("Weather").transform.GetChild(0).GetChild(0).tag;
         temperaturetag = GameObject.Find("Weather").transform.GetChild(0).GetChild(1).tag;
 
+        photonView.RPC("setRemoteTemperatureValue", RpcTarget.All, selectedWeather.GetChild(1).GetComponent<TemperatureGenerator>().GenerateTemperature());
+
+        Debug.Log(weathertag + " - " + temperaturetag + " - " + temperatureValue);
+
         //Transform clothes = new GameObject("Clothes").transform;
         //clothes.parent = sceneRoot;
         //clothes.tag = "ObjectsToBePlaced";
 
         Vector3 clothesPosition = weatherPosition;
         clothesPosition.y = anchorPosition.position.y + 0.1f;
+        clothesPosition.z = clothesPosition.z - 1f;
         Debug.DrawLine(weatherPosition, clothesPosition, Color.red, 30f);
 
         Transform clothes = PhotonNetwork.Instantiate(ClothesContainerPrefab.name, weatherPosition, Quaternion.identity).transform;
@@ -149,6 +153,7 @@ public class DressUpManager : RoomManager
 
         Vector3 assistantPosition = clothes.TransformPoint(-0.3f, 0f, 0.3f);
         assistantPosition.y = anchorPosition.position.y;
+
         Debug.DrawLine(bagPosition, assistantPosition, Color.green, 30f);
 
         if (assistantPresence != 0)
@@ -165,22 +170,40 @@ public class DressUpManager : RoomManager
     public override void OnGameStarted()
     {
         //Set weather and temperature tag
-        //GameObject weatherObj = GameObject.FindGameObjectWithTag("Weather");
+        GameObject weatherObj = GameObject.FindGameObjectWithTag("Weather");
 
-        //weathertag = weatherObj.transform.GetChild(0).tag;
-        //temperaturetag = weatherObj.transform.GetChild(1).tag;
+        weathertag = weatherObj.transform.GetChild(0).tag;
+        temperaturetag = weatherObj.transform.GetChild(1).tag;
+
+        //Display Temperature
+        weatherObj.transform.GetChild(1).GetComponent<TemperatureGenerator>().DisplayTemperature();
+    }
+
+    [PunRPC]
+    public void setRemoteTemperatureValue(int temperatureValue)
+    {
+        this.temperatureValue = temperatureValue;
+    }
+
+    public int getTemperatureValue()
+    {
+        return this.temperatureValue;
     }
 
     public override GameObject GetClosestObject()
     {
-        GameObject[] remainingObjects = GameObject.FindGameObjectsWithTag("ObjectsToBePlaced");
-        Debug.Log("Remaining Object: " + remainingObjects.Length);
+        Rigidbody[] remainingObjects = GameObject.FindGameObjectWithTag("ObjectsToBePlaced").GetComponentsInChildren<Rigidbody>();
+        List<GameObject> targets = new List<GameObject>();
 
-        List<GameObject> targets = remainingObjects.Where(obj =>
+        foreach (Rigidbody target in remainingObjects)
         {
-            List<string> tags = obj.GetComponent<TagsContainer>().tags;
-            return tags.Contains(weathertag) || tags.Contains(temperaturetag);
-        }).ToList();
+            List<string> tags = target.gameObject.GetComponent<TagsContainer>().tags;
+            if (target.gameObject.GetComponent<ObjectManipulator>().enabled == true &&
+                (tags.Contains(weathertag) || tags.Contains(weathertag)))
+            {
+                targets.Add(target.gameObject);
+            }
+        }
 
         SortByDistance(targets);
 
@@ -217,5 +240,87 @@ public class DressUpManager : RoomManager
     public string getWeather()
     {
         return weathertag;
+    }
+
+
+
+    private void cachePrefabs()
+    {
+        if (PhotonNetwork.PrefabPool is DefaultPool pool)
+        {
+            Debug.Log("Caching all prefabs");
+
+            if (WeatherPrefabs != null)
+            {
+                foreach (Transform weatherLvl in WeatherPrefabs.transform)
+                {
+                    if (weatherLvl.transform.childCount > 0)
+                    {
+                        foreach (Transform weather in weatherLvl)
+                        {
+                            if (!pool.ResourceCache.ContainsKey(weather.name))
+                            {
+                                Debug.Log(weather.name);
+                                pool.ResourceCache.Add(weather.name, weather.gameObject);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (ClothesPrefabs != null)
+            {
+                foreach (Transform clothe in ClothesPrefabs.transform)
+                {
+                    if (!pool.ResourceCache.ContainsKey(clothe.name))
+                    {
+                        pool.ResourceCache.Add(clothe.name, clothe.gameObject);
+                    }
+                }
+            }
+
+            if (BagsPrefabs != null)
+            {
+                foreach (Transform clothe in BagsPrefabs.transform)
+                {
+                    if (!pool.ResourceCache.ContainsKey(clothe.name))
+                    {
+                        pool.ResourceCache.Add(clothe.name, clothe.gameObject);
+                    }
+                }
+            }
+
+            if (VirtualAssistantsPrefabs != null)
+            {
+                Transform[] VirtualAssistanModels = { VirtualAssistantsPrefabs.transform.Find("Minion"), VirtualAssistantsPrefabs.transform.Find("Ty") };
+                foreach (Transform virtualAssistantModel in VirtualAssistanModels)
+                {
+                    foreach (Transform virtualAssistant in virtualAssistantModel)
+                    {
+                        if (virtualAssistant.GetComponent<PhotonView>() != null && !pool.ResourceCache.ContainsKey(virtualAssistant.name))
+                        {
+                            pool.ResourceCache.Add(virtualAssistant.name, virtualAssistant.gameObject);
+                        }
+                    }
+                }
+            }
+
+            if (!pool.ResourceCache.ContainsKey(WeatherContainerPrefab.name))
+            {
+                pool.ResourceCache.Add(WeatherContainerPrefab.name, WeatherContainerPrefab);
+            }
+
+            if (!pool.ResourceCache.ContainsKey(ClothesContainerPrefab.name))
+            {
+                pool.ResourceCache.Add(ClothesContainerPrefab.name, ClothesContainerPrefab);
+            }
+
+            if (!pool.ResourceCache.ContainsKey(BagContainerPrefab.name))
+            {
+                pool.ResourceCache.Add(BagContainerPrefab.name, BagContainerPrefab);
+            }
+
+        }
+
     }
 }

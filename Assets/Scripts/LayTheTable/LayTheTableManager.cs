@@ -59,8 +59,8 @@ public class LayTheTableManager : RoomManager
 
         Vector3 tableEdge1 = table.TransformPoint(0.4f, 0f, 0f);
         Vector3 tableEdge2 = table.TransformPoint(-0.4f, 0f, 0f);
-        Vector3 tableEdge3 = table.TransformPoint(0f, -0.4f, 0f);
-        Vector3 tableEdge4 = table.TransformPoint(0f, 0.4f, 0f);
+        Vector3 tableEdge3 = table.TransformPoint(0f, 0f, -0.4f);
+        Vector3 tableEdge4 = table.TransformPoint(0f, 0, 0.4f);
 
 
         List<Vector3> tableEdges = new List<Vector3>() { tableEdge1, tableEdge2, tableEdge3, tableEdge4 };
@@ -79,7 +79,7 @@ public class LayTheTableManager : RoomManager
         }
 
 
-        Transform objectsToBePlaced = selectedLevel.gameObject.GetComponent<ObjectsGenerator>().GenerateObjects(ObjectsPrefabs.transform, numberOfPeople, tableEdge1, rotations.ElementAt(0));
+        Transform objectsToBePlaced = selectedLevel.gameObject.GetComponent<ObjectsGenerator>().GenerateObjects(ObjectsPrefabs.transform, numberOfPeople, tableEdge1 + new Vector3(0, 0.3f, 0), rotations.ElementAt(0));
         //objectsToBePlaced.Translate(tableEdge1);
         //objectsToBePlaced.Rotate(rotations.ElementAt(0).eulerAngles);
 

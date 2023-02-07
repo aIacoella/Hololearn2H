@@ -34,7 +34,7 @@ public class GarbageCollectionManager : RoomManager
     public List<string> activeBins;
 
     // Use this for initialization
-    public void Start()
+    public new void Start()
     {
         base.Start();
 
@@ -71,9 +71,6 @@ public class GarbageCollectionManager : RoomManager
         //SurfacePlane plane = floor.GetComponent<SurfacePlane>();
 
         Transform anchorPosition = this.tableAnchor.transform;
-        Quaternion anchorRotation = anchorPosition.rotation;
-
-
         System.Random rnd = new System.Random();
 
         //Vector3 floorPosition = floor.transform.position + (plane.PlaneThickness * plane.SurfaceNormal);
@@ -88,7 +85,7 @@ public class GarbageCollectionManager : RoomManager
         //Transform bins = new GameObject("Bins").transform;
         //bins.parent = sceneRoot;
         //bins.tag = "Targets";
-        Transform bins = PhotonNetwork.Instantiate(BinsContainerPrefab.name, binsPosition, anchorRotation).transform;
+        Transform bins = PhotonNetwork.Instantiate(BinsContainerPrefab.name, binsPosition, Quaternion.identity).transform;
 
         activeBins = new List<string>();
         for (int i = 1; i <= numberOfBins;)
@@ -98,7 +95,7 @@ public class GarbageCollectionManager : RoomManager
             if (!activeBins.Contains(currentBinTag))
             {
                 Vector3 currentBinPosition = binsPosition + new Vector3((float)Math.Pow(-1, i) * 0.4f * (i / 2), 0f, 0f);
-                PhotonNetwork.Instantiate(bin.name, currentBinPosition, anchorRotation);
+                PhotonNetwork.Instantiate(bin.name, currentBinPosition, bin.rotation);
                 activeBins.Add(bin.gameObject.tag);
                 i++;
             }
@@ -113,7 +110,9 @@ public class GarbageCollectionManager : RoomManager
         //Vector3 wastePosition = Vector3.Lerp(Camera.main.transform.position, bins.position, 0.5f);
         //wastePosition.y = floorPosition.y + 0.1f;
 
-        Vector3 wastePosition = Vector3.Lerp(Camera.main.transform.position, bins.position, 0.5f);
+        //Vector3 wastePosition = Vector3.Lerp(Camera.main.transform.position, bins.position, 0.5f);
+        Vector3 wastePosition = bins.position;
+        wastePosition.z = wastePosition.z - 1.0f;
         wastePosition.y = anchorPosition.position.y + 0.1f;
 
         Transform waste = PhotonNetwork.Instantiate(WasteContainerPrefab.name, wastePosition, Quaternion.identity).transform;

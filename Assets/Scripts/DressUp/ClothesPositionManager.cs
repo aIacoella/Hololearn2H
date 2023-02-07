@@ -9,6 +9,7 @@ public class ClothesPositionManager : ObjectPositionManager
     private bool hasCollided;
     private Vector3 targetPosition;
     private Vector3 floorPosition;
+    private Rigidbody rigidbody;
 
     // Use this for initialization
     public override void Start()
@@ -16,6 +17,7 @@ public class ClothesPositionManager : ObjectPositionManager
         hasCollided = false;
         targetPosition = new Vector3();
         floorPosition = GameObject.Find("TableAnchor").transform.position;
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -24,6 +26,7 @@ public class ClothesPositionManager : ObjectPositionManager
         if (Mathf.Abs(transform.position.y - floorPosition.y) > 5)
         {
             transform.position = new Vector3(transform.position.x, floorPosition.y + 1f, transform.position.z);
+            rigidbody.velocity = Vector3.zero;
         }
 
         if (hasCollided)

@@ -5,7 +5,7 @@ using UnityEngine;
 public class SetParentToWaste : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         transform.parent = GameObject.Find("Waste").transform;
     }
@@ -13,6 +13,6 @@ public class SetParentToWaste : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -13,7 +13,6 @@ public class TemperatureGenerator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        this.GenerateTemperature();
     }
 
     // Update is called once per frame
@@ -22,10 +21,15 @@ public class TemperatureGenerator : MonoBehaviour
 
     }
 
-    private void GenerateTemperature()
+    public int GenerateTemperature()
     {
-        Transform weather = gameObject.transform.parent;
-        DressUpManager manager = (DressUpManager)DressUpManager.Instance;
+        return new System.Random().Next(MinRange, MaxRange);
+    }
+
+    public void DisplayTemperature()
+    {
+        Transform weather = transform.parent.parent;
+        DressUpManager manager = (DressUpManager)RoomManager.Instance;
 
         Vector3 temperaturePostion = weather.TransformPoint(0.4f, 0f, 0f);
         Vector3 relativePos = temperaturePostion - Camera.main.transform.position;
@@ -33,11 +37,9 @@ public class TemperatureGenerator : MonoBehaviour
         temperatureRotation.x = 0f;
         temperatureRotation.z = 0f;
 
-        GameObject temperature = PhotonNetwork.Instantiate(manager.TemperatureTextPrefab.name, temperaturePostion, temperatureRotation, 0);
+        Transform temperature = Instantiate(manager.WeatherPrefabs.transform.GetChild(0), temperaturePostion, temperatureRotation, weather.GetChild(0).GetChild(1));
 
-        int temperatureValue = new System.Random().Next(MinRange, MaxRange);
-        temperature.GetComponent<TextMesh>().text = temperatureValue + "°C";
-
+        temperature.GetComponent<TextMesh>().text = manager.getTemperatureValue() + "°C";
         /*int unit = temperature % 10;
         int dec = (temperature - unit) / 10;
 

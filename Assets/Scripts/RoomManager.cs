@@ -123,17 +123,26 @@ public abstract class RoomManager : Singleton<RoomManager>, IInRoomCallbacks
     //Only called by the host
     private void startGame()
     {
+        //photonView.RPC("AllignWithAnchorPoint", RpcTarget.Others);
+        //this.AllignWithAnchorPoint();
         this.GenerateObjectsInWorld();
         photonView.RPC("OnGameStarted", RpcTarget.All);
-        photonView.RPC("AllignWithAnchorPoint", RpcTarget.Others);
-
+        photonView.RPC("AllignWithAnchorPoint", RpcTarget.All);
     }
 
-    private void AllignWithAnchorPoint()
+    [PunRPC]
+    public void AllignWithAnchorPoint()
     {
         Transform qrCodeTransform = QRCode.Instance.transform;
-        tableAnchor.transform.SetPositionAndRotation(qrCodeTransform.transform.position, qrCodeTransform.transform.rotation);
-        Debug.Log("Allignment completed");
+
+        Debug.Log("QR Code Position: " + qrCodeTransform.transform.position);
+        Debug.Log("QR Code Rotation: " + qrCodeTransform.transform.rotation.eulerAngles);
+
+        Quaternion rotationToApply = qrCodeTransform.transform.rotation * Quaternion.Euler(90, 0, 0);
+
+        tableAnchor.transform.SetPositionAndRotation(qrCodeTransform.transform.position, rotationToApply);
+        Debug.Log("Allignment completed: " + qrCodeTransform.transform.position + "\n" + rotationToApply.eulerAngles);
+        Debug.Log("Child in table anchor: " + tableAnchor.transform.childCount);
     }
 
     /* Virtual Assistant Logic */

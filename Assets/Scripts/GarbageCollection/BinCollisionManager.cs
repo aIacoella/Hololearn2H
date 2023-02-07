@@ -35,7 +35,7 @@ public class BinCollisionManager : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.transform.parent && other.transform.parent.tag == "ObjectsToBePlaced")
+        if (photonView && other.transform.parent && other.transform.parent.tag == "ObjectsToBePlaced")
         {
             photonView.RPC("remoteOnTriggerEnter", RpcTarget.All, other.transform.GetSiblingIndex());
         }
@@ -46,6 +46,7 @@ public class BinCollisionManager : MonoBehaviour
     {
         GameObject waste = GameObject.FindGameObjectWithTag("ObjectsToBePlaced");
         GameObject item = waste.transform.GetChild(itemIndex).gameObject;
+
 
         if (item.CompareTag(gameObject.tag))
         {

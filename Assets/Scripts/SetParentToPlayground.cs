@@ -5,7 +5,7 @@ using UnityEngine;
 public class SetParentToPlayground : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         transform.parent = GameObject.Find("SharedPlayground").transform.GetChild(0).transform;
     }
@@ -13,6 +13,6 @@ public class SetParentToPlayground : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
