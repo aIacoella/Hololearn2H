@@ -48,7 +48,7 @@ public class BagCollisionManager : MonoBehaviour
         GameObject item = clothes.transform.GetChild(itemIndex).gameObject;
 
 
-        TagsContainer tagsContainer = clothes.transform.GetComponent<TagsContainer>();
+        TagsContainer tagsContainer = item.transform.GetComponent<TagsContainer>();
         if (tagsContainer == null)
         {
             return;
