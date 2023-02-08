@@ -149,22 +149,24 @@ public class DressUpManager : RoomManager
 
         Debug.DrawLine(clothesPosition, bagPosition, Color.blue, 30f);
 
-        Counter.Instance.InitializeCounter(counter);
+        //Counter.Instance.InitializeCounter(counter);
 
-        Vector3 assistantPosition = clothes.TransformPoint(-0.3f, 0f, -0.5f);
+        /*
+                Vector3 assistantPosition = clothes.TransformPoint(-0.3f, 0f, -0.5f);
 
-        assistantPosition.y = anchorPosition.position.y;
+                assistantPosition.y = anchorPosition.position.y;
 
-        Debug.DrawLine(bagPosition, assistantPosition, Color.green, 30f);
+                Debug.DrawLine(bagPosition, assistantPosition, Color.green, 30f);
 
-        if (assistantPresence != 0)
-        {
-            //Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, sceneRoot);
-            PhotonNetwork.Instantiate(virtualAssistant.name, assistantPosition, virtualAssistant.transform.rotation);
+                if (assistantPresence != 0)
+                {
+                    //Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, sceneRoot);
+                    PhotonNetwork.Instantiate(virtualAssistant.name, assistantPosition, virtualAssistant.transform.rotation);
 
-            VirtualAssistantManager.Instance.patience = assistantPatience;
-            VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
-        }
+                    VirtualAssistantManager.Instance.patience = assistantPatience;
+                    VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
+                }
+        */
     }
 
     [PunRPC]
@@ -178,6 +180,33 @@ public class DressUpManager : RoomManager
 
         //Display Temperature
         weatherObj.transform.GetChild(1).GetComponent<TemperatureGenerator>().DisplayTemperature();
+
+        Transform clothes = GameObject.Find("Clothes").transform;
+        int counter = clothes.GetComponentsInChildren<TagsContainer>().Where(tc => tc.tags.Contains(weathertag) || tc.tags.Contains(temperaturetag)).Count();
+
+        Counter.Instance.InitializeCounter(counter);
+
+        initVirtualAssistant();
+    }
+
+    private void initVirtualAssistant()
+    {
+        Vector3 targetPosition = this.tableAnchor.transform.position;
+
+        Vector3 assistantPosition = Vector3.Lerp(Camera.main.transform.position, targetPosition, 0.5f);
+
+        assistantPosition.y = this.tableAnchor.transform.position.y;
+
+        Debug.DrawLine(targetPosition, assistantPosition, Color.green, 30f);
+
+        if (assistantPresence != 0)
+        {
+            Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, this.tableAnchor.transform);
+            //PhotonNetwork.Instantiate(virtualAssistant.name, assistantPosition, virtualAssistant.transform.rotation);
+
+            VirtualAssistantManager.Instance.patience = assistantPatience;
+            VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
+        }
     }
 
     [PunRPC]
