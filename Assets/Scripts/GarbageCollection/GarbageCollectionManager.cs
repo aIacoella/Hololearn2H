@@ -61,6 +61,31 @@ public class GarbageCollectionManager : RoomManager
             activeBins.Add(bin.tag);
             Debug.Log(bin.tag);
         }
+
+        initVirtualAssistant();
+    }
+
+    private void initVirtualAssistant()
+    {
+        Vector3 targetPosition = this.tableAnchor.transform.position;
+
+        Vector3 assistantPosition = Vector3.Lerp(Camera.main.transform.position, targetPosition, 0.5f);
+
+        assistantPosition.y = this.tableAnchor.transform.position.y;
+
+        Debug.DrawLine(targetPosition, assistantPosition, Color.green, 30f);
+
+        if (assistantPresence != 0)
+        {
+            Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, this.tableAnchor.transform);
+            VirtualAssistantManager.Instance.patience = assistantPatience;
+            VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
+
+            if (explainTaskGoal == 1)
+            {
+                VirtualAssistantManager.Instance.ExplainTaskGoal();
+            }
+        }
     }
 
 
@@ -152,22 +177,6 @@ public class GarbageCollectionManager : RoomManager
             }
         }
         */
-
-        Vector3 assistantPosition = new Vector3(-0.3f, 0f, -0.5f) + bins.position;
-        //assistantPosition.y = anchorPosition.position.y;
-
-        if (assistantPresence != 0)
-        {
-            PhotonNetwork.Instantiate(virtualAssistant.name, assistantPosition, virtualAssistant.transform.rotation);
-
-            VirtualAssistantManager.Instance.patience = assistantPatience;
-            //TODO: Find a solution for this one. (Maybe in OnGameStarted)
-            VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
-            if (explainTaskGoal == 1)
-            {
-                VirtualAssistantManager.Instance.ExplainTaskGoal();
-            }
-        }
     }
 
     public override GameObject GetClosestTarget()
