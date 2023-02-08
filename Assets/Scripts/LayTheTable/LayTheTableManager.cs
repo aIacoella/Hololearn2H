@@ -145,7 +145,22 @@ public class LayTheTableManager : RoomManager
     public override void OnGameStarted()
     {
         Counter.Instance.InitializeCounter(GameObject.Find("ObjectsToBePlaced").GetComponentsInChildren<Rigidbody>().Length);
+
+        initVirtualAssistant();
     }
+
+
+    private void initVirtualAssistant()
+    {
+        Vector3 assistantPosition = this.tableAnchor.transform.position;
+
+        if (assistantPresence != 0)
+        {
+            Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, this.tableAnchor.transform);
+            VirtualAssistantManager.Instance.patience = assistantPatience;
+        }
+    }
+
 
     private void cachePrefabs()
     {

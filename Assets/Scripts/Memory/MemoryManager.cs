@@ -63,8 +63,25 @@ public class MemoryManager : RoomManager
         //Init Counter
         playModeManager.InitCounter();
 
+        initVirtualAssistant();
+
         //Show Objects
         playModeManager.ShowObjects(waitingTime);
+    }
+
+    private void initVirtualAssistant()
+    {
+        Vector3 targetPosition = this.tableAnchor.transform.position;
+
+        Vector3 assistantPosition = Vector3.Lerp(Camera.main.transform.position, targetPosition, 0.5f);
+
+        assistantPosition.y = this.tableAnchor.transform.position.y;
+
+        if (assistantPresence != 0)
+        {
+            Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, this.tableAnchor.transform);
+            VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
+        }
     }
 
     [PunRPC]
@@ -146,16 +163,6 @@ public class MemoryManager : RoomManager
 
 
         //Vector3 assistantPosition = elems.GetChild(elems.childCount - 2).TransformPoint(0.3f * (float)Math.Pow(-1, elems.childCount / 2 % 2), 0f, 0f);
-        Vector3 assistantPosition = elems.gameObject.transform.position + new Vector3(0f, 0f, -.9f);
-        assistantPosition.y = anchorPosition.position.y;
-
-        if (assistantPresence != 0)
-        {
-            PhotonNetwork.Instantiate(virtualAssistant.name, assistantPosition, virtualAssistant.transform.rotation);
-
-            VirtualAssistantManager.Instance.patience = assistantPatience;
-            VirtualAssistantManager.Instance.transform.localScale += new Vector3(0.25f * VirtualAssistantManager.Instance.transform.localScale.x, 0.25f * VirtualAssistantManager.Instance.transform.localScale.y, 0.25f * VirtualAssistantManager.Instance.transform.localScale.z);
-        }
 
         photonView.RPC("AllignGameSettings", RpcTarget.All, playMode, waitingTime);
     }
