@@ -103,17 +103,6 @@ public class LayTheTableManager : RoomManager
         PhotonNetwork.Instantiate(beveragesPlacements.name, tableCenter + new Vector3(0f, 0.01f, 0f), beveragesPlacements.transform.rotation);
 
         Counter.Instance.InitializeCounter(objectsToBePlaced.GetComponentsInChildren<Rigidbody>().Length);
-
-        Vector3 assistantPosition = table.TransformPoint(-0.2f, 0f, 0f);
-
-        if (assistantPresence != 0)
-        {
-            //Instantiate(virtualAssistant.gameObject, assistantPosition, virtualAssistant.transform.rotation, sceneRoot);
-            PhotonNetwork.Instantiate(virtualAssistant.name, assistantPosition, virtualAssistant.transform.rotation);
-
-            //It should be ok to have it only assigned for the host as it is the one that controls it
-            VirtualAssistantManager.Instance.patience = assistantPatience;
-        }
     }
 
 
